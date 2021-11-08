@@ -27,9 +27,9 @@
       return {
        url:'https://ui-avatars.com/api/?size=60&length=1&bold=true&background=6699CC&color=ffffff&rounded=true&name=User' ,
        navList: [
-        { name: "/Home", navItem: "首页" },
+        { name: "/home", navItem: "首页" },
+        { name: "/news", navItem: "科普资讯" },
         { name: "/online", navItem: "线上问诊" },
-        { name: "/offline", navItem: "线下预约" },
         { name: "/mall", navItem: "健康商城" },
         { name: "/diseaseInfo", navItem: "疾病信息" },
       ],

@@ -1,16 +1,67 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/home.vue'
+import Login from '../views/login.vue'
+import Register from '../views/register.vue'
+import News from '../views/news.vue'
+import Online from '../views/online.vue'
+import Mall from '../views/mall.vue'
+import diseaseInfo from '../views/diseaseInfo.vue'
+import shoppingCart from '../components/shoppingCart.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {path:'/', redirect:'/login'},
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta:{title: '欢迎来到济病通！'}
   },
-  
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta:{title: '请先登录！'}
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register,
+    meta:{title: '请先注册！'}
+  },
+  {
+    path: '/news',
+    name: 'News',
+    component: News,
+    meta:{title: '科普资讯'}
+  },
+  {
+    path: '/mall',
+    name: 'Mall',
+    component: Mall,
+    meta:{title: '健康商城'}
+  },
+  {
+    path: '/online',
+    name: 'Online',
+    component: Online,
+    meta:{title: '线上问诊预约'}
+  },
+  {
+    path: '/diseaseInfo',
+    name: 'diseaseInfo',
+    component: diseaseInfo,
+    meta:{title: '疾病信息库'}
+  },
+  {
+    path: '/shoppingcart',
+    name: 'shoppingCart',
+    component: shoppingCart,
+    meta:{title: '购物车'}
+  },
+
   // {
   //   path: '/about',
   //   name: 'About',
