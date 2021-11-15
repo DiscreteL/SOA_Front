@@ -1,16 +1,26 @@
 <template>
   <div>
     <div class="login_background">
-      <img :src="imgSrc" width="100%" height="100%" alt="" />
+      <img
+        :src="imgSrc"
+        style="width: 100%; height: 100%; display: block"
+        alt=""
+      />
     </div>
-    <div class="login_box">
-      <!-- 头像区域 -->
-      <div class="avatar_box">
-        <img src="../assets/logo2.png" alt="" />
-      </div>
-       <div class="pos">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="患者注册" name="first">
+    <div style="height: 100px"></div>
+    <el-tabs
+      v-model="activeName"
+      @tab-click="handleClick"
+      style="
+        background-color: #ffffffa4;
+        width: 700px;
+        margin-left: 10%;
+        padding-left: 10px;
+      "
+    >
+      <el-tab-pane label="患者注册" name="first">
+        <div class="login_box1">
+          <!-- <div class="pos"> -->
           <el-form
             ref="loginForm1"
             :model="loginForm1"
@@ -24,7 +34,7 @@
             <el-form-item prop="identification" label="身份证号">
               <el-input
                 v-model="loginForm1.identification"
-                prefix-icon="el-icon-user"
+                prefix-icon="el-icon-postcard"
               ></el-input>
             </el-form-item>
             <!-- 姓名 -->
@@ -32,19 +42,22 @@
               <el-input
                 v-model="loginForm1.username"
                 prefix-icon="el-icon-user"
+                style="width: 117%"
               ></el-input>
             </el-form-item>
-            <!-- 电话号码 -->
-            <el-form-item prop="telephone" label="电话号码">
+            <!-- 邮箱 -->
+            <el-form-item prop="email" label="邮箱" style="white-space: nowrap">
               <el-input
-                v-model="loginForm1.telephone"
-                prefix-icon="el-icon-user"
+                v-model="loginForm1.email"
+                prefix-icon="el-icon-message"
               ></el-input>
             </el-form-item>
             <!-- 性别 -->
-            <el-form-item label="性别">
-              <el-radio v-model="loginForm1.sex" label="1">男</el-radio>
-              <el-radio v-model="loginForm1.sex" label="2">女</el-radio>
+            <el-form-item label="性别" prop="sex" style="width=150%">
+              <el-radio-group v-model="loginForm1.sex">
+                <el-radio label="男"></el-radio>
+                <el-radio label="女"></el-radio>
+              </el-radio-group>
             </el-form-item>
             <!-- 密码 -->
             <el-form-item prop="password" label="密码">
@@ -61,10 +74,37 @@
                 prefix-icon="el-icon-lock"
                 type="password"
                 class="length"
+                style="width: 110%"
+                show-password
               ></el-input>
             </el-form-item>
+
+            <!-- 验证码 -->
+            <el-form-item
+              prop="code"
+              label="验证码"
+              style="width: 100%; white-space: nowrap"
+              :inline="false"
+            >
+              <el-input
+                v-model="loginForm1.code"
+                prefix-icon="el-icon-chat-round"
+                style="width: 55%"
+              ></el-input>
+              <el-button
+                @click="getCode()"
+                :disabled="!show"
+                style="width: 40%; float: right"
+              >
+                <span v-show="show">发送邮箱验证码</span>
+                <span v-show="!show" class="count"
+                  >{{ count }} s后可点击重发</span
+                >
+              </el-button>
+            </el-form-item>
             <!-- 按钮区域 -->
-            <el-form-item class="btns">
+            <el-form-item style="margin-right=0;width:100%" align="right">
+              <!-- class="btns" -->
               <el-button type="text" @click="toLogin">已有账号，登陆</el-button>
               <el-button type="primary" @click="register1('loginForm1')"
                 >注册</el-button
@@ -72,23 +112,27 @@
               <el-button type="info" @click="resetloginForm1">重置</el-button>
             </el-form-item>
           </el-form>
-        </el-tab-pane>
+          <!-- </div> -->
+        </div>
+      </el-tab-pane>
 
-        <el-tab-pane label="医生注册" name="second">
+      <el-tab-pane label="医生注册" name="second">
+        <div class="login_box2">
+          <!-- <div class="pos"> -->
           <el-form
             ref="loginForm2"
             :model="loginForm2"
             :rules="loginForm2Rules"
             label-width="80px"
             :inline="true"
-            size="mini"
+            size="medium"
             class="login_form2"
           >
             <!-- 身份证 -->
             <el-form-item prop="identification" label="身份证号">
               <el-input
                 v-model="loginForm2.identification"
-                prefix-icon="el-icon-user"
+                prefix-icon="el-icon-postcard"
               ></el-input>
             </el-form-item>
             <!-- 姓名 -->
@@ -96,19 +140,8 @@
               <el-input
                 v-model="loginForm2.username"
                 prefix-icon="el-icon-user"
+                 style="width: 117%"
               ></el-input>
-            </el-form-item>
-            <!-- 电话号码 -->
-            <el-form-item prop="telephone" label="电话号码">
-              <el-input
-                v-model="loginForm2.telephone"
-                prefix-icon="el-icon-user"
-              ></el-input>
-            </el-form-item>
-            <!-- 性别 -->
-            <el-form-item label="性别">
-              <el-radio v-model="loginForm2.sex" label="1">男</el-radio>
-              <el-radio v-model="loginForm2.sex" label="2">女</el-radio>
             </el-form-item>
             <!-- 医院 -->
             <el-form-item prop="hospital" label="工作医院">
@@ -117,25 +150,26 @@
                 prefix-icon="el-icon-office-building"
               ></el-input>
             </el-form-item>
+           <!-- 性别 -->
+            <el-form-item label="性别" prop="sex" >
+              <el-radio-group v-model="loginForm2.sex">
+                <el-radio label="男"></el-radio>
+                <el-radio label="女"></el-radio>
+              </el-radio-group>
+            </el-form-item>
             <!-- 科室 -->
             <el-form-item prop="department" label="科室">
               <el-input
                 v-model="loginForm2.department"
-                prefix-icon="el-icon-office-building"
+                prefix-icon="el-icon-house"
               ></el-input>
             </el-form-item>
             <!-- 职称 -->
             <el-form-item prop="title" label="职称">
               <el-input
                 v-model="loginForm2.title"
-                prefix-icon="el-icon-office-building"
-              ></el-input>
-            </el-form-item>
-            <!-- 工龄 -->
-            <el-form-item prop="workingAge" label="工龄">
-              <el-input
-                v-model="loginForm2.workingAge"
-                prefix-icon="el-icon-office-building"
+                prefix-icon="el-icon-medal"
+                 style="width: 117%"
               ></el-input>
             </el-form-item>
             <!-- 密码 -->
@@ -152,10 +186,55 @@
                 v-model="loginForm2.rePassword"
                 prefix-icon="el-icon-lock"
                 type="password"
+                    style="width: 110%"
+                show-password
               ></el-input>
             </el-form-item>
+            <el-row>
+              <el-col :span="11">
+                <!-- 邮箱 -->
+                <el-form-item
+                  prop="email"
+                  label="邮箱"
+                  style="white-space: nowrap"
+                >
+                  <el-input
+                    v-model="loginForm2.email"
+                    prefix-icon="el-icon-message"
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <!-- 验证码 -->
+                <el-form-item
+                  prop="code"
+                  label="验证码"
+                  style="white-space: nowrap;margin-left:6px;"
+                >
+                  <el-input
+                    v-model="loginForm2.code"
+                    prefix-icon="el-icon-chat-round"
+                    style="width: 35%;"
+                  ></el-input>
+                  <el-button
+                    @click="getCode()"
+                    :disabled="!show"
+                    style="width: 51%; margin-left: 4%"
+                  >
+                    <span v-show="show">发送验证码</span>
+                    <span v-show="!show" class="count"
+                      >{{ count }} s后可点击重发</span
+                    >
+                  </el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
             <!-- 按钮区域 -->
-            <el-form-item class="btns">
+            <el-form-item
+              style="margin-right=0;width:100%"
+              align="right"
+              size="medium"
+            >
               <el-button type="text" @click="toLogin">已有账号，登陆</el-button>
               <el-button type="primary" @click="register2('loginForm2')"
                 >注册</el-button
@@ -163,18 +242,18 @@
               <el-button type="info" @click="resetloginForm2">重置</el-button>
             </el-form-item>
           </el-form>
-        </el-tab-pane>
-      </el-tabs>
-       </div>
-      <!-- </el-form> -->
-    </div>
-      <!-- 表单区域 -->
-
+          <!-- </div> -->
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+    <div style="height: 100px"></div>
   </div>
 </template>
 
 <script>
 // import { registerPFun, registerDFun } from "../service/userService.js";
+
+const TIME_COUNT = 60; // 设置一个全局的倒计时的时间
 export default {
   data() {
     //在data里面定义两个校验器,检验两次密码是否一致
@@ -193,20 +272,22 @@ export default {
       }
     };
     return {
+      count: 0,
       //这是注册表单的数据绑定对象
       loginForm1: {
         username: "",
         password: "",
         rePassword: "",
-        telephone: "",
+        email: "",
         identification: "",
         sex: "",
+        code: "",
       },
       loginForm2: {
         username: "",
         password: "",
         rePassword: "",
-        telephone: "",
+        email: "",
         identification: "",
         sex: "",
         hospital: "",
@@ -216,6 +297,7 @@ export default {
       },
       //这是表单的验证规则对象
       loginForm1Rules: {
+        sex: [{ required: true, message: "请选择性别", trigger: "change" }],
         //验证姓名是否合法
         username: [
           { required: true, message: "请输入姓名", trigger: "blur" },
@@ -237,6 +319,9 @@ export default {
             },
             trigger: "blur",
           },
+        ],
+        code: [
+          { required: true, message: "请输入验证码", trigger: "blur" },
         ],
         //验证身份证是否合法
         identification: [
@@ -262,20 +347,24 @@ export default {
             trigger: "blur",
           },
         ],
-        //验证电话号码是否合法
-        telephone: [
-          { required: true, message: "请输入电话号码", trigger: "blur" },
+        //验证邮箱是否合法
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "blur" },
           {
-            min: 11,
-            max: 11,
-            message: "长度在 11 个字符",
+            min: 1,
+            max: 20,
+            message: "长度在 1 到 20 个字符",
             trigger: "blur",
           },
           {
             validator: function (rule, value, callback) {
               //校验数字的正则：^[0-9]*$
-              if (/^[0-9]*$/.test(value) == false) {
-                callback(new Error("请输入正确的电话号码"));
+              if (
+                /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(
+                  value
+                ) == false
+              ) {
+                callback(new Error("请输入正确的邮箱"));
               } else {
                 //校验通过
                 callback();
@@ -297,7 +386,7 @@ export default {
             validator: function (rule, value, callback) {
               //校验密码的正则: ^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,15}$
               if (
-                /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,15}$/.test(value) ==
+                /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(value) ==
                 false
               ) {
                 callback(
@@ -326,6 +415,10 @@ export default {
 
       //这是表单的验证规则对象
       loginForm2Rules: {
+        code: [
+          { required: true, message: "请输入验证码", trigger: "blur" },
+        ],
+        sex: [{ required: true, message: "请选择性别", trigger: "change" }],
         //验证姓名是否合法
         username: [
           { required: true, message: "请输入姓名", trigger: "blur" },
@@ -372,24 +465,24 @@ export default {
             trigger: "blur",
           },
         ],
-        //验证电话号码是否合法
-        telephone: [
-          { required: true, message: "请输入身份证号", trigger: "blur" },
+        //验证邮箱是否合法
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "blur" },
           {
-            min: 11,
-            max: 11,
-            message: "长度在 11 个字符",
+            min: 1,
+            max: 20,
+            message: "长度在 1 到 20 个字符",
             trigger: "blur",
           },
           {
             validator: function (rule, value, callback) {
-              //校验电话号码的正则：/^[0-9]*$/  ^(13[0-9]|14[5|7]|15[0|1|2|3|4|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$
+              //校验数字的正则：^[0-9]*$
               if (
-                /^(13[0-9]|14[5|7]|15[0|1|2|3|4|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/.test(
+                /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(
                   value
                 ) == false
               ) {
-                callback(new Error("请输入正确的电话号码"));
+                callback(new Error("请输入正确的邮箱"));
               } else {
                 //校验通过
                 callback();
@@ -529,6 +622,7 @@ export default {
       activeName: "first",
       imgSrc: require("../assets/bg.png"),
       radio: "1",
+      show: true,
     };
   },
   methods: {
@@ -546,6 +640,59 @@ export default {
     //点击重置按钮，重置登录
     resetloginForm2() {
       this.$refs.loginForm2.resetFields();
+    },
+    //向手机号发送验证码
+    getCode() {
+      // console.log("eess6@163.com");
+      // if (this.loginForm.email === "") {
+      //   this.$message.error("请先输入邮箱再点击获取验证码");
+      // } else {
+      //   let regemail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+      //   if (!regemail.test(this.loginForm.email)) {
+      //     this.$message({
+      //       showClose: true,
+      //       message: "请输入格式正确有效的邮箱号!",
+      //       type: "error",
+      //     });
+      //   } else {
+      //     console.log("经过检验格式正确");//已执行
+      //     request.post("/email", this.loginForm).then((res) => {
+      //       console.log("2222222");//未执行
+      //       if (res.code === "0") {
+      //         this.$message({
+      //           showClose: true,
+      //           type: "success",
+      //           message: "验证码已发送",
+      //         });
+      //         console.log("3333333");//未执行
+      //         this.Ecode = res.Ecode;
+      //         console.log(res.Ecode);
+      //       } else {
+      //         console.log("4444444");//未执行
+      //         this.$message({
+      //           message: res.msg,
+      //           type: "error",
+      //           showClose: true,
+      //         });
+      //       }
+      //     });
+      //   }
+      // }
+      console.log("55555"); //执行
+      // 验证码倒计时
+      if (!this.timer) {
+        this.count = TIME_COUNT;
+        this.show = false;
+        this.timer = setInterval(() => {
+          if (this.count > 0 && this.count <= TIME_COUNT) {
+            this.count--;
+          } else {
+            this.show = true;
+            clearInterval(this.timer);
+            this.timer = null;
+          }
+        }, 1000);
+      }
     },
     //患者注册功能
     register1(loginForm1) {
@@ -565,18 +712,18 @@ export default {
                 this.$notify({
                   title: "提示",
                   message: "用户已注册过账号，无须再注册！",
-                  type: 'warning',
+                  type: "warning",
                   duration: 3000,
                 });
               } else {
-                this.$store.commit('editPatientId',res.result)
+                this.$store.commit("editPatientId", res.result);
                 this.$router.push("/Home"); //注册成功路由实现跳转
-                this.$store.commit('getAllPro',res.result)
+                this.$store.commit("getAllPro", res.result);
                 this.$message({
                   showClose: true,
                   message: `注册成功！请记住您的ID：${res.result}`,
                   type: "success",
-                  duration:0,
+                  duration: 0,
                 });
               }
               console.log(res);
@@ -585,7 +732,7 @@ export default {
               this.$notify({
                 title: "提示",
                 message: "用户访问错误",
-                type: 'error',
+                type: "error",
                 duration: 0,
               });
               console.log(err);
@@ -614,21 +761,21 @@ export default {
             department: this.loginForm2.department,
           })
             .then((res) => {
-               if (res.result === false) {
+              if (res.result === false) {
                 this.$notify({
                   title: "提示",
                   message: "用户已注册过账号，无须再注册！",
-                  type: 'warning',
+                  type: "warning",
                   duration: 3000,
                 });
               } else {
-                this.$store.commit('editDoctorId',res.result)
+                this.$store.commit("editDoctorId", res.result);
                 this.$router.push("/homepage"); //注册成功路由实现跳转
                 this.$message({
                   showClose: true,
                   message: `注册成功！请记住您的ID：${res.result}`,
                   type: "success",
-                  duration:0,
+                  duration: 0,
                 });
               }
               console.log(res);
@@ -655,65 +802,57 @@ export default {
 
 <style lang="less" scoped>
 .login_background {
+  // width: 100%;
+  // height: 100%;
+  z-index: -1;
+  // position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
-  z-index: -1;
-  position: absolute;
+  top: 0px; // 这里是设置与顶部的距离
+  left: 0px; // 这里是设置与左边的距离
 }
 
-.login_box {
-  width: 700px;
-  height: 350px;
+.login_box1 {
+  background-color: #ffffffa4;
+  opacity: 0.9;
+  border-radius: 5px;
+  width: 690px;
+}
+.login_box2 {
   background-color: #ffffff;
   opacity: 0.9;
   border-radius: 5px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-85%, -35%);
-  z-index: 1;
-  border: 1px solid #d8d2d2;
-}
-
-.avatar_box {
-  height: 130px;
-  width: 130px;
-  border: 1px solid #d8d2d2;
-  border-radius: 50%;
-  padding: 10px;
-  box-shadow: 0 0 10px #ddd;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, -70%);
-  background-color: #fff;
-  img {
-    width: 100%;
-    width: 100%;
-    border-radius: 50%;
-    background-color: #eeeeee;
-  }
+  width: 690px;
+  // height: 450px;
+  // left: 50%;
+  // top: 50%;
+  // transform: translate(-75%, -35%);
 }
 
 .login_form1 {
+  background-color: #ffffff;
   width: 100%;
-  padding: 40px 10px;
-  align-self: center;
+  padding: 10px 10px;
+  padding-top: 30px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  // align-self: center;
   box-sizing: border-box;
 }
 
 .login_form2 {
+  background-color: #ffffff;
   width: 100%;
-  padding: 15px 35px;
+  padding: 10px 10px;
+  padding-top: 30px;
+  margin-bottom: 10px;
+  border-radius: 5px;
   box-sizing: border-box;
 }
 
-.btns {
-  display: flex;
-  justify-content: flex-end;
-}
-.pos{
+.pos {
   position: absolute;
-
   padding: 10px;
 }
 </style>
