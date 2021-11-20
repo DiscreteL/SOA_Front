@@ -61,7 +61,7 @@
     position:absolute;
     left:45%;
     top:3%;
-    min-width:800px;
+    // min-width:700px;
    
 }
 /deep/.el-menu-item{
