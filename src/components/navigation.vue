@@ -30,8 +30,8 @@
         { name: "/home", navItem: "首页" },
         { name: "/news", navItem: "科普资讯" },
         { name: "/online", navItem: "线上问诊" },
-        { name: "/mall", navItem: "健康商城" },
         { name: "/diseaseInfo", navItem: "疾病信息" },
+        { name: "/information1", navItem: "个人中心" },
       ],
       };
     },

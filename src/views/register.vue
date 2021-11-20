@@ -7,7 +7,7 @@
         alt=""
       />
     </div>
-    <div style="height: 100px"></div>
+    <div style="height: 120px"></div>
     <el-tabs
       v-model="activeName"
       @tab-click="handleClick"
@@ -30,35 +30,48 @@
             size="medium"
             class="login_form1"
           >
+           <!-- 姓名 -->
+            <el-form-item prop="username" label="姓名">
+              <el-input
+                v-model="loginForm1.username"
+                prefix-icon="el-icon-user"
+               
+              ></el-input>
+            </el-form-item>
             <!-- 身份证 -->
             <el-form-item prop="identification" label="身份证号">
               <el-input
                 v-model="loginForm1.identification"
                 prefix-icon="el-icon-postcard"
+                 style="width: 117%"
               ></el-input>
             </el-form-item>
-            <!-- 姓名 -->
-            <el-form-item prop="username" label="姓名">
-              <el-input
-                v-model="loginForm1.username"
-                prefix-icon="el-icon-user"
-                style="width: 117%"
-              ></el-input>
-            </el-form-item>
-            <!-- 邮箱 -->
-            <el-form-item prop="email" label="邮箱" style="white-space: nowrap">
-              <el-input
-                v-model="loginForm1.email"
-                prefix-icon="el-icon-message"
-              ></el-input>
-            </el-form-item>
-            <!-- 性别 -->
-            <el-form-item label="性别" prop="sex" style="width=150%">
-              <el-radio-group v-model="loginForm1.sex">
-                <el-radio label="男"></el-radio>
-                <el-radio label="女"></el-radio>
-              </el-radio-group>
-            </el-form-item>
+           
+            <el-row>
+              <el-col :span="11">
+                <!-- 性别 -->
+                <el-form-item label="性别" prop="sex" style="width=150%">
+                  <el-radio-group v-model="loginForm1.sex">
+                    <el-radio label="男"></el-radio>
+                    <el-radio label="女"></el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <!-- 邮箱 -->
+                <el-form-item
+                  prop="email"
+                  label="邮箱"
+                  style="white-space: nowrap;margin-left:8px;"
+                >
+                  <el-input
+                    v-model="loginForm1.email"
+                    prefix-icon="el-icon-message"
+                    style="width:117%"
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
             <!-- 密码 -->
             <el-form-item prop="password" label="密码">
               <el-input
@@ -128,51 +141,22 @@
             size="medium"
             class="login_form2"
           >
-            <!-- 身份证 -->
-            <el-form-item prop="identification" label="身份证号">
-              <el-input
-                v-model="loginForm2.identification"
-                prefix-icon="el-icon-postcard"
-              ></el-input>
-            </el-form-item>
             <!-- 姓名 -->
             <el-form-item prop="username" label="姓名">
               <el-input
                 v-model="loginForm2.username"
                 prefix-icon="el-icon-user"
-                 style="width: 117%"
               ></el-input>
             </el-form-item>
-            <!-- 医院 -->
-            <el-form-item prop="hospital" label="工作医院">
+            <!-- 身份证 -->
+            <el-form-item prop="identification" label="身份证号">
               <el-input
-                v-model="loginForm2.hospital"
-                prefix-icon="el-icon-office-building"
+                v-model="loginForm2.identification"
+                prefix-icon="el-icon-postcard"
+                style="width: 117%"
               ></el-input>
             </el-form-item>
-           <!-- 性别 -->
-            <el-form-item label="性别" prop="sex" >
-              <el-radio-group v-model="loginForm2.sex">
-                <el-radio label="男"></el-radio>
-                <el-radio label="女"></el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <!-- 科室 -->
-            <el-form-item prop="department" label="科室">
-              <el-input
-                v-model="loginForm2.department"
-                prefix-icon="el-icon-house"
-              ></el-input>
-            </el-form-item>
-            <!-- 职称 -->
-            <el-form-item prop="title" label="职称">
-              <el-input
-                v-model="loginForm2.title"
-                prefix-icon="el-icon-medal"
-                 style="width: 117%"
-              ></el-input>
-            </el-form-item>
-            <!-- 密码 -->
+             <!-- 密码 -->
             <el-form-item prop="password" label="密码">
               <el-input
                 v-model="loginForm2.password"
@@ -186,7 +170,7 @@
                 v-model="loginForm2.rePassword"
                 prefix-icon="el-icon-lock"
                 type="password"
-                    style="width: 110%"
+                style="width: 110%"
                 show-password
               ></el-input>
             </el-form-item>
@@ -209,12 +193,12 @@
                 <el-form-item
                   prop="code"
                   label="验证码"
-                  style="white-space: nowrap;margin-left:6px;"
+                  style="white-space: nowrap; margin-left: 6px"
                 >
                   <el-input
                     v-model="loginForm2.code"
                     prefix-icon="el-icon-chat-round"
-                    style="width: 35%;"
+                    style="width: 35%"
                   ></el-input>
                   <el-button
                     @click="getCode()"
@@ -229,6 +213,90 @@
                 </el-form-item>
               </el-col>
             </el-row>
+            <el-row>
+              <el-col :span="11">
+                <!-- 性别 -->
+                <el-form-item label="性别" prop="sex">
+                  <el-radio-group v-model="loginForm2.sex">
+                    <el-radio label="男"></el-radio>
+                    <el-radio label="女"></el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <!-- 医院 -->
+                <el-form-item
+                  prop="hospital"
+                  label="工作医院"
+                  style="margin-left: 7px"
+                >
+                  <el-input
+                    v-model="loginForm2.hospital"
+                    prefix-icon="el-icon-office-building"
+                    style="width: 117%"
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <!-- 科室 -->
+            <el-form-item prop="department" label="科室">
+              <el-input
+                v-model="loginForm2.department"
+                prefix-icon="el-icon-house"
+              ></el-input>
+            </el-form-item>
+            <!-- 职称 -->
+            <el-form-item prop="title" label="职称">
+              <el-input
+                v-model="loginForm2.title"
+                prefix-icon="el-icon-s-custom"
+                style="width: 117%"
+              ></el-input>
+            </el-form-item>
+           <!-- 工作时间 -->
+            <el-form-item prop="workingAge" label="从业起始年份">
+              <el-input
+                v-model="loginForm2.workingAge"
+                prefix-icon="el-icon-news"
+              ></el-input>
+            </el-form-item>
+             <!-- 个人简介 -->
+            <el-form-item label="个人简介" prop="introduction">
+              <el-input
+                type="textarea"
+                v-model="loginForm2.introduction"
+                style="width: 138%"
+              ></el-input>
+            </el-form-item>
+            <!-- 执业医师资格证编号 -->
+            <el-form-item prop="certification" label="执业医师资格证号">
+              <el-input
+                v-model="loginForm2.certification"
+                prefix-icon="el-icon-medal"
+               
+              ></el-input>
+            </el-form-item>
+
+            <el-form-item label="资格证明">
+              <el-upload
+                class="upload-demo"
+                action="#"
+                :http-request="httpRequest"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :before-upload="beforeUpload"
+                multiple
+                :limit="3"
+                :on-exceed="handleExceed"
+                :file-list="cFileList"
+              >
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">
+                  只能上传jpg/png文件，且不超过8MB
+                </div>
+              </el-upload>
+            </el-form-item>
+          
             <!-- 按钮区域 -->
             <el-form-item
               style="margin-right=0;width:100%"
@@ -240,6 +308,7 @@
                 >注册</el-button
               >
               <el-button type="info" @click="resetloginForm2">重置</el-button>
+              <el-button type="info" @click="testFile">打印</el-button>
             </el-form-item>
           </el-form>
           <!-- </div> -->
@@ -284,17 +353,22 @@ export default {
         code: "",
       },
       loginForm2: {
+        sex: "",
         username: "",
+        identification: "",
+        email: "",
+        code:"",
         password: "",
         rePassword: "",
-        email: "",
-        identification: "",
-        sex: "",
+        certification:"",
         hospital: "",
-        workingAge: "",
-        title: "",
         department: "",
+        title: "",
+        introduction:"",
+        workingAge: "",
+        
       },
+      cFileList: [],
       //这是表单的验证规则对象
       loginForm1Rules: {
         sex: [{ required: true, message: "请选择性别", trigger: "change" }],
@@ -320,9 +394,7 @@ export default {
             trigger: "blur",
           },
         ],
-        code: [
-          { required: true, message: "请输入验证码", trigger: "blur" },
-        ],
+        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
         //验证身份证是否合法
         identification: [
           { required: true, message: "请输入身份证号", trigger: "blur" },
@@ -415,8 +487,12 @@ export default {
 
       //这是表单的验证规则对象
       loginForm2Rules: {
-        code: [
-          { required: true, message: "请输入验证码", trigger: "blur" },
+        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+        certification: [
+          { required: true, message: "请输入执业医师资格证编号", trigger: "blur" },
+        ],
+        introduction: [
+          { required: true, message: "请输入个人简介", trigger: "blur" },
         ],
         sex: [{ required: true, message: "请选择性别", trigger: "change" }],
         //验证姓名是否合法
@@ -514,10 +590,10 @@ export default {
         ],
         //验证工龄是否合法
         workingAge: [
-          { required: true, message: "请输入工龄", trigger: "blur" },
+          { required: true, message: "请输入从业起始年份", trigger: "blur" },
           {
-            min: 1,
-            max: 2,
+            min: 4,
+            max: 4,
             message: "工龄不能为空",
             trigger: "blur",
           },
@@ -629,6 +705,61 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
+      );
+    },
+    // beforeRemove(file, fileList) {
+    //   return this.$confirm(`确定移除 ${file.name}？`);
+    // },
+    beforeUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isPNG = file.type === "image/png";
+      const isLt8M = file.size / 1024 / 1024 < 8;
+      if (!isJPG && !isPNG) {
+        this.$message.error("上传图片只能是 JPG/PNG 格式!");
+      }
+      if (!isLt8M) {
+        this.$message.error("上传图片大小不能超过 8MB!");
+      }
+      // return isJPG && isLt8M;
+      // let fd = new FormData();//通过form数据格式来传
+      // fd.append("picFile", file); //传文件
+      // this.eFileList.push(fd);
+    },
+
+    testFile() {
+      this.loginForm2.eFileList = this.eFileList;
+      console.log(this.eFileList);
+      console.log(this.loginForm2);
+    },
+
+    httpRequest(data) {
+      let fd = new FormData(); //通过form数据格式来传
+      fd.append("picFile", data.file); //传文件
+      // let x=rd.result;
+      // console.log(x);
+      console.log(fd);
+      // this.eFileList.push(fd);
+      this.eFileList.push({
+        name: data.file.name,
+        url: data.file.url,
+      });
+
+      // rd.onloadend = function (e) {
+      //   _this.data.imageUrl = this.result // this指向当前方法onloadend的作用域
+      // }
+    },
     //跳转到登录界面
     toLogin() {
       this.$router.push("/");
@@ -641,7 +772,7 @@ export default {
     resetloginForm2() {
       this.$refs.loginForm2.resetFields();
     },
-    //向手机号发送验证码
+    //向邮箱发送验证码
     getCode() {
       // console.log("eess6@163.com");
       // if (this.loginForm.email === "") {

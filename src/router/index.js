@@ -5,9 +5,7 @@ import Login from '../views/login.vue'
 import Register from '../views/register.vue'
 import News from '../views/news.vue'
 import Online from '../views/online.vue'
-import Mall from '../views/mall.vue'
 import diseaseInfo from '../views/diseaseInfo.vue'
-import shoppingCart from '../components/shoppingCart.vue'
 
 Vue.use(VueRouter)
 
@@ -38,12 +36,6 @@ const routes = [
     meta:{title: '科普资讯'}
   },
   {
-    path: '/mall',
-    name: 'Mall',
-    component: Mall,
-    meta:{title: '健康商城'}
-  },
-  {
     path: '/online',
     name: 'Online',
     component: Online,
@@ -54,12 +46,6 @@ const routes = [
     name: 'diseaseInfo',
     component: diseaseInfo,
     meta:{title: '疾病信息库'}
-  },
-  {
-    path: '/shoppingcart',
-    name: 'shoppingCart',
-    component: shoppingCart,
-    meta:{title: '购物车'}
   },
 
   // {

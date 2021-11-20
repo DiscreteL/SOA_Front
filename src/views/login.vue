@@ -31,6 +31,7 @@
               <el-radio-group v-model="loginForm1.usertype">
                 <el-radio label="我是医生"></el-radio>
                 <el-radio label="我是患者"></el-radio>
+                <el-radio label="我是管理员"></el-radio>
               </el-radio-group>
             </el-form-item>
             <!-- 邮箱 -->
@@ -74,6 +75,7 @@
               <el-radio-group v-model="loginForm2.usertype">
                 <el-radio label="我是医生"></el-radio>
                 <el-radio label="我是患者"></el-radio>
+                
               </el-radio-group>
             </el-form-item>
             <!-- 邮箱 -->
