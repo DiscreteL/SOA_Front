@@ -28,7 +28,7 @@
 import Navigation from "@/components/navigation.vue";
 import cardList from "@/components/docList.vue";
 import myselect from "@/components/singleSelect.vue";
-import mysearch from '@/components/searchingSelect.vue';
+import mysearch from '@/components/searchingSelectDoctor.vue';
 import myform from "@/components/orderForm.vue";
 // import {getDocDataFun} from "@/service/userService.js";
 // import {postReservationFun} from '@/service/userService.js';

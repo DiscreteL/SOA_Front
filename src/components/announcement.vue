@@ -13,7 +13,7 @@
           <el-table :data="dataList.slice(0, 10)" style="width: 100%">
             <el-table-column prop="time" label="日期" width="180">
             </el-table-column>
-            <el-table-column prop="name" label="公告" width="380">
+            <el-table-column prop="announce_name" label="公告" width="380">
               <template slot-scope="scope">
                 <!-- 点击进行响应弹出通告具体界面 -->
                 <span

@@ -16,10 +16,8 @@
 
 <script>
 import Navigation from "@/components/navigation.vue";
-import mysearch from "@/components/searchingSelect.vue";
+import mysearch from "@/components/searchingSelectDisease.vue";
 import disease from "@/components/disease.vue";
-// axios.defaults.withCredentials = true;
-// axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 
 export default {
   name: "diseaseInfo",
@@ -30,10 +28,87 @@ export default {
   },
   data() {
     return {
-      diseaseIDList: [],
+      diseaseIDList: [{
+                "diseaseID":41,
+                "index":"小儿感冒",
+                "alias":[
+                    " 小儿急性上呼吸道感染",
+                    "小儿上感",
+                    "急性鼻咽炎",
+                    "急性扁桃体炎"
+                ],
+                "introduction":"慢性咽炎为咽部粘膜、粘膜下及淋巴组织的弥漫性炎症，常为上呼吸道炎症的一部分，多见于成年人，病程长，症状顽固，较难治愈。常因急性咽炎反复发作、鼻炎、鼻窦炎的脓液刺激咽部，或鼻塞而张口呼吸，导致慢性咽炎的发生。另外，与某些不明原因的疾病或症状，如内分泌紊乱、胃肠功能失调、风湿性关节炎、长期低热、头痛、头晕、口臭及嗅觉不灵等密切相关。",
+                "medicalInsurance":"非医保疾病",
+                "siteOfDisease":[
+                    "咽喉"
+                ],
+                "infectiousness":"无传染性",
+                "typicalSymptom":"打喷嚏,流鼻涕,新生儿鼻塞,发烧,流清涕"
+            },
+            {
+                "diseaseID":48,
+                "index":"感冒",
+                "alias":[
+                    " 急性鼻咽炎",
+                    "急性上呼吸道感染",
+                    "上感",
+                    "卡他性鼻炎",
+                    "普通感冒",
+                    "伤风"
+                ],
+                "introduction":"慢性咽炎为咽部粘膜、粘膜下及淋巴组织的弥漫性炎症，常为上呼吸道炎症的一部分，多见于成年人，病程长，症状顽固，较难治愈。常因急性咽炎反复发作、鼻炎、鼻窦炎的脓液刺激咽部，或鼻塞而张口呼吸，导致慢性咽炎的发生。另外，与某些不明原因的疾病或症状，如内分泌紊乱、胃肠功能失调、风湿性关节炎、长期低热、头痛、头晕、口臭及嗅觉不灵等密切相关。",
+                "medicalInsurance":"非医保疾病",
+                "siteOfDisease":[
+                    "鼻",
+                    "咽喉"
+                ],
+                "infectiousness":"有传染性",
+                "typicalSymptom":"打喷嚏,发烧,咳嗽,怕冷,流鼻涕"
+            },],
       diseaseList: [],
-      diseaseData: [],
-      options: [],
+      diseaseData: [
+        {
+                "diseaseID":41,
+                "index":"小儿感冒",
+                "alias":[
+                    " 小儿急性上呼吸道感染",
+                    "小儿上感",
+                    "急性鼻咽炎",
+                    "急性扁桃体炎"
+                ],
+                "introduction":"慢性咽炎为咽部粘膜、粘膜下及淋巴组织的弥漫性炎症，常为上呼吸道炎症的一部分，多见于成年人，病程长，症状顽固，较难治愈。常因急性咽炎反复发作、鼻炎、鼻窦炎的脓液刺激咽部，或鼻塞而张口呼吸，导致慢性咽炎的发生。另外，与某些不明原因的疾病或症状，如内分泌紊乱、胃肠功能失调、风湿性关节炎、长期低热、头痛、头晕、口臭及嗅觉不灵等密切相关。",
+                "medicalInsurance":"非医保疾病",
+                "siteOfDisease":[
+                    "咽喉"
+                ],
+                "infectiousness":"无传染性",
+                "typicalSymptom":"打喷嚏,流鼻涕,新生儿鼻塞,发烧,流清涕"
+            },
+            {
+                "diseaseID":48,
+                "index":"感冒",
+                "alias":[
+                    " 急性鼻咽炎",
+                    "急性上呼吸道感染",
+                    "上感",
+                    "卡他性鼻炎",
+                    "普通感冒",
+                    "伤风"
+                ],
+                "introduction":"慢性咽炎为咽部粘膜、粘膜下及淋巴组织的弥漫性炎症，常为上呼吸道炎症的一部分，多见于成年人，病程长，症状顽固，较难治愈。常因急性咽炎反复发作、鼻炎、鼻窦炎的脓液刺激咽部，或鼻塞而张口呼吸，导致慢性咽炎的发生。另外，与某些不明原因的疾病或症状，如内分泌紊乱、胃肠功能失调、风湿性关节炎、长期低热、头痛、头晕、口臭及嗅觉不灵等密切相关。",
+                "medicalInsurance":"非医保疾病",
+                "siteOfDisease":[
+                    "鼻",
+                    "咽喉"
+                ],
+                "infectiousness":"有传染性",
+                "typicalSymptom":"打喷嚏,发烧,咳嗽,怕冷,流鼻涕"
+            },
+      ],
+      options: [
+        { value: "感冒", label: "感冒",intro:"慢性咽炎为咽部粘膜、粘膜下及淋巴组织的弥漫性炎症，常为上呼吸道炎症的一部分，多见于成年人，病程长，症状顽固，较难治愈。常因急性咽炎反复发作、鼻炎、鼻窦炎的脓液刺激咽部，或鼻塞而张口呼吸，导致慢性咽炎的发生。另外，与某些不明原因的疾病或症状，如内分泌紊乱、胃肠功能失调、风湿性关节炎、长期低热、头痛、头晕、口臭及嗅觉不灵等密切相关。" },
+        { value: "小儿感冒", label: "小儿感冒",intro:"慢性咽炎为咽部粘膜、粘膜下及淋巴组织的弥漫性炎症，常为上呼吸道炎症的一部分，多见于成年人，病程长，症状顽固，较难治愈。常因急性咽炎反复发作、鼻炎、鼻窦炎的脓液刺激咽部，或鼻塞而张口呼吸，导致慢性咽炎的发生。另外，与某些不明原因的疾病或症状，如内分泌紊乱、胃肠功能失调、风湿性关节炎、长期低热、头痛、头晕、口臭及嗅觉不灵等密切相关。" },
+      ],
     };
   },
   created() {
@@ -49,7 +124,6 @@ export default {
             diseaseID: i.diseaseID, //疾病ID
           });
         }
-        this.getOptions();
       } else {
         this.$notify({
           title: "提示",
@@ -76,22 +150,24 @@ export default {
           typicalSymptom: res2.result.typicalSymptom, //典型症状
           medicine: res2.result.medicine, //常用药品
         });
-        console.log(this.diseaseList);
+        // console.log(this.diseaseList);
       }
-      console.log(this.diseaseList);
+      // console.log(this.diseaseList);
       this.diseaseData = this.diseaseList;
+      this.getOptions();
     },
 
     getOptions() {
       //获得所有可能的index
       let obj = {};
-      this.options.push({ value: "全部", label: "全部" });
+      this.options.push({ value: "全部", label: "全部",intro:"全部" });
       for (let i of this.diseaseList) {
         if (!obj[i.index]) {
           obj[i.index] = 1;
           this.options.push({
             value: i.index,
             label: i.index,
+            intro:i.typicalSymptom,
           });
         }
       }
@@ -129,7 +205,7 @@ body {
 }
 .dis {
   position: absolute;
-  top: 180px;
+  top: 150px;
   width: 100%;
 }
 </style>

@@ -50,7 +50,7 @@
             <el-row>
               <el-col :span="11">
                 <!-- 性别 -->
-                <el-form-item label="性别" prop="sex" style="width=150%">
+                <el-form-item label="性别" prop="sex" style="width=100%">
                   <el-radio-group v-model="loginForm1.sex">
                     <el-radio label="男"></el-radio>
                     <el-radio label="女"></el-radio>
