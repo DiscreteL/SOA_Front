@@ -16,7 +16,7 @@
             <div class="ill">
               <span class="text">{{ item.index }}</span>
               <div class="image">
-                <img src="../assets/ji.png" alt="" />
+                <img src="../assets/medicine.png" alt="" />
               </div>
             </div>
             <div class="content">
@@ -237,7 +237,7 @@ export default {
   .image {
     height: 40px;
     width: 40px;
-    border-radius: 50%;
+    // border-radius: 50%;
     padding: 10px;
     position: relative;
     top: -15px;
@@ -246,7 +246,7 @@ export default {
     img {
       width: 100%;
       height: 100%;
-      border-radius: 50%;
+      // border-radius: 50%;
     }
   }
 
