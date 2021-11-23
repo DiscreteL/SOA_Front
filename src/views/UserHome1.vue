@@ -1,28 +1,23 @@
 <template>
   <div class="container">
     <Navigation></Navigation>
-    <div class="head">
-        <img src="@/assets/bg.png" alt="">
-        头像 用户名
-        </div>
-    <el-container>
-      <el-header>头部</el-header>
-      <el-aside>aside</el-aside>
-      <el-main>main</el-main>
-    </el-container>
-  </div>
+    <UserHomeNav></UserHomeNav>
+</div>
 </template>
 
 <script>
 import Navigation from "@/components/navigation.vue";
+import UserHomeNav from "@/components/userhomenav.vue";
 
 export default {
   name: "UserHome1",
   components: {
     Navigation,
+    UserHomeNav,
   },
 };
 </script>
 
 <style scoped>
+
 </style>
