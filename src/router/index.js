@@ -92,6 +92,12 @@ const routes = [
   //   component: doc,
   //   meta:{title: '医生个人中心'}
   // }
+  {
+    path: '/userhome1',
+    name: 'UserHome1',
+    component:()=>import ('../views/patient/UserHome1.vue'),
+    meta:{title: '个人中心'}
+  },
 
   // {
   //   path: '/about',
