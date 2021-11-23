@@ -1,11 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/home.vue'
+import Home from '../views/Home.vue'
 import Login from '../views/login.vue'
 import Register from '../views/register.vue'
 import News from '../views/news.vue'
 import Online from '../views/online.vue'
 import diseaseInfo from '../views/diseaseInfo.vue'
+import adminHome from '../views/admin/adminHome.vue'
+import docApp from '../views/docApplication/index.vue'
+import problemList from '../views/problem/index.vue'
+import problemAdd from '../views/problem/problemAdd.vue'
+import message from '../views/message/index.vue'
+import report from '../views/report/index.vue'
 
 Vue.use(VueRouter)
 
@@ -47,6 +53,45 @@ const routes = [
     component: diseaseInfo,
     meta:{title: '疾病信息库'}
   },
+  {
+    path: '/adminHome',
+    name: 'adminHome',
+    component: adminHome,
+    meta:{title: '管理员主页'},
+    children: [
+      {
+        path: '/docApp',
+        component: docApp,
+        meta: {title: '医生资格认证申请'}
+      },
+      {
+        path: '/problemList',
+        component: problemList,
+        meta: {title: '问题列表'}
+      },
+      {
+        path: '/problemAdd',
+        component: problemAdd,
+        meta: {title: '添加常见问题'}
+      },
+      {
+        path: '/report',
+        component: report,
+        meta: {title: '反馈列表'}
+      },
+      {
+        path: '/message',
+        component: message,
+        meta: {title: '资讯列表'}
+      },
+    ]
+  },
+  // {
+  //   path: '/doc',
+  //   name: 'DoctorHome',
+  //   component: doc,
+  //   meta:{title: '医生个人中心'}
+  // }
 
   // {
   //   path: '/about',
