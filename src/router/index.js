@@ -50,7 +50,7 @@ const routes = [
   {
     path: '/userhome1',
     name: 'UserHome1',
-    component:()=>import ('../views/UserHome1.vue'),
+    component:()=>import ('../views/patient/UserHome1.vue'),
     meta:{title: '个人中心'}
   },
 
