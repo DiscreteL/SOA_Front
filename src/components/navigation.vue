@@ -31,7 +31,7 @@
         { name: "/news", navItem: "科普资讯" },
         { name: "/online", navItem: "线上问诊" },
         { name: "/diseaseInfo", navItem: "疾病信息" },
-        { name: "/information1", navItem: "个人中心" },
+        { name: "/userhome1", navItem: "个人中心" },
       ],
       };
     },
@@ -41,7 +41,7 @@
       },
       move()//进入个人信息界面
       {
-        this.$router.push('/information1');
+        this.$router.push('/userhome1');
       }
     }
   }

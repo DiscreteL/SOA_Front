@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/home.vue'
+import Home from '../views/Home.vue'
 import Login from '../views/login.vue'
 import Register from '../views/register.vue'
 import News from '../views/news.vue'
@@ -46,6 +46,12 @@ const routes = [
     name: 'diseaseInfo',
     component: diseaseInfo,
     meta:{title: '疾病信息库'}
+  },
+  {
+    path: '/userhome1',
+    name: 'UserHome1',
+    component:()=>import ('../views/UserHome1.vue'),
+    meta:{title: '个人中心'}
   },
 
   // {
