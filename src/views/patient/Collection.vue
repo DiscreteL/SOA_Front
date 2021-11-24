@@ -1,6 +1,7 @@
 <template>
   <div class="home_container">
     <UserHomeNav></UserHomeNav>
+    <!--页面主体区-->
     <el-container>
       <!--侧边栏-->
       <el-aside :width="isCollapse ? '64px' : '150px'">
@@ -24,13 +25,26 @@
           <!-- :unique-opened="true"->只允许展开一个菜单 -->
           <!-- :collapse-transition="false" -> 关闭动画 -->
           <!-- router -> 导航开启路由模式 -->
-          <el-menu-item index="/esseninfo" @click="saveNavState('/esseninfo')">
-            <i class="el-icon-date" style="color: #dcdcdc"></i>
-            <span slot="title">基本信息</span>
+          <el-menu-item
+            index="/person"
+            @click="saveNavState('/person')"
+          >
+            <i class="el-icon-user" style="color: #dcdcdc"></i>
+            <span slot="title">关注人</span>
           </el-menu-item>
-          <el-menu-item index="/accmanage" @click="saveNavState('/accmanage')">
+             <el-menu-item
+            index="/article"
+            @click="saveNavState('/article')"
+          >
             <i class="el-icon-document" style="color: #dcdcdc"></i>
-            <span slot="title">账号管理</span>
+            <span slot="title">健康推文</span>
+          </el-menu-item>
+                    <el-menu-item
+            index="/video"
+            @click="saveNavState('/video')"
+          >
+            <i class="el-icon-video-camera-solid" style="color: #dcdcdc"></i>
+            <span slot="title">科普视频</span>
           </el-menu-item>
         </el-menu>
       </el-aside>
@@ -39,18 +53,6 @@
         <router-view></router-view>
       </el-main>
     </el-container>
-    <!-- 个人信息部分 -->
-    <!-- <div class="Info" style="color:#909399">
-            <strong> 姓名：</strong>{{ userInfo.name }} <br />
-            <strong>身份证号：</strong>{{ userInfo.number }} <br />
-            <strong>出生日期：</strong>{{ userInfo.borndate }} <br />
-            <strong>性别：</strong>{{ userInfo.gender }} <br />
-            <strong>邮箱：</strong>{{ userInfo.mail }} <br />
-            <strong>身高：</strong>{{ userInfo.height }} <br />
-            <strong>体重：</strong>{{ userInfo.weight }} <br />
-            <strong>血压：</strong>{{ userInfo.bloodpressure }} <br />
-            <strong>心率：</strong>{{ userInfo.heartrate }} 
-          </div> -->
   </div>
 </template>
 
@@ -58,20 +60,10 @@
 import UserHomeNav from "@/components/userhomenav.vue";
 
 export default {
-  name: "UserHome1",
+  name: "Collection",
   components: {
     UserHomeNav,
   },
-  // data() {
-  //   return {
-  //     // 返回个人信息
-  //     // userID: window.sessionStorage.getItem("id"),
-  //     userInfo: {}, //用户个人信息
-  //     item: {
-  //       id: "",
-  //     },
-  //   };
-  // },
   data() {
     return {
       // 默认不折叠
@@ -81,7 +73,6 @@ export default {
     };
   },
   created() {
-    this.getMenuList();
     this.activePath = window.sessionStorage.getItem("activePath");
   },
   methods: {
@@ -97,13 +88,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// .Info {
-//   text-align: left;
-//   font: 15px "Microsoft YaHei";
-//   align-content: center;
-//   width: 80%;
-//   position: relative;
-// }
 html,
 body {
   width: 100%;
@@ -111,11 +95,11 @@ body {
   margin: 0px;
   padding: 0px;
 }
-.home_container {
-  height: 100vh;
+.home_container{
+    height: 100vh;
 }
-.el-container {
-  height: 100%;
+.el-container{
+    height: 100%;
 }
 .el-aside {
   background-color: #5b6be5;
