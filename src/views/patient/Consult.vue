@@ -4,7 +4,7 @@
     <!--页面主体区-->
     <el-container>
       <!--侧边栏-->
-      <el-aside :width="isCollapse ? '64px' : '200px'">
+      <el-aside :width="isCollapse ? '64px' : '150px'">
         <div class="toggle-button" @click="toggleCollapse">
           <div v-if="this.isCollapse == true">
             <i class="el-icon-s-fold"></i>
@@ -25,17 +25,11 @@
           <!-- :unique-opened="true"->只允许展开一个菜单 -->
           <!-- :collapse-transition="false" -> 关闭动画 -->
           <!-- router -> 导航开启路由模式 -->
-          <el-menu-item
-            index="/consult"
-            @click="saveNavState('/apply')"
-          >
+          <el-menu-item index="/consult" @click="saveNavState('/apply')">
             <i class="el-icon-date" style="color: #dcdcdc"></i>
             <span slot="title">我的预约</span>
           </el-menu-item>
-          <el-menu-item
-            index="/record"
-            @click="saveNavState('/record')"
-          >
+          <el-menu-item index="/record" @click="saveNavState('/record')">
             <i class="el-icon-document" style="color: #dcdcdc"></i>
             <span slot="title">问诊记录</span>
           </el-menu-item>
@@ -53,9 +47,17 @@
 import UserHomeNav from "@/components/userhomenav.vue";
 
 export default {
-  name: "Collection",
+  name: "Consult",
   components: {
     UserHomeNav,
+  },
+  data() {
+    return {
+      // 默认不折叠
+      isCollapse: false,
+      // 被激活导航地址
+      activePath: "",
+    };
   },
   created() {
     this.getMenuList();

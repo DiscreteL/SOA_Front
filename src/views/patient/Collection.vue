@@ -4,7 +4,7 @@
     <!--页面主体区-->
     <el-container>
       <!--侧边栏-->
-      <el-aside :width="isCollapse ? '64px' : '200px'">
+      <el-aside :width="isCollapse ? '64px' : '150px'">
         <div class="toggle-button" @click="toggleCollapse">
           <div v-if="this.isCollapse == true">
             <i class="el-icon-s-fold"></i>

@@ -48,9 +48,9 @@ export default {
   data() {
     return {
       //   userID: window.sessionStorage.getItem("id"),
-      userName: "xxx",
+      userName: "王某某",
       navList: [
-        { name: "/userhome1", navItem: "主页" },
+        { name: "/userhome1", navItem: "个人信息" },
         { name: "/collection", navItem: "收藏" },
         { name: "/consult", navItem: "问诊" },
         { name: "/help", navItem: "帮助中心" },
