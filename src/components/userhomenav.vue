@@ -4,18 +4,24 @@
       <div class="background">
         <img src="@/assets/back.jpg" alt="" width="100%" height="100%" />
       </div>
-      <div class="left">
-        <!-- 头像部分 -->
-        <div class="port_box">
-          <img src="../assets/port.png" />
-        </div>
+      <div class="headmain">
+        <div class="left">
+          <!-- 头像部分 -->
+          <div class="port_box">
+            <img src="../assets/port.png" />
+          </div>
 
-        <!-- 个人信息部分 -->
-        <div
-          class="Info"
-          style="color: white; font-size: 30px; font-family: 宋体"
-        >
-          {{ userName }}<br />
+          <!-- 个人信息部分 -->
+          <div
+            class="Info"
+            style="color: white; font-size: 30px; font-family: 宋体"
+          >
+            {{ userName }}<br />
+          </div>
+        </div>
+        <div>
+          <el-button type="info" @click="logout">退出</el-button>
+          <el-button type="info" @click="returnhome">返回首页</el-button>
         </div>
       </div>
     </div>
@@ -28,12 +34,11 @@
         active-text-color="#409EFF"
       >
         <el-menu-item v-for="(item, i) in navList" :key="i" :index="item.name">
-          <template slot="title">
-            <span> {{ item.navItem }}</span>
-          </template>
+          {{ item.navItem }}
         </el-menu-item>
       </el-menu>
     </div>
+    <div></div>
   </div>
 </template>
 
@@ -43,33 +48,44 @@ export default {
   data() {
     return {
       //   userID: window.sessionStorage.getItem("id"),
-      userName: "刘白桦",
+      userName: "xxx",
       navList: [
         { name: "/userhome1", navItem: "主页" },
         { name: "/collection", navItem: "收藏" },
         { name: "/consult", navItem: "问诊" },
+        { name: "/help", navItem: "帮助中心" },
       ],
     };
+  },
+  methods: {
+    logout() {
+      // 清空token
+      window.sessionStorage.clear();
+      this.$router.push("/login");
+    },
+    returnhome(){
+      this.$router.push("/home");
+    }
   },
 };
 </script>
 
 <style scoped>
 .head {
-  position: absolute;
-  top: 16%;
   height: 180px;
   width: 100%;
 }
 .background {
   width: 100%;
-  height: 100%; /**宽高100%是为了图片铺满屏幕 */
+  height: 180px;
   z-index: -1;
   position: absolute;
 }
-.navBar {
-  position: absolute;
-  top: 41%;
+.headmain {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
 }
 .left {
   display: flex;
@@ -97,8 +113,5 @@ export default {
   font: 15px "Microsoft YaHei";
   margin: 30px;
   position: relative;
-}
-.el-menu-item span {
-  margin: 222px;
 }
 </style>

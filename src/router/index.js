@@ -98,6 +98,48 @@ const routes = [
     component:()=>import ('../views/patient/UserHome1.vue'),
     meta:{title: '个人中心'}
   },
+  {
+    path: '/collection',
+    name: 'Collection',
+    component:()=>import('../views/patient/Collection.vue'),
+    meta:{title: '收藏'},
+    redirect:'/person',
+    children: [{
+      path: '/person',
+      component:()=>import('../views/patient/collection/Person.vue')
+    },
+    {
+      path: '/video',
+      component: () => import('../views/patient/collection/Video.vue')
+    },
+    {
+      path: '/article',
+      component: () => import('../views/patient/collection/Article.vue')
+    },
+  ]
+  },
+  {
+    path: '/consult',
+    name: 'Consult',
+    component:()=>import ('../views/patient/Consult.vue'),
+    meta:{title: '问诊'},
+    redirect:'/apply',
+    children: [{
+      path: '/apply',
+      component:()=>import('../views/patient/consult/Apply.vue')
+    },
+    {
+      path: '/record',
+      component: () => import('../views/patient/consult/Record.vue')
+    },
+  ]
+  },
+  {
+    path: '/help',
+    name: 'Help',
+    component:()=>import ('../views/patient/Help.vue'),
+    meta:{title: '帮助中心'}
+  },
 
   // {
   //   path: '/about',
