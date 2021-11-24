@@ -12,6 +12,8 @@ import problemList from '../views/problem/index.vue'
 import problemAdd from '../views/problem/problemAdd.vue'
 import message from '../views/message/index.vue'
 import report from '../views/report/index.vue'
+import docInfo from '../views/doctor/docInfo.vue'
+import messageManage from '../views/doctor/messageManage.vue'
 
 Vue.use(VueRouter)
 
@@ -86,12 +88,24 @@ const routes = [
       },
     ]
   },
-  // {
-  //   path: '/doc',
-  //   name: 'DoctorHome',
-  //   component: doc,
-  //   meta:{title: '医生个人中心'}
-  // }
+  {
+    path: '/userhome2',
+    name: 'UserHome2',
+    component:()=>import ('../views/doctor/userHome2.vue'),
+    meta:{title: '个人中心'},
+    children: [
+      {
+        path: '/docInfo',
+        component: docInfo,
+        meta: {title: '个人信息'}
+      },
+      {
+        path: '/messagemanage',
+        component: messageManage,
+        meta: {title: '创作中心'}
+      }
+    ]
+  },
   {
     path: '/userhome1',
     name: 'UserHome1',
