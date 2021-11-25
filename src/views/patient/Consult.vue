@@ -25,14 +25,22 @@
           <!-- :unique-opened="true"->只允许展开一个菜单 -->
           <!-- :collapse-transition="false" -> 关闭动画 -->
           <!-- router -> 导航开启路由模式 -->
-          <el-menu-item index="/consult" @click="saveNavState('/apply')">
-            <i class="el-icon-date" style="color: #dcdcdc"></i>
-            <span slot="title">我的预约</span>
-          </el-menu-item>
-          <el-menu-item index="/record" @click="saveNavState('/record')">
+
+          <el-menu-item index="/consult/record" @click="saveNavState('/record')">
             <i class="el-icon-document" style="color: #dcdcdc"></i>
             <span slot="title">问诊记录</span>
           </el-menu-item>
+
+          <el-submenu>
+            <template slot="title">
+              <i class="el-icon-date" style="color: #dcdcdc"></i>
+              <span>我的预约</span>
+            </template>
+            <el-menu-item index="total">全部</el-menu-item>
+            <el-menu-item index="wait">待接受</el-menu-item>
+            <el-menu-item index="success">待问诊</el-menu-item>
+            <el-menu-item index="fail">已拒绝</el-menu-item>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <!--右侧主体区-->

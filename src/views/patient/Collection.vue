@@ -26,21 +26,21 @@
           <!-- :collapse-transition="false" -> 关闭动画 -->
           <!-- router -> 导航开启路由模式 -->
           <el-menu-item
-            index="/person"
+            index="/collection/person"
             @click="saveNavState('/person')"
           >
             <i class="el-icon-user" style="color: #dcdcdc"></i>
             <span slot="title">关注人</span>
           </el-menu-item>
              <el-menu-item
-            index="/article"
+            index="/collection/article"
             @click="saveNavState('/article')"
           >
             <i class="el-icon-document" style="color: #dcdcdc"></i>
             <span slot="title">健康推文</span>
           </el-menu-item>
                     <el-menu-item
-            index="/video"
+            index="/collection/video"
             @click="saveNavState('/video')"
           >
             <i class="el-icon-video-camera-solid" style="color: #dcdcdc"></i>

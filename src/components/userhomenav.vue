@@ -20,7 +20,6 @@
           </div>
         </div>
         <div>
-          <el-button type="info" @click="logout">退出</el-button>
           <el-button type="info" @click="returnhome">返回首页</el-button>
         </div>
       </div>
@@ -58,11 +57,6 @@ export default {
     };
   },
   methods: {
-    logout() {
-      // 清空token
-      window.sessionStorage.clear();
-      this.$router.push("/login");
-    },
     returnhome(){
       this.$router.push("/home");
     }

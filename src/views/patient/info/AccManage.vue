@@ -14,7 +14,7 @@
       >
       >
     </el-descriptions>
-<hr>
+    <hr />
     <el-descriptions
       class="margin-top"
       title="账号注销"
@@ -29,6 +29,10 @@
       >
       >
     </el-descriptions>
+    <hr />
+    <el-button type="primary" size="small" @click="logout"
+      >退出当前帐号</el-button
+    >
   </el-card>
 </template>
 
@@ -42,3 +46,15 @@
   margin-bottom: 5%;
 }
 </style>
+
+<script>
+export default {
+  methods: {
+    logout() {
+      // 清空token
+      window.sessionStorage.clear();
+      this.$router.push("/login");
+    },
+  },
+};
+</script>
