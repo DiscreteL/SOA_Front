@@ -1,28 +1,62 @@
 <template>
   <el-card>
-    <div>
-      <h1>基本信息</h1>
-      <div>
-        <!-- 不能被更改的信息 -->
-        姓名：  陆话叶{{ userInfo.name }}<br />
-        性别：  男{{ userInfo.gender }}<br />
-        出生日期：  2002.8.10{{ userInfo.borndate }}<br />
-      </div>
-    </div>
-    <div>
-      <h1>健康信息</h1>
-      <div>
-        身高:  180{{ userInfo.height }} <br />
-        体重:  135{{ userInfo.weight }}<br />
-        血压:  null{{ userInfo.bloodpressure }}<br />
-        心率:  null{{ userInfo.heartrate }}<br />
-      </div>
-    </div>
-    <div>
-      <h1>联系方式</h1>
-      <div>邮箱:  12345677908@qq.com{{ userInfo.mail }}<br /></div>
-    </div>
-    <div></div>
+    <el-descriptions title="用户信息">
+      <el-descriptions-item label="姓名"
+        >王某某{{ userInfo.name }}</el-descriptions-item
+      >
+      <el-descriptions-item label="性别">
+        男{{ userInfo.gender }}</el-descriptions-item
+      >
+      <el-descriptions-item label="出生日期">2000.9.13</el-descriptions-item>
+    </el-descriptions>
+    <hr />
+    <el-descriptions
+      class="margin-top"
+      title="健康信息"
+      :column="3"
+      :size="size"
+    >
+      <template slot="extra">
+        <el-button type="primary" size="small">编辑</el-button>
+      </template>
+      <el-descriptions-item label="身高"
+        >180{{ userInfo.height }}</el-descriptions-item
+      >
+      <el-descriptions-item label="体重"
+        >135{{ userInfo.weight }}</el-descriptions-item
+      >
+      <el-descriptions-item label="血压"
+        >null{{ userInfo.bloodpressure }}</el-descriptions-item
+      >
+      <el-descriptions-item label="心率"
+        >null{{ userInfo.heartrate }}</el-descriptions-item
+      >
+      <el-descriptions-item label="左眼视力"
+        >null{{ userInfo.lefteye }}</el-descriptions-item
+      >
+      <el-descriptions-item label="右眼视力"
+        >null{{ userInfo.righteye }}</el-descriptions-item
+      >
+    </el-descriptions>
+
+    <hr />
+    <el-descriptions
+      class="margin-top"
+      title="联系方式"
+      :column="3"
+      :size="size"
+    >
+      <template slot="extra">
+        <el-button type="primary" size="small">编辑</el-button>
+      </template>
+      <el-descriptions-item label="邮箱"
+        >12345677908@qq.com{{ userInfo.mail }}</el-descriptions-item
+      >
+      <el-descriptions-item label="电话号码"
+        >13528749665{{ userInfo.tel }}</el-descriptions-item
+      >
+      >
+    </el-descriptions>
   </el-card>
 </template>
 <script>
