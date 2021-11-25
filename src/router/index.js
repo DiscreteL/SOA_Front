@@ -91,18 +91,18 @@ const routes = [
   {
     path: '/userhome2',
     name: 'UserHome2',
-    component:()=>import ('../views/doctor/userHome2.vue'),
-    meta:{title: '个人中心'},
+    component: () => import('../views/doctor/userHome2.vue'),
+    meta: { title: '个人中心' },
     children: [
       {
         path: '/docInfo',
         component: docInfo,
-        meta: {title: '个人信息'}
+        meta: { title: '个人信息' }
       },
       {
         path: '/messagemanage',
         component: messageManage,
-        meta: {title: '创作中心'}
+        meta: { title: '创作中心' }
       }
     ]
   },
@@ -110,15 +110,16 @@ const routes = [
     path: '/userhome1',
     name: 'UserHome1',
     component: () => import('../views/patient/UserHome1.vue'),
-    meta: { title: '个人中心' },
     redirect: '/esseninfo',
     children: [{
       path: '/esseninfo',
-      component: () => import('../views/patient/info/EssenInfo.vue')
+      component: () => import('../views/patient/info/EssenInfo.vue'),
+      meta: { title: '基本信息' },
     },
     {
       path: '/accmanage',
-      component: () => import('../views/patient/info/AccManage.vue')
+      component: () => import('../views/patient/info/AccManage.vue'),
+      meta: { title: '账号管理' },
     },
     ]
   },
@@ -127,19 +128,24 @@ const routes = [
     path: '/collection',
     name: 'Collection',
     component: () => import('../views/patient/Collection.vue'),
-    meta: { title: '收藏' },
     redirect: 'collection/person',
+
     children: [{
       path: 'person',
-      component: () => import('../views/patient/collection/Person.vue')
+      component: () => import('../views/patient/collection/Person.vue'),
+      meta: { title: '关注人' },
+
     },
     {
       path: 'video',
-      component: () => import('../views/patient/collection/Video.vue')
+      component: () => import('../views/patient/collection/Video.vue'),
+      meta: { title: '收藏视频' },
+
     },
     {
       path: 'article',
-      component: () => import('../views/patient/collection/Article.vue')
+      component: () => import('../views/patient/collection/Article.vue'),
+      meta: { title: '收藏推文' },
     },
     ]
   },
@@ -147,32 +153,38 @@ const routes = [
     path: '/consult',
     name: 'Consult',
     component: () => import('../views/patient/Consult.vue'),
-    meta: { title: '问诊' },
-    redirect:'/consult/record',
+    redirect: '/consult/record',
     children: [
       {
         path: 'total',
-        component: () => import('../views/patient/consult/apply/TotalApply.vue')
+        component: () => import('../views/patient/consult/apply/TotalApply.vue'),
+        meta: { title: '预约' }
+
       },
       {
         path: 'success',
-        component: () => import('../views/patient/consult/apply/SucApply.vue')
+        component: () => import('../views/patient/consult/apply/SucApply.vue'),
+        meta: { title: '预约' },
       },
       {
         path: 'fail',
-        component: () => import('../views/patient/consult/apply/FailApply.vue')
+        component: () => import('../views/patient/consult/apply/FailApply.vue'),
+        meta: { title: '预约' },
       },
       {
         path: 'wait',
-        component: () => import('../views/patient/consult/apply/WaitApply.vue')
+        component: () => import('../views/patient/consult/apply/WaitApply.vue'),
+        meta: { title: '预约' },
       },
-        {
-          path:'record',
-          name:'Record',
+      {
+        path: 'record',
+        name: 'Record',
         component: () => import('../views/patient/consult/Record.vue'),
-        }
-        ]
-      },
+        meta: { title: '问诊记录' }
+
+      }
+    ]
+  },
   {
     path: '/help',
     name: 'Help',
