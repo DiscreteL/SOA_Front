@@ -121,7 +121,7 @@
 </template>
 
 <script>
-// import { loginPFun,loginDFun } from "../service/userService.js"
+import { loginPFun,loginDFun } from "../service/userService.js"
 
 const TIME_COUNT = 60; // 设置一个全局的倒计时的时间
 export default {
@@ -203,13 +203,13 @@ export default {
       this.$refs[loginForm1].validate((valid, wrongstring) => {
         // 获取loginform1的实例（el-form），找到validate方法，根据验证规则rules校验是否valid
         if (valid) {
-          loginPFun({
-            id: this.loginForm1.email,
-            password: this.loginForm1.password,
-            type: this.loginForm1.usertype,
-          })
-            .then((res) => {
-              if (res.result === true) {
+          // loginPFun({
+          //   id: this.loginForm1.email,
+          //   password: this.loginForm1.password,
+          //   type: this.loginForm1.usertype,
+          // })
+          //   .then((res) => {
+              // if (res.result === true) {
                 //window.sessionStorage.setItem("token", res.data.token);
                 this.$notify({
                   title: "提示",
@@ -217,15 +217,16 @@ export default {
                   type: "success",
                   duration: 3000,
                 });
-                if (this.loginForm.username.substring(0, 5) == "Admin") {
-                  this.$router.push("/admin1"); //!!!!!!!!要改成管理员的页面
-                  this.$store.commit("editAdminId", this.loginForm1.username);
-                } else {
-                  this.$router.push("/home");
-                  this.$store.commit("editPatientId", this.loginForm1.username); //更改id
-                  this.$store.commit("getAllPro", this.loginForm1.username); //请求购物车
-                }
-                this.$store.commit("setLoadingStatus", true);
+                 this.$router.push("/home");
+                // if (this.loginForm.username.substring(0, 5) == "Admin") {
+                //   this.$router.push("/admin1"); //!!!!!!!!要改成管理员的页面
+                //   this.$store.commit("editAdminId", this.loginForm1.username);
+                // } else {
+                //   this.$router.push("/home");
+                //   this.$store.commit("editPatientId", this.loginForm1.username); //更改id
+                //   this.$store.commit("getAllPro", this.loginForm1.username); //请求购物车
+                // }
+                // this.$store.commit("setLoadingStatus", true);
               } else {
                 this.$notify({
                   title: "提示",
@@ -234,25 +235,25 @@ export default {
                   duration: 3000,
                 });
               }
-              console.log(res);
-            })
-            .catch((err) => {
-              this.$notify({
-                title: "提示",
-                message: "用户访问错误",
-                type: "error",
-                duration: 3000,
-              });
-              console.log(err);
-            });
-        } else {
-          console.log(valid, wrongstring);
-          console.log("error submit!!");
-          return false;
-        }
-      });
+              // console.log(res);
+        //     })
+        //     .catch((err) => {
+        //       this.$notify({
+        //         title: "提示",
+        //         message: "用户访问错误",
+        //         type: "error",
+        //         duration: 3000,
+        //       });
+        //       console.log(err);
+        //     });
+  
+        // } else {
+        //   console.log(valid, wrongstring);
+        //   console.log("error submit!!");
+        //   return false;
+        // }
+      })
     },
-
     //向手机号发送验证码
     getCode() {
       // console.log("eess6@163.com");

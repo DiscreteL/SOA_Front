@@ -74,13 +74,13 @@ export default {
 .pa {
   position: absolute;
   top: 520px;
-  left: 55%;
+  left: 58%;
 }
 
 .announce {
   position: absolute;
   top: 520px;
-  left: 7%;
+  left: 6%;
 }
 .button1 {
   position: absolute;
