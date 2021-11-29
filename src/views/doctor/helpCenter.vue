@@ -23,12 +23,12 @@
           :default-active="activePath"
         >
           <el-menu-item index="/problems" @click="saveNavState('/problems')">
-            <i class="el-icon-document" style="color: #dcdcdc"></i>
+            <i class="el-icon-search" style="color: #dcdcdc"></i>
             <span slot="title">常见问题解答</span>
           </el-menu-item>
           <el-submenu index="1">
             <template slot="title">
-              <i class="el-icon-date"></i>
+              <i class="el-icon-phone-outline"></i>
               <span>问题反馈</span>
             </template>
             <el-menu-item

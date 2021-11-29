@@ -25,29 +25,29 @@
 
           <el-submenu index="1">
           <template slot="title">
-            <i class="el-icon-s-custom"></i>
+            <i class="el-icon-upload"></i>
             <span>发布资讯</span>
           </template>
             <el-menu-item index="/uploadArticle" @click="saveNavState('/uploadArticle')">
-              <i class="el-icon-date" style="color: #dcdcdc"></i>
+              <i style="color: #dcdcdc"></i>
               <span slot="title">发布文章</span>
             </el-menu-item>
             <el-menu-item index="/uploadVideo" @click="saveNavState('/uploadVideo')">
-              <i class="el-icon-date" style="color: #dcdcdc"></i>
+              <i style="color: #dcdcdc"></i>
             <span slot="title">上传视频</span>
             </el-menu-item>
           </el-submenu>
           <el-submenu index="2">
           <template slot="title">
-            <i class="el-icon-s-custom"></i>
+            <i class="el-icon-s-order"></i>
             <span>资讯管理</span>
           </template>
             <el-menu-item index="/manageArticle" @click="saveNavState('/manageArticle')">
-              <i class="el-icon-date" style="color: #dcdcdc"></i>
+              <i style="color: #dcdcdc"></i>
               <span slot="title">文章管理</span>
             </el-menu-item>
             <el-menu-item index="/manageVideo" @click="saveNavState('/manageVideo')">
-              <i class="el-icon-date" style="color: #dcdcdc"></i>
+              <i style="color: #dcdcdc"></i>
             <span slot="title">视频管理</span>
             </el-menu-item>
           </el-submenu>
