@@ -1,5 +1,5 @@
 <template>
-  <div class="videoForm">
+  <div class="feedbackForm">
     <div class="form" style="margin-top: 15px">
       <el-table
         ref="filterTable"
@@ -10,7 +10,7 @@
       >
         <el-table-column
           prop="date"
-          label="上传日期"
+          label="反馈日期"
           sortable
           width="150"
           column-key="date"
@@ -18,19 +18,18 @@
         </el-table-column>
         <el-table-column
           prop="status"
-          label="审核状态"
+          label="状态"
           width="120"
           :filters="[
-            { text: '等待审核', value: '等待审核' },
-            { text: '通过审核', value: '通过审核' },
-            { text: '未通过审核', value: '未通过审核' },
+            { text: '等待回复', value: '等待审核' },
+            { text: '已回复', value: '通过审核' }
           ]"
           :filter-method="filterStatus"
           filter-placement="bottom-end"
         >
           <template slot-scope="scope">
             <el-tag
-              :type="scope.row.status === '未通过审核' ? 'danger' : 'success'"
+              :type="scope.row.status === '等待回复' ? 'primary' : 'success'"
               disable-transitions
             >
               {{ scope.row.status }}
@@ -213,7 +212,7 @@ export default {
       this.currentPage = val;
     },
     del() {
-      this.$confirm("此操作将永久删除该视频, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -242,7 +241,7 @@ export default {
 </script>
 
 <style scoped>
-.videoForm {
+.feedbackForm {
   width: 100%;
   display: flex;
   flex-direction: column;

@@ -1,5 +1,5 @@
 <template>
-  <div class="videoForm">
+  <div class="feedbackForm">
     <div class="form" style="margin-top: 15px">
       <el-table
         ref="filterTable"
@@ -10,7 +10,7 @@
       >
         <el-table-column
           prop="date"
-          label="上传日期"
+          label="反馈日期"
           sortable
           width="150"
           column-key="date"
@@ -18,19 +18,18 @@
         </el-table-column>
         <el-table-column
           prop="status"
-          label="审核状态"
+          label="状态"
           width="120"
           :filters="[
-            { text: '等待审核', value: '等待审核' },
-            { text: '通过审核', value: '通过审核' },
-            { text: '未通过审核', value: '未通过审核' },
+            { text: '等待回复', value: '等待回复' },
+            { text: '已回复', value: '已回复' }
           ]"
           :filter-method="filterStatus"
           filter-placement="bottom-end"
         >
           <template slot-scope="scope">
             <el-tag
-              :type="scope.row.status === '未通过审核' ? 'danger' : 'success'"
+              :type="scope.row.status === '等待回复' ? 'primary' : 'success'"
               disable-transitions
             >
               {{ scope.row.status }}
@@ -38,37 +37,11 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="title"
-          label="视频标题"
+          prop="content"
+          label="反馈内容"
           width="500"
           :show-overflow-tooltip="true"
         >
-        </el-table-column>
-        <el-table-column
-          prop="label"
-          label="标签"
-          width="120"
-          :filters="[
-            { text: '疾病科普', value: '疾病科普' },
-            { text: '生活常识', value: '生活常识' },
-            { text: '养生妙招', value: '养生妙招' },
-            { text: '其他', value: '其他' },
-          ]"
-          :filter-method="filterLabel"
-          filter-placement="bottom-end"
-        >
-          <template slot-scope="scope">
-            <el-tag :type="primary" disable-transitions>
-              {{ scope.row.label }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="链接地址"
-          :show-overflow-tooltip="true"
-          prop="content"
-        >
-          <el-link type="primary">点击查看</el-link>
         </el-table-column>
         <el-table-column label="操作">
             <el-button size="mini" @click="dialogTableVisible = true"
@@ -76,27 +49,23 @@
           >
           <el-dialog :visible.sync="dialogTableVisible">
             <el-descriptions
-              title="发布内容详情"
+              title="反馈内容详情"
               direction="vertical"
               :column="4"
               border
             >
-              <el-descriptions-item label="上传时间"
+              <el-descriptions-item label="反馈提交时间"
                 >2021-05-02</el-descriptions-item
               >
-              <el-descriptions-item label="标签">
-                <el-tag size="small">生活常识</el-tag>
+              <el-descriptions-item label="状态">
+                <el-tag size="small" type="success">已回复</el-tag>
               </el-descriptions-item>
-              <el-descriptions-item label="审核状态">
-                <el-tag size="small" type="success">等待审核</el-tag>
-              </el-descriptions-item>
-              <el-descriptions-item label="审核反馈">NULL</el-descriptions-item>
-              <el-descriptions-item label="标题" :span="4"
-                >过敏性哮喘患者在饮食上有什么禁忌</el-descriptions-item
-              >
-              <el-descriptions-item label="链接地址">
-                  <el-link href="https://element.eleme.io" type="primary">点击查看</el-link>
+              <el-descriptions-item label="相关文件" :span="2">
+                  <el-link href="https://element.eleme.io" type="primary" >点击下载</el-link>
              </el-descriptions-item>
+             <el-descriptions-item label="回复内容" :span="4"
+                >感谢您的反馈！现已对bug进行了修复！</el-descriptions-item
+              >
             </el-descriptions>
           </el-dialog>
           <el-button
@@ -132,46 +101,24 @@ export default {
       tableData: [
         {
           date: "2021-05-02",
-          status: "等待审核",
-          title: "过敏性哮喘患者在饮食上有什么禁忌？",
-          label: "生活常识",
-          content: "",
+          status: "已回复",
+          content: "个人信息界面中的“编辑”按钮点击后没有反应",
         },
         {
-          date: "2021-05-04",
-          status: "未通过审核",
-          title: "小儿支气管炎，别怕！六招教你如何护理！",
-          label: "生活常识",
-          content: ""
+          date: "2021-07-03",
+          status: "等待回复",
+          content: "无法修改头像",
+        },
+        {
+          date: "2021-10-13",
+          status: "等待回复",
+          content: "视频问诊过程中卡顿严重",
         },
         {
           date: "2021-05-01",
-          status: "通过审核",
-          title: "新生儿黄疸要注意！你知道引起黄疸的真正原因吗？",
-          label: "疾病科普",
-          content: ""
-        },
-        {
-          date: "2020-05-03",
-          status: "通过审核",
-          title: "新生儿黄疸护理方法出来啦，一起来学学吧",
-          label: "其他",
-          content: ""
-        },
-        {
-          date: "2020-05-03",
-          status: "未通过审核",
-          title: "小儿先天性膈疝临床表现有哪些",
-          label: "疾病科普",
-          content: ""
-        },
-        {
-          date: "2020-05-03",
-          status: "通过审核",
-          title: "小儿慢性肾衰如何治疗，需要注意什么",
-          label: "疾病科普",
-          content: ""
-        },
+          status: "已回复",
+          content: "医生资格认证申请不通过且未给出拒绝理由",
+        }
       ],
       dialogTableVisible: false,
       dialogFormVisible: false,
@@ -213,7 +160,7 @@ export default {
       this.currentPage = val;
     },
     del() {
-      this.$confirm("此操作将永久删除该视频, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -242,7 +189,7 @@ export default {
 </script>
 
 <style scoped>
-.videoForm {
+.feedbackForm {
   width: 100%;
   display: flex;
   flex-direction: column;

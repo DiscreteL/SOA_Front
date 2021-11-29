@@ -172,9 +172,9 @@ const routes = [
         meta: { title: '反馈记录' },
       },
       {
-        path: '/problems',
-        component: () => import('../views/doctor/help/problems.vue'),
-        meta: { title: '常见问题解答' },
+        path: '/problemList',
+        component: () => import('../views/doctor/help/problemList.vue'),
+        meta: { title: '常见问题' },
       }
   ]
   },
