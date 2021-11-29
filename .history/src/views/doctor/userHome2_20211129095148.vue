@@ -24,7 +24,7 @@
           <!-- :unique-opened="true"->只允许展开一个菜单 -->
           <!-- :collapse-transition="false" -> 关闭动画 -->
           <!-- router -> 导航开启路由模式 -->
-          <el-menu-item index="/docInfo" @click="saveNavState('/docInfo')">
+          <el-menu-item index="/essenInfo" @click="saveNavState('/essenInfo')">
             <i class="el-icon-date" style="color: #dcdcdc"></i>
             <span slot="title">基本信息</span>
           </el-menu-item>

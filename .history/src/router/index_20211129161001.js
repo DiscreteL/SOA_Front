@@ -134,29 +134,6 @@ const routes = [
   },
 
   {
-    path: '/consultcenter',
-    name: 'ConsultCenter',
-    component: () => import('../views/doctor/consultCenter.vue'),
-    children: [
-      {
-      path: '/waitApply',
-      component: () => import('../views/doctor/consult/waitApply.vue'),
-      meta: { title: '预约申请' },
-      },
-      {
-        path: '/sucApply',
-        component: () => import('../views/doctor/consult/sucApply.vue'),
-        meta: { title: '待问诊' },
-      },
-      {
-        path: '/docRecord',
-        component: () => import('../views/doctor/consult/docRecord.vue'),
-        meta: { title: '问诊记录' },
-      }
-  ]
-  },
-
-  {
     path: '/userhome1',
     name: 'UserHome1',
     component: () => import('../views/patient/UserHome1.vue'),

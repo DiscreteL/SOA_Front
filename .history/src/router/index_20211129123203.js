@@ -109,6 +109,7 @@ const routes = [
     path: '/messagecenter',
     name: 'MessageCenter',
     component: () => import('../views/doctor/messageCenter.vue'),
+    redirect: '/uploadArticle',
     children: [
       {
       path: '/uploadArticle',
@@ -130,29 +131,6 @@ const routes = [
         component: () => import('../views/doctor/message/manageVideo.vue'),
         meta: { title: '视频管理' },
       },
-  ]
-  },
-
-  {
-    path: '/consultcenter',
-    name: 'ConsultCenter',
-    component: () => import('../views/doctor/consultCenter.vue'),
-    children: [
-      {
-      path: '/waitApply',
-      component: () => import('../views/doctor/consult/waitApply.vue'),
-      meta: { title: '预约申请' },
-      },
-      {
-        path: '/sucApply',
-        component: () => import('../views/doctor/consult/sucApply.vue'),
-        meta: { title: '待问诊' },
-      },
-      {
-        path: '/docRecord',
-        component: () => import('../views/doctor/consult/docRecord.vue'),
-        meta: { title: '问诊记录' },
-      }
   ]
   },
 

@@ -1,6 +1,6 @@
 <template>
   <div class="home_container">
-    <UserHomeNav2></UserHomeNav2>
+    <UserHomeNav></UserHomeNav>
     <el-container>
       <!--侧边栏-->
       <el-aside :width="isCollapse ? '64px' : '150px'">
@@ -24,11 +24,11 @@
           <!-- :unique-opened="true"->只允许展开一个菜单 -->
           <!-- :collapse-transition="false" -> 关闭动画 -->
           <!-- router -> 导航开启路由模式 -->
-          <el-menu-item index="/docInfo" @click="saveNavState('/docInfo')">
+          <el-menu-item index="/esseninfo" @click="saveNavState('/esseninfo')">
             <i class="el-icon-date" style="color: #dcdcdc"></i>
             <span slot="title">基本信息</span>
           </el-menu-item>
-          <el-menu-item index="/accManage" @click="saveNavState('/accManage')">
+          <el-menu-item index="/accmanage" @click="saveNavState('/accmanage')">
             <i class="el-icon-document" style="color: #dcdcdc"></i>
             <span slot="title">账号管理</span>
           </el-menu-item>
@@ -55,12 +55,12 @@
 </template>
 
 <script>
-import UserHomeNav2 from "@/components/userhomenav2.vue";
+import UserHomeNav from "@/components/userhomenav.vue";
 
 export default {
-  name: "userHome2",
+  name: "UserHome1",
   components: {
-    UserHomeNav2,
+    UserHomeNav,
   },
   // data() {
   //   return {

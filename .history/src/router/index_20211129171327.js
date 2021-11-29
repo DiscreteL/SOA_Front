@@ -149,10 +149,15 @@ const routes = [
         meta: { title: '待问诊' },
       },
       {
-        path: '/docRecord',
-        component: () => import('../views/doctor/consult/docRecord.vue'),
-        meta: { title: '问诊记录' },
-      }
+        path: '/manageArticle',
+        component: () => import('../views/doctor/message/manageArticle.vue'),
+        meta: { title: '文章管理' },
+      },
+      {
+        path: '/manageVideo',
+        component: () => import('../views/doctor/message/manageVideo.vue'),
+        meta: { title: '视频管理' },
+      },
   ]
   },
 

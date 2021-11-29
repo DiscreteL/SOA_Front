@@ -86,7 +86,6 @@ const routes = [
       },
     ]
   },
-
   {
     path: '/userhome2',
     name: 'UserHome2',
@@ -101,61 +100,9 @@ const routes = [
       path: '/accManage',
       component: () => import('../views/doctor/info/accManage.vue'),
       meta: { title: '账号管理' },
-    }
-  ]
+    },
+    ]
   },
-
-  {
-    path: '/messagecenter',
-    name: 'MessageCenter',
-    component: () => import('../views/doctor/messageCenter.vue'),
-    children: [
-      {
-      path: '/uploadArticle',
-      component: () => import('../views/doctor/message/uploadArticle.vue'),
-      meta: { title: '发布文章' },
-      },
-      {
-        path: '/uploadVideo',
-        component: () => import('../views/doctor/message/uploadVideo.vue'),
-        meta: { title: '上传视频' },
-      },
-      {
-        path: '/manageArticle',
-        component: () => import('../views/doctor/message/manageArticle.vue'),
-        meta: { title: '文章管理' },
-      },
-      {
-        path: '/manageVideo',
-        component: () => import('../views/doctor/message/manageVideo.vue'),
-        meta: { title: '视频管理' },
-      },
-  ]
-  },
-
-  {
-    path: '/consultcenter',
-    name: 'ConsultCenter',
-    component: () => import('../views/doctor/consultCenter.vue'),
-    children: [
-      {
-      path: '/waitApply',
-      component: () => import('../views/doctor/consult/waitApply.vue'),
-      meta: { title: '预约申请' },
-      },
-      {
-        path: '/sucApply',
-        component: () => import('../views/doctor/consult/sucApply.vue'),
-        meta: { title: '待问诊' },
-      },
-      {
-        path: '/docRecord',
-        component: () => import('../views/doctor/consult/docRecord.vue'),
-        meta: { title: '问诊记录' },
-      }
-  ]
-  },
-
   {
     path: '/userhome1',
     name: 'UserHome1',
@@ -172,6 +119,7 @@ const routes = [
     },
     ]
   },
+
   {
     path: '/collection',
     name: 'Collection',
