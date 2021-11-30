@@ -50,8 +50,8 @@ export default {
       userName: "王某某",
       navList: [
         { name: "/userhome1", navItem: "个人信息" },
-        { name: "/collection", navItem: "收藏" },
-        { name: "/consult", navItem: "问诊" },
+        { name: "/collection", navItem: "收藏中心" },
+        { name: "/consult", navItem: "问诊中心" },
         { name: "/help", navItem: "帮助中心" },
       ],
     };

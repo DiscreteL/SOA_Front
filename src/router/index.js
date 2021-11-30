@@ -183,13 +183,14 @@ const routes = [
     path: '/userhome1',
     name: 'UserHome1',
     component: () => import('../views/patient/UserHome1.vue'),
+    redirect:'/userhome1/esseninfo',
     children: [{
-      path: '/esseninfo',
+      path: 'esseninfo',
       component: () => import('../views/patient/info/EssenInfo.vue'),
       meta: { title: '基本信息' },
     },
     {
-      path: '/accmanage',
+      path: 'accmanage',
       component: () => import('../views/patient/info/AccManage.vue'),
       meta: { title: '账号管理' },
     },

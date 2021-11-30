@@ -26,7 +26,8 @@
         </el-form>
       </template>
     </el-table-column>
-    <el-table-column label="预约时间" prop="date"> </el-table-column>
+    <el-table-column label="预约日期" prop="date"> </el-table-column>
+    <el-table-column label="预约时间" prop="time"> </el-table-column>
     <el-table-column label="预约医生" prop="doctor"> </el-table-column>
     <el-table-column label="预约状态" prop="status"> </el-table-column>
     <el-table-column align="right">
@@ -41,6 +42,9 @@
       <template slot-scope="scope">
         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
           >详细信息</el-button
+        >
+        <el-button size="mini" type="primary" @click="goConsult()"
+          >前往问诊界面</el-button
         >
       </template>
     </el-table-column>
@@ -87,6 +91,9 @@ export default {
     },
     handleChange() {
       this.$forceUpdate();
+    },
+    goConsult() {
+      this.$router.push("/patientchat");
     },
   },
 };
