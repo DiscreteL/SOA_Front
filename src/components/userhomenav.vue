@@ -52,7 +52,7 @@ export default {
         { name: "/userhome1", navItem: "个人信息" },
         { name: "/collection", navItem: "收藏" },
         { name: "/consult", navItem: "问诊" },
-        // { name: "/help", navItem: "帮助中心" },
+        { name: "/help", navItem: "帮助中心" },
       ],
     };
   },

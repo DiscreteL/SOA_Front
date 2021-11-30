@@ -26,16 +26,16 @@
         >135{{ userInfo.weight }}</el-descriptions-item
       >
       <el-descriptions-item label="血压"
-        >null{{ userInfo.bloodpressure }}</el-descriptions-item
+        >120/80{{ userInfo.bloodpressure }}</el-descriptions-item
       >
       <el-descriptions-item label="心率"
-        >null{{ userInfo.heartrate }}</el-descriptions-item
+        >80次/分{{ userInfo.heartrate }}</el-descriptions-item
       >
       <el-descriptions-item label="左眼视力"
-        >null{{ userInfo.lefteye }}</el-descriptions-item
+        >5.0{{ userInfo.lefteye }}</el-descriptions-item
       >
       <el-descriptions-item label="右眼视力"
-        >null{{ userInfo.righteye }}</el-descriptions-item
+        >4.8{{ userInfo.righteye }}</el-descriptions-item
       >
     </el-descriptions>
 

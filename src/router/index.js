@@ -230,7 +230,6 @@ const routes = [
         path: 'total',
         component: () => import('../views/patient/consult/apply/TotalApply.vue'),
         meta: { title: '预约' }
-
       },
       {
         path: 'success',
@@ -252,7 +251,6 @@ const routes = [
         name: 'Record',
         component: () => import('../views/patient/consult/Record.vue'),
         meta: { title: '问诊记录' }
-
       }
     ]
   },
@@ -260,7 +258,37 @@ const routes = [
     path: '/help',
     name: 'Help',
     component: () => import('../views/patient/Help.vue'),
-    meta: { title: '帮助中心' }
+    meta: { title: '帮助中心' },
+    redirect:'/help/faq',
+    children:[
+      {
+        path:'faq',
+        name:'FAQ',
+        component:()=>import('../views/patient/help/FAQ.vue'),
+        meta: { title: '常见问题' }
+      },
+      {
+        path:'releaseq',
+        name:'ReleaseQ',
+        component:()=>import('../views/patient/help/ReleaseQ.vue'),
+        meta: { title: '反馈问题' }
+      },
+      {
+        path: 'totalq',
+        component: () => import('../views/patient//help/myquestion/TotalQ.vue'),
+        meta: { title: '我的反馈' }
+      },
+      {
+        path: 'successq',
+        component: () => import('../views/patient/help/myquestion/SucQ.vue'),
+        meta: { title: '我的反馈' },
+      },
+      {
+        path: 'waitq',
+        component: () => import('../views/patient/help/myquestion/WaitQ.vue'),
+        meta: { title: '我的反馈' },
+      },
+    ]
   },
 
   // {

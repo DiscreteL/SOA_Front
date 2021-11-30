@@ -136,18 +136,4 @@ body {
   cursor: pointer;
   padding: 10px;
 }
-.logo_box {
-  height: 60px;
-  width: 60px;
-  border: 5px #53868b;
-  border-radius: 50%; /* 圆角 */
-  position: relative;
-  margin: 30px;
-}
-.port_box img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%; /* 圆角 */
-  background-color: #53868b;
-}
 </style>
