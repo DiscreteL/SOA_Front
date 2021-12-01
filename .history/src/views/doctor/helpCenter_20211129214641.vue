@@ -1,6 +1,7 @@
 <template>
   <div class="home_container">
     <UserHomeNav2></UserHomeNav2>
+    <!--页面主体区-->
     <el-container>
       <!--侧边栏-->
       <el-aside :width="isCollapse ? '64px' : '150px'">
@@ -21,17 +22,27 @@
           :router="true"
           :default-active="activePath"
         >
-          <!-- :unique-opened="true"->只允许展开一个菜单 -->
-          <!-- :collapse-transition="false" -> 关闭动画 -->
-          <!-- router -> 导航开启路由模式 -->
-          <el-menu-item index="/docInfo" @click="saveNavState('/docInfo')">
-            <i class="el-icon-user" style="color: #dcdcdc"></i>
-            <span slot="title">基本信息</span>
+          <el-menu-item index="/problems" @click="saveNavState('/problems')">
+            <i class="el-icon-search" style="color: #dcdcdc"></i>
+            <span slot="title">常见问题解答</span>
           </el-menu-item>
-          <el-menu-item index="/accManage" @click="saveNavState('/accManage')">
-            <i class="el-icon-s-order" style="color: #dcdcdc"></i>
-            <span slot="title">账号管理</span>
-          </el-menu-item>
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-date"></i>
+              <span>问题反馈</span>
+            </template>
+            <el-menu-item
+              index="/feedback"
+              @click="saveNavState('/feedback')"
+            >
+              <i tyle="color: #dcdcdc"></i>
+              <span slot="title">我要反馈</span>
+            </el-menu-item>
+            <el-menu-item index="/feedbackList" @click="saveNavState('/feedbackList')">
+              <i style="color: #dcdcdc"></i>
+              <span slot="title">反馈记录</span>
+            </el-menu-item>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <!--右侧主体区-->
@@ -39,18 +50,6 @@
         <router-view></router-view>
       </el-main>
     </el-container>
-    <!-- 个人信息部分 -->
-    <!-- <div class="Info" style="color:#909399">
-            <strong> 姓名：</strong>{{ userInfo.name }} <br />
-            <strong>身份证号：</strong>{{ userInfo.number }} <br />
-            <strong>出生日期：</strong>{{ userInfo.borndate }} <br />
-            <strong>性别：</strong>{{ userInfo.gender }} <br />
-            <strong>邮箱：</strong>{{ userInfo.mail }} <br />
-            <strong>身高：</strong>{{ userInfo.height }} <br />
-            <strong>体重：</strong>{{ userInfo.weight }} <br />
-            <strong>血压：</strong>{{ userInfo.bloodpressure }} <br />
-            <strong>心率：</strong>{{ userInfo.heartrate }} 
-          </div> -->
   </div>
 </template>
 
@@ -58,20 +57,10 @@
 import UserHomeNav2 from "@/components/userhomenav2.vue";
 
 export default {
-  name: "userHome2",
+  name: "ConsultCenter",
   components: {
     UserHomeNav2,
   },
-  // data() {
-  //   return {
-  //     // 返回个人信息
-  //     // userID: window.sessionStorage.getItem("id"),
-  //     userInfo: {}, //用户个人信息
-  //     item: {
-  //       id: "",
-  //     },
-  //   };
-  // },
   data() {
     return {
       // 默认不折叠
@@ -97,13 +86,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// .Info {
-//   text-align: left;
-//   font: 15px "Microsoft YaHei";
-//   align-content: center;
-//   width: 80%;
-//   position: relative;
-// }
 html,
 body {
   width: 100%;

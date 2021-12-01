@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/home.vue'
+import Home from '../views/Home.vue'
 import Login from '../views/login.vue'
 import Register from '../views/register.vue'
 import News from '../views/news.vue'
@@ -196,14 +196,15 @@ const routes = [
         name: 'UserHome1',
         component: () =>
             import ('../views/patient/UserHome1.vue'),
+        redirect: '/userhome1/esseninfo',
         children: [{
-                path: '/esseninfo',
+                path: 'esseninfo',
                 component: () =>
                     import ('../views/patient/info/EssenInfo.vue'),
                 meta: { title: '基本信息' },
             },
             {
-                path: '/accmanage',
+                path: 'accmanage',
                 component: () =>
                     import ('../views/patient/info/AccManage.vue'),
                 meta: { title: '账号管理' },
@@ -250,7 +251,6 @@ const routes = [
                 component: () =>
                     import ('../views/patient/consult/apply/TotalApply.vue'),
                 meta: { title: '预约' }
-
             },
             {
                 path: 'success',
@@ -276,7 +276,6 @@ const routes = [
                 component: () =>
                     import ('../views/patient/consult/Record.vue'),
                 meta: { title: '问诊记录' }
-
             }
         ]
     },
@@ -285,7 +284,41 @@ const routes = [
         name: 'Help',
         component: () =>
             import ('../views/patient/Help.vue'),
-        meta: { title: '帮助中心' }
+        meta: { title: '帮助中心' },
+        redirect: '/help/faq',
+        children: [{
+                path: 'faq',
+                name: 'FAQ',
+                component: () =>
+                    import ('../views/patient/help/FAQ.vue'),
+                meta: { title: '常见问题' }
+            },
+            {
+                path: 'releaseq',
+                name: 'ReleaseQ',
+                component: () =>
+                    import ('../views/patient/help/ReleaseQ.vue'),
+                meta: { title: '反馈问题' }
+            },
+            {
+                path: 'totalq',
+                component: () =>
+                    import ('../views/patient//help/myquestion/TotalQ.vue'),
+                meta: { title: '我的反馈' }
+            },
+            {
+                path: 'successq',
+                component: () =>
+                    import ('../views/patient/help/myquestion/SucQ.vue'),
+                meta: { title: '我的反馈' },
+            },
+            {
+                path: 'waitq',
+                component: () =>
+                    import ('../views/patient/help/myquestion/WaitQ.vue'),
+                meta: { title: '我的反馈' },
+            },
+        ]
     },
 
     // {
