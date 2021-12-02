@@ -295,7 +295,7 @@ export default {
 .block {
   float: left;
   width: 100%;
-  position: fixed;
-  bottom: 75px;
+  /* position: fixed;
+  bottom: 75px; */
 }
 </style>
