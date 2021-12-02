@@ -217,7 +217,11 @@ export default {
                   type: "success",
                   duration: 3000,
                 });
+                if(this.loginForm1.usertype==="我是患者")
                  this.$router.push("/home");
+                 else if(this.loginForm1.usertype==="我是医生")
+                 this.$router.push("/userhome2");
+                 else this.$router.push("/adminhome");
                 // if (this.loginForm.username.substring(0, 5) == "Admin") {
                 //   this.$router.push("/admin1"); //!!!!!!!!要改成管理员的页面
                 //   this.$store.commit("editAdminId", this.loginForm1.username);

@@ -166,7 +166,7 @@ export default {
     },
     quit() {
       clearInterval(this.$store.state.inquiry.chatroomId);
-      this.$router.push("/Home");
+      this.$router.push("/userhome1");
     },
   },
 };

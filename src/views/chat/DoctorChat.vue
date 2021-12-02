@@ -60,7 +60,7 @@ export default {
   methods: {
     quit() {
       clearInterval(this.$store.state.inquiry.chatroomId); //停止轮询
-      this.$router.push("/home"); //退出，跳转到主页
+      this.$router.push("/userhome2"); //退出，跳转到主页
     },
   },
 };

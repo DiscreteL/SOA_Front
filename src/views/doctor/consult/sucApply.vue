@@ -124,7 +124,7 @@ export default {
       this.$forceUpdate();
     },
     goConsult() {
-        this.$router.push("/consultPage");
+        this.$router.push("/doctorchat");
     }
   },
 };
