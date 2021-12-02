@@ -20,10 +20,10 @@
         <el-button type="primary" size="small">编辑</el-button>
       </template>
       <el-descriptions-item label="身高"
-        >180{{ userInfo.height }}</el-descriptions-item
+        >180cm{{ userInfo.height }}</el-descriptions-item
       >
       <el-descriptions-item label="体重"
-        >135{{ userInfo.weight }}</el-descriptions-item
+        >70kg{{ userInfo.weight }}</el-descriptions-item
       >
       <el-descriptions-item label="血压"
         >120/80{{ userInfo.bloodpressure }}</el-descriptions-item
