@@ -7,7 +7,7 @@
         :key="item.id"
         :offset="1"
         type="flex"
-        push=1
+        :push=1
       >
         <div style="margin-top:30px">
           <el-card :body-style="{ padding: '10px'}" shadow="hover" class="box-card" >

@@ -3,7 +3,7 @@ import axios from 'axios';
 axios.defaults.withCredentials = false
 
 const instance = axios.create({
-    timeout: 10000,
+    timeout: 50000,
     headers: {
         'Content-Type': "multipart/form-data;charset=utf-8",
     }

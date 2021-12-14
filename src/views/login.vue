@@ -39,7 +39,7 @@
               <el-input
                 v-model="loginForm1.email"
                 prefix-icon="el-icon-user"
-                placeholder="请输入邮箱"
+                placeholder="请输入ID"
               ></el-input>
             </el-form-item>
             <!-- 密码 -->
@@ -75,7 +75,6 @@
               <el-radio-group v-model="loginForm2.usertype">
                 <el-radio label="我是医生"></el-radio>
                 <el-radio label="我是患者"></el-radio>
-                
               </el-radio-group>
             </el-form-item>
             <!-- 邮箱 -->
@@ -121,7 +120,8 @@
 </template>
 
 <script>
-import { loginPFun,loginDFun } from "../service/userService.js"
+import axios from "axios";
+import request from "@/utils/request";
 
 const TIME_COUNT = 60; // 设置一个全局的倒计时的时间
 export default {
@@ -143,7 +143,7 @@ export default {
       loginForm1Rules: {
         //验证邮箱是否合法
         email: [
-          { required: true, message: "请输入邮箱", trigger: "blur" },
+          { required: true, message: "请输入ID", trigger: "blur" },
           {
             min: 2,
             max: 20,
@@ -177,9 +177,7 @@ export default {
           },
         ],
         //验证验证码是否合法
-        code: [
-          { required: true, message: "请输入验证码", trigger: "blur" },
-        ],
+        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
         usertype: [
           { required: true, message: "请选择用户身份", trigger: "change" },
         ],
@@ -203,98 +201,204 @@ export default {
       this.$refs[loginForm1].validate((valid, wrongstring) => {
         // 获取loginform1的实例（el-form），找到validate方法，根据验证规则rules校验是否valid
         if (valid) {
-          // loginPFun({
-          //   id: this.loginForm1.email,
-          //   password: this.loginForm1.password,
-          //   type: this.loginForm1.usertype,
-          // })
-          //   .then((res) => {
-              // if (res.result === true) {
-                //window.sessionStorage.setItem("token", res.data.token);
+          if (this.loginForm1.usertype === "我是患者") {
+            this.axios
+              .get(
+                "api/patient-service/loginByAccount/" +
+                  this.loginForm1.email +
+                  "/" +
+                  this.loginForm1.password
+              )
+              .then((res) => {
+                console.log(res);
+                console.log(res.data);
+                if (res.data == true) {
+                  // window.sessionStorage.setItem("token", res.data.token);
+                  this.$notify({
+                    title: "提示",
+                    message: "用户登录成功",
+                    type: "success",
+                    duration: 3000,
+                  });
+                  this.$router.push("/home");
+                  window.sessionStorage.setItem(
+                    "userID",
+                    this.loginForm1.email
+                  ); //其实存的是ID
+                } else {
+                  this.$notify({
+                    title: "提示",
+                    message: "用户登录失败",
+                    type: "error",
+                    duration: 3000,
+                  });
+                }
+                console.log(res);
+              })
+              .catch((err) => {
                 this.$notify({
                   title: "提示",
-                  message: "用户登录成功",
-                  type: "success",
-                  duration: 3000,
-                });
-                if(this.loginForm1.usertype==="我是患者")
-                 this.$router.push("/home");
-                 else if(this.loginForm1.usertype==="我是医生")
-                 this.$router.push("/userhome2");
-                 else this.$router.push("/adminhome");
-                // if (this.loginForm.username.substring(0, 5) == "Admin") {
-                //   this.$router.push("/admin1"); //!!!!!!!!要改成管理员的页面
-                //   this.$store.commit("editAdminId", this.loginForm1.username);
-                // } else {
-                //   this.$router.push("/home");
-                //   this.$store.commit("editPatientId", this.loginForm1.username); //更改id
-                //   this.$store.commit("getAllPro", this.loginForm1.username); //请求购物车
-                // }
-                // this.$store.commit("setLoadingStatus", true);
-              } else {
-                this.$notify({
-                  title: "提示",
-                  message: "用户登录失败",
+                  message: "用户访问错误",
                   type: "error",
                   duration: 3000,
                 });
-              }
-              // console.log(res);
-        //     })
-        //     .catch((err) => {
-        //       this.$notify({
-        //         title: "提示",
-        //         message: "用户访问错误",
-        //         type: "error",
-        //         duration: 3000,
-        //       });
-        //       console.log(err);
-        //     });
-  
-        // } else {
-        //   console.log(valid, wrongstring);
-        //   console.log("error submit!!");
-        //   return false;
-        // }
-      })
+                console.log(err);
+              });
+          } else if (this.loginForm1.usertype === "我是医生") {
+            this.axios
+              .get(
+                "api/doctor-service/loginByAccount/" +
+                  this.loginForm1.email +
+                  "/" +
+                  this.loginForm1.password
+              )
+              .then((res) => {
+                console.log(res);
+                console.log(res.data);
+                if (res.data == true) {
+                  // window.sessionStorage.setItem("token", res.data.token);
+                  this.$notify({
+                    title: "提示",
+                    message: "用户登录成功",
+                    type: "success",
+                    duration: 3000,
+                  });
+                  this.$router.push("/userhome2");
+                  window.sessionStorage.setItem(
+                    "userID",
+                    this.loginForm1.email
+                  ); //其实存的是ID
+                } else {
+                  this.$notify({
+                    title: "提示",
+                    message: "用户登录失败",
+                    type: "error",
+                    duration: 3000,
+                  });
+                }
+                console.log(res);
+              })
+              .catch((err) => {
+                this.$notify({
+                  title: "提示",
+                  message: "用户访问错误",
+                  type: "error",
+                  duration: 3000,
+                });
+                console.log(err);
+              });
+          } else {
+            this.axios
+              .get(
+                "api/admin-and-problem-service/login/" +
+                  this.loginForm1.email +
+                  "/" +
+                  this.loginForm1.password
+              )
+              .then((res) => {
+                console.log(res);
+                console.log(res.data);
+                if (res.data == true) {
+                  // window.sessionStorage.setItem("token", res.data.token);
+                  this.$notify({
+                    title: "提示",
+                    message: "用户登录成功",
+                    type: "success",
+                    duration: 3000,
+                  });
+                  this.$router.push("/adminhome");
+                  window.sessionStorage.setItem(
+                    "userID",
+                    this.loginForm1.email
+                  ); //其实存的是ID
+                } else {
+                  this.$notify({
+                    title: "提示",
+                    message: "用户登录失败",
+                    type: "error",
+                    duration: 3000,
+                  });
+                }
+                console.log(res);
+              })
+              .catch((err) => {
+                this.$notify({
+                  title: "提示",
+                  message: "用户访问错误",
+                  type: "error",
+                  duration: 3000,
+                });
+                console.log(err);
+              });
+          }
+        } else {
+          console.log(valid, wrongstring);
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
     //向手机号发送验证码
     getCode() {
-      // console.log("eess6@163.com");
-      // if (this.loginForm.email === "") {
-      //   this.$message.error("请先输入邮箱再点击获取验证码");
-      // } else {
-      //   let regemail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-      //   if (!regemail.test(this.loginForm.email)) {
-      //     this.$message({
-      //       showClose: true,
-      //       message: "请输入格式正确有效的邮箱号!",
-      //       type: "error",
-      //     });
-      //   } else {
-      //     console.log("经过检验格式正确");//已执行
-      //     request.post("/email", this.loginForm).then((res) => {
-      //       console.log("2222222");//未执行
-      //       if (res.code === "0") {
-      //         this.$message({
-      //           showClose: true,
-      //           type: "success",
-      //           message: "验证码已发送",
-      //         });
-      //         console.log("3333333");//未执行
-      //         this.Ecode = res.Ecode;
-      //         console.log(res.Ecode);
-      //       } else {
-      //         console.log("4444444");//未执行
-      //         this.$message({
-      //           message: res.msg,
-      //           type: "error",
-      //           showClose: true,
-      //         });
-      //       }
-      //     });
-      //   }
-      // }
+      if (this.loginForm.email === "") {
+        this.$message.error("请先输入邮箱再点击获取验证码");
+      } else {
+        let regemail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        if (!regemail.test(this.loginForm.email)) {
+          this.$message({
+            showClose: true,
+            message: "请输入格式正确有效的邮箱号!",
+            type: "error",
+          });
+        } else {
+          console.log("经过检验格式正确"); //已执行
+          if (this.loginForm2.usertype === "我是患者") {
+            this.axios
+              .get("api/patient-service/getCode/" + this.loginForm2.email)
+              .then((res) => {
+                console.log(res);
+                if (res.code === "0") {
+                  this.$message({
+                    showClose: true,
+                    type: "success",
+                    message: "验证码已发送",
+                  });
+                  this.Ecode = res.Ecode;
+                  console.log(res.Ecode);
+                } else {
+                  console.log("4444444"); //未执行
+                  this.$message({
+                    message: res.msg,
+                    type: "error",
+                    showClose: true,
+                  });
+                }
+              });
+          } else {
+            this.axios
+              .get("api/doctor-service/getCode/" + this.loginForm2.email)
+              .then((res) => {
+                console.log(res);
+                if (res.code === "0") {
+                  this.$message({
+                    showClose: true,
+                    type: "success",
+                    message: "验证码已发送",
+                  });
+                  this.Ecode = res.Ecode;
+                  console.log(res.Ecode);
+                } else {
+                  console.log("4444444"); //未执行
+                  this.$message({
+                    message: res.msg,
+                    type: "error",
+                    showClose: true,
+                  });
+                }
+              });
+          }
+        }
+      }
       console.log("55555"); //执行
       // 验证码倒计时
       if (!this.timer) {
@@ -317,49 +421,92 @@ export default {
       this.$refs[loginForm2].validate((valid, wrongstring) => {
         // 获取loginform1的实例（el-form），找到validate方法，根据验证规则rules校验是否valid
         if (valid) {
-          loginPFun({
-            //接口函数要改
-            telephone: this.loginForm2.email,
-            code: this.loginForm2.code,
-            type: this.loginForm2.usertype,
-          })
-            .then((res) => {
-              if (res.result === true) {
-                //window.sessionStorage.setItem("token", res.data.token);
-                this.$notify({
-                  title: "提示",
-                  message: "用户登录成功",
-                  type: "success",
-                  duration: 3000,
-                });
-                if (this.loginForm.username.substring(0, 5) == "Admin") {
-                  this.$router.push("/admin1"); //!!!!!!!!要改成管理员的页面
-                  this.$store.commit("editAdminId", this.loginForm2.username);
-                } else {
+          if (this.loginForm2.usertype === "我是患者") {
+            this.axios
+              .get(
+                "api/patient-service/loginByMail/" +
+                  this.loginForm2.email +
+                  "/" +
+                  this.loginForm2.code
+              )
+              .then((res) => {
+                console.log(res);
+                console.log(res.data);
+                if (res.data == true) {
+                  this.$notify({
+                    title: "提示",
+                    message: "用户登录成功",
+                    type: "success",
+                    duration: 3000,
+                  });
                   this.$router.push("/home");
-                  this.$store.commit("editPatientId", this.loginForm2.username); //更改id
-                  this.$store.commit("getAllPro", this.loginForm2.username); //请求购物车
+                  window.sessionStorage.setItem(
+                    "userID",
+                    this.loginForm2.email
+                  ); //其实存的是ID
+                } else {
+                  this.$notify({
+                    title: "提示",
+                    message: "用户登录失败",
+                    type: "error",
+                    duration: 3000,
+                  });
                 }
-                this.$store.commit("setLoadingStatus", true);
-              } else {
+                console.log(res);
+              })
+              .catch((err) => {
                 this.$notify({
                   title: "提示",
-                  message: "用户登录失败",
+                  message: "用户访问错误",
                   type: "error",
                   duration: 3000,
                 });
-              }
-              console.log(res);
-            })
-            .catch((err) => {
-              this.$notify({
-                title: "提示",
-                message: "用户访问错误",
-                type: "error",
-                duration: 3000,
+                console.log(err);
               });
-              console.log(err);
-            });
+          } else if (this.loginForm2.usertype === "我是医生") {
+            this.axios
+              .get(
+                "api/doctor-service/loginByMail/" +
+                  this.loginForm2.email +
+                  "/" +
+                  this.loginForm2.code
+              )
+              .then((res) => {
+                console.log(res);
+                console.log(res.data);
+                if (res.data == true) {
+                  // window.sessionStorage.setItem("token", res.data.token);
+                  this.$notify({
+                    title: "提示",
+                    message: "用户登录成功",
+                    type: "success",
+                    duration: 3000,
+                  });
+                  this.$router.push("/userhome2");
+                  window.sessionStorage.setItem(
+                    "userID",
+                    this.loginForm2.email
+                  ); //其实存的是ID
+                } else {
+                  this.$notify({
+                    title: "提示",
+                    message: "用户登录失败",
+                    type: "error",
+                    duration: 3000,
+                  });
+                }
+                console.log(res);
+              })
+              .catch((err) => {
+                this.$notify({
+                  title: "提示",
+                  message: "用户访问错误",
+                  type: "error",
+                  duration: 3000,
+                });
+                console.log(err);
+              });
+          }
         } else {
           console.log(valid, wrongstring);
           console.log("error submit!!");

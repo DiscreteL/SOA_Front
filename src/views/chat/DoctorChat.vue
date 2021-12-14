@@ -7,10 +7,12 @@
       </el-button>
     </div>
     <el-card class="chatroom">
-      <div class="ope">
+      <!-- <div class="ope">
         <i class="el-icon-turn-off-microphone"></i>
-        <!-- <i class="el-icon-video-camera"></i> -->
-      </div>
+        
+         <i class="el-icon-video-camera"></i> 
+      </div> -->
+       <testvideo />
       <!-- <i class="el-microphone"></i> -->
     </el-card>
     <el-card class="tab_pos">
@@ -26,6 +28,8 @@
 import tabs from "@/components/docChatSide.vue";
 // import inquiry_title from "@/components/inquiry_title";
 // import inquiry_navigation_doc from "@/components/inquiry_navigation_doc";
+import testvideo from "./video.vue";
+
 export default {
   name: "Inquiry",
   components: {
@@ -33,6 +37,7 @@ export default {
     // text_box,
     // inquiry_record,
     tabs,
+    testvideo,
     // inquiry_navigation_doc,
   },
   data() {
@@ -96,9 +101,8 @@ export default {
   height: 100%;
   border: 0;
   overflow: hidden;
-
 }
-.ope{
+.ope {
   display: flex;
   justify-content: space-between;
 }

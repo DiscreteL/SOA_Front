@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import {getDocInfoData} from "@/service/userService";
+// import {getDocInfoData} from "@/service/userService";
 
 export default {
   name: "doc_info",
@@ -58,24 +58,24 @@ export default {
   },
   methods:{
     getDocInfo(){
-      getDocInfoData({
-        id:this.$store.state.inquiry.doctorId
-      }).then(res=>{
-        console.log("ok");
-        console.log(res);
-        this.doc.Id=res.result.doctor_ID;
-        // this.doc.identi=res.result.identification;
-        this.doc.name=res.result.doctor_name;
-        this.doc.workAge=res.result.working_age+'年';
-        this.doc.sex=res.result.sex;
-        this.doc.workBench=res.result.title;
-        this.doc.hos=res.result.hos_name;
-        this.doc.department=res.result.department;
-        this.doc.intro=res.result.introduction;
-        this.$store.commit("editInquiryDocName",this.doc.name);
-      }).catch(err=>{
-        console.log(err);
-      })
+      // getDocInfoData({
+      //   id:this.$store.state.inquiry.doctorId
+      // }).then(res=>{
+      //   console.log("ok");
+      //   console.log(res);
+      //   this.doc.Id=res.result.doctor_ID;
+      //   // this.doc.identi=res.result.identification;
+      //   this.doc.name=res.result.doctor_name;
+      //   this.doc.workAge=res.result.working_age+'年';
+      //   this.doc.sex=res.result.sex;
+      //   this.doc.workBench=res.result.title;
+      //   this.doc.hos=res.result.hos_name;
+      //   this.doc.department=res.result.department;
+      //   this.doc.intro=res.result.introduction;
+      //   this.$store.commit("editInquiryDocName",this.doc.name);
+      // }).catch(err=>{
+      //   console.log(err);
+      // })
     }
   }
 }

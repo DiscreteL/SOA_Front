@@ -104,8 +104,7 @@
 
 <script>
 import doc_info from "./doctorInfo";
-import {getDrugsIncludedListDataFun,getPreDataFun,getPatientInfoDataFun,postAutoAddDataFun} from "@/service/userService";
-import {} from "@/service/userService";
+// import {getDrugsIncludedListDataFun,getPreDataFun,getPatientInfoDataFun,postAutoAddDataFun} from "@/service/userService";
 export default {
   name: "tabs_patient",
   components:{
@@ -133,47 +132,47 @@ export default {
   },
   methods: {
     getDrugs(){//获取处方信息
-      getDrugsIncludedListDataFun({
-        pre_id:this.$store.state.inquiry.preId
-      }).then(res=>{
-        if(res.result.length!=0){//当成功获取到处方信息时
-          for(let i=0;i<res.result.length;i++){
-            this.includeForm.data.push({//装入药品表格数据
-              name:res.result[i].medicine_name,
-              num:res.result[i].quantity,
-              method:res.result[i].content
-            })
-          }
-          this.includeButtonDiabled=true;//将刷新处方获取按钮禁用
-          this.addDrugsDisabled=false;//将一键购药开放
-        }
-      }).catch(err=>{
-        console.log(err);
-      })
+      // getDrugsIncludedListDataFun({
+      //   pre_id:this.$store.state.inquiry.preId
+      // }).then(res=>{
+      //   if(res.result.length!=0){//当成功获取到处方信息时
+      //     for(let i=0;i<res.result.length;i++){
+      //       this.includeForm.data.push({//装入药品表格数据
+      //         name:res.result[i].medicine_name,
+      //         num:res.result[i].quantity,
+      //         method:res.result[i].content
+      //       })
+      //     }
+      //     this.includeButtonDiabled=true;//将刷新处方获取按钮禁用
+      //     this.addDrugsDisabled=false;//将一键购药开放
+      //   }
+      // }).catch(err=>{
+      //   console.log(err);
+      // })
     },
     getPre(){//获取病历
-      getPreDataFun({
-        pati_id:this.$store.state.inquiry.patientId,
-        doctor_id:this.$store.state.inquiry.doctorId
-      }).then(res=>{
-        console.log(res);
-        if(res.result.prescription_ID!=null){//当成功获取到病历信息时
-          this.diseaseDecidedForm.department=res.result.department;//装入科室信息
-          this.$store.commit("editInquiryPreId",res.result.prescription_ID);//装入处方id信息，存到store，供处方组件使用
-          let content=res.result.prescription_Content;//获取content
-          let temp=content.split('——');//处理content
-          this.diseaseDecidedForm.desc=temp[0];//第一部分：患者主诉
-          this.diseaseDecidedForm.disease=temp[1];//第二部分：诊断疾病
-          let index=temp[2].split('-');//处理第三部分（由多选框数组构成）
-          for(let i=0;i<index.length;i++){//装入
-            this.diseaseDecidedForm.type.push(index[i]);
-          }
-          this.preButtonDiabled=true;//设置病历刷新按钮禁用
-          this.includeTabDisabled=false;//设置处方tab单元可用
-        }
-      }).catch(err=>{
-        console.log(err);
-      })
+      // getPreDataFun({
+      //   pati_id:this.$store.state.inquiry.patientId,
+      //   doctor_id:this.$store.state.inquiry.doctorId
+      // }).then(res=>{
+      //   console.log(res);
+      //   if(res.result.prescription_ID!=null){//当成功获取到病历信息时
+      //     this.diseaseDecidedForm.department=res.result.department;//装入科室信息
+      //     this.$store.commit("editInquiryPreId",res.result.prescription_ID);//装入处方id信息，存到store，供处方组件使用
+      //     let content=res.result.prescription_Content;//获取content
+      //     let temp=content.split('——');//处理content
+      //     this.diseaseDecidedForm.desc=temp[0];//第一部分：患者主诉
+      //     this.diseaseDecidedForm.disease=temp[1];//第二部分：诊断疾病
+      //     let index=temp[2].split('-');//处理第三部分（由多选框数组构成）
+      //     for(let i=0;i<index.length;i++){//装入
+      //       this.diseaseDecidedForm.type.push(index[i]);
+      //     }
+      //     this.preButtonDiabled=true;//设置病历刷新按钮禁用
+      //     this.includeTabDisabled=false;//设置处方tab单元可用
+      //   }
+      // }).catch(err=>{
+      //   console.log(err);
+      // })
     },
     autoAddDrugsToCart(){
       postAutoAddDataFun({

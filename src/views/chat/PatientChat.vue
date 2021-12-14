@@ -62,10 +62,11 @@
       </el-button>
     </div>
     <el-card class="chatroom">
-      <div class="ope">
-        <i class="el-icon-turn-off-microphone"></i>
-        <!-- <i class="el-icon-video-camera"></i> -->
-      </div>
+      <!-- <div class="ope">
+         <i class="el-icon-turn-off-microphone"></i> 
+         <i class="el-icon-video-camera"></i> 
+      </div> -->
+      <testvideo />
       <!-- <i class="el-microphone"></i> -->
     </el-card>
     <el-card class="tab_pos">
@@ -77,6 +78,7 @@
 import tabs from "@/components/patChatSide.vue";
 // import inquiry_title from "@/components/inquiry_title";
 // import inquiry_navigation_patient from "@/components/inquiry_navigation_patient";
+import testvideo from "./video.vue";
 export default {
   name: "InquiryPatient",
   components: {
@@ -84,6 +86,7 @@ export default {
     // text_box,
     // inquiry_record,
     tabs,
+    testvideo,
     // inquiry_navigation_patient,
   },
   data() {
@@ -205,9 +208,8 @@ export default {
   height: 100%;
   border: 0;
   overflow: hidden;
-
 }
-.ope{
+.ope {
   display: flex;
   justify-content: space-between;
 }

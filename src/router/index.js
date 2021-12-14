@@ -68,6 +68,13 @@ const routes = [
         meta: { title: '聊天室' }
     },
     {
+        path: '/testchat',
+        name: 'PatientChat',
+        component: () =>
+            import ('@/views/chat/video.vue'),
+        meta: { title: '聊天室' }
+    },
+    {
         path: '/adminHome',
         name: 'adminHome',
         component: adminHome,
