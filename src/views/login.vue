@@ -340,11 +340,11 @@ export default {
     },
     //向手机号发送验证码
     getCode() {
-      if (this.loginForm.email === "") {
+      if (this.loginForm2.email === "") {
         this.$message.error("请先输入邮箱再点击获取验证码");
       } else {
         let regemail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-        if (!regemail.test(this.loginForm.email)) {
+        if (!regemail.test(this.loginForm2.email)) {
           this.$message({
             showClose: true,
             message: "请输入格式正确有效的邮箱号!",
@@ -357,7 +357,7 @@ export default {
               .get("api/patient-service/getCode/" + this.loginForm2.email)
               .then((res) => {
                 console.log(res);
-                if (res.code === "0") {
+                if (res.data === true) {
                   this.$message({
                     showClose: true,
                     type: "success",
@@ -379,7 +379,7 @@ export default {
               .get("api/doctor-service/getCode/" + this.loginForm2.email)
               .then((res) => {
                 console.log(res);
-                if (res.code === "0") {
+                if (res.data === true) {
                   this.$message({
                     showClose: true,
                     type: "success",
@@ -431,8 +431,7 @@ export default {
               )
               .then((res) => {
                 console.log(res);
-                console.log(res.data);
-                if (res.data == true) {
+                if (res.data != "登录失败！！！") {
                   this.$notify({
                     title: "提示",
                     message: "用户登录成功",
@@ -442,7 +441,7 @@ export default {
                   this.$router.push("/home");
                   window.sessionStorage.setItem(
                     "userID",
-                    this.loginForm2.email
+                    res.data
                   ); //其实存的是ID
                 } else {
                   this.$notify({
@@ -474,7 +473,7 @@ export default {
               .then((res) => {
                 console.log(res);
                 console.log(res.data);
-                if (res.data == true) {
+                if (res.data != "登录失败！！！") {
                   // window.sessionStorage.setItem("token", res.data.token);
                   this.$notify({
                     title: "提示",
@@ -485,7 +484,7 @@ export default {
                   this.$router.push("/userhome2");
                   window.sessionStorage.setItem(
                     "userID",
-                    this.loginForm2.email
+                     res.data
                   ); //其实存的是ID
                 } else {
                   this.$notify({

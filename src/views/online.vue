@@ -51,88 +51,8 @@ export default {
   },
   data() {
     return {
-      docList: [
-        {
-          id: "1",
-          name: "张三",
-          title: "副主任医师",
-          index: "内科",
-          sex: "男",
-          workingAge: "12",
-          hos: "上海市嘉定区安亭医院",
-          pic: "https://ui-avatars.com/api/?size=60&length=1&bold=true&background=6699CC&color=ffffff&rounded=true&name=张三", //图片直接放url不能请求到 需要重写 这里记录了一个编号 在docList会用到
-          intro: "专业内科，专业内科，专业内科",
-        },
-      ],
-      docData: [
-        {
-          id: "2",
-          name: "杨希文",
-          title: "主任医师",
-          index: "内科",
-          sex: "男",
-          workingAge: "12",
-          hos: "上海市嘉定区安亭医院",
-          pic: "https://ui-avatars.com/api/?size=60&length=1&bold=true&background=6699CC&color=ffffff&rounded=true&name=张三", //图片直接放url不能请求到 需要重写 这里记录了一个编号 在docList会用到
-          intro: "专业内科，专业内科，专业内科",
-        },
-        {
-          id: "3",
-          name: "张三",
-          title: "副主任医师",
-          index: "内科",
-          sex: "男",
-          workingAge: "12",
-          hos: "上海市嘉定区安亭医院",
-          pic: "https://ui-avatars.com/api/?size=60&length=1&bold=true&background=6699CC&color=ffffff&rounded=true&name=张三", //图片直接放url不能请求到 需要重写 这里记录了一个编号 在docList会用到
-          intro: "专业内科，专业内科，专业内科",
-        },
-        {
-          id: "4",
-          name: "李四",
-          title: "副主任医师",
-          index: "内科",
-          sex: "男",
-          workingAge: "12",
-          hos: "上海市嘉定区安亭医院",
-          pic: "https://ui-avatars.com/api/?size=60&length=1&bold=true&background=6699CC&color=ffffff&rounded=true&name=张三", //图片直接放url不能请求到 需要重写 这里记录了一个编号 在docList会用到
-          intro: "专业内科，专业内科，专业内科",
-        },
-        {
-          id: "5",
-          name: "哈哈",
-          title: "副主任医师",
-          index: "内科",
-          sex: "男",
-          workingAge: "12",
-          hos: "上海市嘉定区安亭医院",
-          pic: "https://ui-avatars.com/api/?size=60&length=1&bold=true&background=6699CC&color=ffffff&rounded=true&name=张三", //图片直接放url不能请求到 需要重写 这里记录了一个编号 在docList会用到
-          intro: "专业内科，专业内科，专业内科",
-        },
-        {
-          id: "6",
-          name: "张三",
-          title: "副主任医师",
-          index: "内科",
-          sex: "男",
-          workingAge: "12",
-          hos: "上海市嘉定区安亭医院",
-          pic: "", //图片直接放url不能请求到 需要重写 这里记录了一个编号 在docList会用到
-          intro: "专业内科，专业内科，专业内科",
-        },
-        {
-          id: "7",
-          name: "哈哈",
-          title: "副主任医师",
-          index: "内科",
-          sex: "男",
-          workingAge: "12",
-          hos: "上海市嘉定区安亭医院",
-          pic: "", //图片直接放url不能请求到 需要重写 这里记录了一个编号 在docList会用到
-          intro: "专业内科，专业内科，专业内科",
-        },
-
-      ],
+      docList: [],
+      docData: [],
       options: [],
       isFormVisible: false,
     };
@@ -142,9 +62,10 @@ export default {
   },
   methods: {
     getDataList() {
-      this.axios.get("doctor-service/getDoctorList")
+      this.axios
+        .get("doctor-service/getDoctorList")
         .then((res) => {
-          console.log(res)
+          console.log(res);
           //从后端请求到医生信息 也是筛选/搜索时直接处理的数据
           let count = 1;
           for (let i of res.data) {
@@ -155,7 +76,7 @@ export default {
               title: i.title,
               index: i.department,
               sex: i.gender,
-              workingAge: i.workLength,
+              workingAge: 2021 - i.workLength,
               hos: i.hospital,
               pic: count, //图片直接放url不能请求到 需要重写 这里记录了一个编号 在docList会用到
               intro: i.docIntro,
@@ -200,14 +121,21 @@ export default {
       //向表单信息添加新信息
       mes.docId = this.$refs.listItem.lastCardInfo._id;
       console.log(mes.docId);
-      postReservationFun({
-        pati_id: this.$store.state.userId,
-        doctor_id: mes.docId,
-        time: mes.date1,
-        status: 1, //待确认的意思
-      })
+      // var date = "1";
+      // console.log(mes.date1);
+      // date = mes.date1;
+      this.axios
+        .post("patient-service/patientSubmitRequest", {
+          // patientID: this.$store.state.userId,
+          patientID:sessionStorage.getItem('userID'),
+          reserveNum: mes.date1+mes.docId,
+          doctorID: mes.docId,
+          time: mes.date1,
+          status: 0, //待确认的意思
+          initDescription: mes.desc,
+        })
         .then((res) => {
-          if (res.result === true)
+          if (res.data === true)
             this.$message({
               message: "提交成功",
               type: "success",
