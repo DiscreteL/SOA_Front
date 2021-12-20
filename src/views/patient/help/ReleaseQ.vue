@@ -1,135 +1,45 @@
 <template>
-    <!-- 发布问题 -->
-  <div class="container">
-      <div class="input" >
-        <el-input 
-            v-model="myQuestion"
-            type="textarea"
-            :rows="5"
-            autofocus
-            @input="timeEffectInput"
-            placeholder="写下你的疑惑">
-        </el-input>
-
-        <div class="countChar">
-            <div class="count">
-            {{currentLength}}
-            </div>
+  <el-form ref="form" :model="form" label-width="80px">
+    <el-form-item label="反馈内容" required>
+      <el-input type="textarea" :rows="10" v-model="form.content"></el-input>
+    </el-form-item>
+    <el-form-item label="相关材料">
+      <el-upload
+        class="upload-demo"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :before-remove="beforeRemove"
+        multiple
+        :limit="3"
+        :on-exceed="handleExceed"
+        :file-list="fileList"
+      >
+        <el-button size="small" type="primary">点击上传</el-button>
+        <div slot="tip" class="el-upload__tip">
+          可以选择上传相关文件对要反馈的内容进行展示
         </div>
-
-        <div class="btn">
-            <div></div>
-            <div class="center"></div>
-            <div>
-            <el-button class="btn" type="success" round @click="releaseQ()">提交</el-button>
-            </div>
-        </div>
-        </div>
-  </div>
+      </el-upload>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="success" @click="onSubmit">提交</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
 export default {
-  data(){
-      return{
-          currentLength:'0/500',
-          myQuestion:'',
-          sendQuestion:{
-            id:'',//个人id
-            qdate:'',//提问时间
-            content:'',
-            quesid:'',//问题id
-            likeNum:0
-          }
-      }
+  data() {
+    return {
+      form: {
+        content: "",
+      },
+    };
   },
-  methods:{
-       timeEffectInput(){
-      var length = this.myQuestion.length
-      this.currentLength=length.toString()+'/500'
-      if (length >= 500) {
-        this.$message('字数上限：500');
-      }
-      },
-      releaseQ(){
-        if(this.myQuestion==='')
-        {
-        this.$message('内容不能为空哦~');
-        }
-        else{
-            this.sendQuestion.id=window.sessionStorage.getItem("id");
-            const nowDate=new Date();
-            var year=nowDate.getFullYear().toString();
-            var month=(nowDate.getMonth()+1).toString();
-            var day=nowDate.getDate().toString();
-            var hour=nowDate.getHours().toString();
-            var minutes=nowDate.getMinutes().toString();
-            this.sendQuestion.qdate=year+'-'+month+'-'+day+' '+hour+':'+minutes;
-            this.sendQuestion.quesid='q'+year+month+day+hour+minutes+this.sendQuestion.id;
-            this.sendQuestion.content=this.myQuestion;
-            console.log("sendQuestion");
-            console.log(this.sendQuestion);
-            this.sendData();
-        }
-      },
-      async sendData(){
-      /* const myGet = (data1) => {
-      this.questionData = data1.data;
-      }; */
-
-    //     await fetch("http://175.27.240.116:5000/api/Problem/Insert",{
-    //     method: 'POST',
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //       Authorization: "bearer " + window.sessionStorage.getItem("token"),
-    //     },
-    //     body: JSON.stringify(this.sendQuestion)
-    //   })
-    //     .then((response) => response.json()) //将获取的数据转化成json格式
-    //     .then((datastu) => myGet(datastu)) //datastu储存转化完成的数据
-    //     .catch((error) => console.error("Unable to get items".error)); //报错信息
-    //     //console.log(this.questionData)
-    //     this.$message.success('发送成功');
-    //     this.myQuestion='';
-    //     this.$router.go(0)
-      }
+  methods: {
+    onSubmit() {
+      console.log("submit!");
     }
-}
+  },
+};
 </script>
-
-<style lang="less" scoped>
-.container{
-    padding:0 10px;
-    box-sizing: border-box;
-    display:flex;
-    flex-direction: column;
-    .input{
-        margin-top:20px;
-        box-sizing: border-box;
-        .countChar{
-            box-sizing: border-box;
-            width:100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            margin-left:10px;
-            align-items: center;
-            margin-top:5px;
-            .count{
-            font-size: 13px;
-            font-weight:300;
-            color: #909399;
-            }
-        }
-        .btn{
-            margin-top:-5px;
-            display: flex;
-            flex-direction: row;
-            .center{
-                flex:1;
-            }
-        }
-    }
-}
-</style>
