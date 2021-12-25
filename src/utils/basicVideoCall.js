@@ -1,4 +1,5 @@
 import AgoraRTC from "agora-rtc-sdk-ng"
+import axios from "axios"
 
 let rtc = {
     localAudioTrack: null,
@@ -12,14 +13,15 @@ let options = {
     // Set the channel name.  改成医生或者患者ID
     channel: "test",
     // Set the user ID.  改成用户ID
-    uid: 123456
+    // uid: 123456,
+    uid: sessionStorage.getItem('userID')
 };
 
 // 从 服务器获取 Token  地址要改
 function fetchToken(uid, channelName) {
-
     return new Promise(function(resolve) {
-        axios.get('http://<Your Host URL and port>/fetch_rtc_token' + uid + channelName
+        axios.get("http://100.78.182.86:9780/webrtc/getToken/" + channelName + "/" + uid
+                // 'webrtc-service/' + 'webrtc/getToken/'
                 // , {
                 //     headers: {
                 //         'Content-Type': 'application/json; charset=UTF-8'
@@ -27,7 +29,8 @@ function fetchToken(uid, channelName) {
                 // }
             )
             .then(function(response) {
-                const token = response.data.token;
+                const token = response.data;
+                console.log(token);
                 resolve(token);
             })
             .catch(function(error) {
@@ -94,6 +97,7 @@ export async function startBasicCall() {
         document.getElementById("join").onclick = async function() {
             // Join an RTC channel.
             let token = await fetchToken(options.uid, options.channel);
+            // let token = "0061dd8d304d2ca43929025aed73ede6976IABB545VtwO8kd/alywGeh45yRX5kPgco1T2vgy+hQEQuQx+f9gcOvXLIgBdmbqwrQ3IYQQAAQA9ysZhAgA9ysZhAwA9ysZhBAA9ysZh";
             await rtc.client.join(options.appId, options.channel, token, options.uid);
             // Create a local audio track from the audio sampled by a microphone.
             rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();

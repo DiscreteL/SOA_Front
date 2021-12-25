@@ -315,7 +315,7 @@ export default {
         department: "",
         title: "",
         introduction:"",
-        workingAge: 0,
+        workingAge: 2021,
         
       },
       cFileList: [],
@@ -729,7 +729,6 @@ export default {
         // 获取loginform的实例（el-form），找到validate方法，根据验证规则rules校验是否valid
         if (valid) {
           this.loading = true;
-              //this.axios.post("http://100.80.144.48:9000/doctor-service/register",{
          this.axios.post("/patient-service/register",{
             name: this.loginForm1.username,
             password: this.loginForm1.password,
@@ -791,7 +790,7 @@ export default {
             docIntro:this.loginForm2.introduction,
           })
             .then((res) => {
-              if (res.result === "注册失败") {
+              if (res.data === "注册失败") {
                 this.$notify({
                   title: "提示",
                   message: "用户已注册过账号，无须再注册！",
@@ -802,7 +801,7 @@ export default {
                 this.$router.push("/login"); //注册成功路由实现跳转
                 this.$message({
                   showClose: true,
-                  message: `注册成功！请记住您的ID：${res.result}`,
+                  message: `注册成功！请记住您的ID：${res.data}`,
                   type: "success",
                   duration: 0,
                 });

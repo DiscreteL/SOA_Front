@@ -7,20 +7,21 @@
       <el-form-item label="问诊时间">
         <el-col :span="11">
           <el-date-picker
-            type="date"
-            placeholder="选择日期"
+            type="datetime"
+            placeholder="选择日期和时间"
             v-model="form.date1"
+            value-format="timestamp"
             style="width: 100%"
           ></el-date-picker>
         </el-col>
-        <el-col class="line" :span="2">-</el-col>
+        <!-- <el-col class="line" :span="2">-</el-col>
         <el-col :span="11">
           <el-time-picker
             placeholder="选择时间"
             v-model="form.date2"
             style="width: 100%"
           ></el-time-picker>
-        </el-col>
+        </el-col> -->
       </el-form-item>
       <el-form-item label="是否复诊">
         <el-switch v-model="form.delivery"></el-switch>
@@ -43,9 +44,8 @@ export default {
   data() {
     return {
       form: {
-        name: "",
-        date1: "",
-        date2: "",
+        name: "",  //患者名字
+        date1: '', //日期
         delivery: false,
         desc: "",
       },
@@ -62,6 +62,7 @@ export default {
 
   onSubmit() {
       this.visible = false
+      console.log(this.form.date1)
       this.$emit('formSubmit',this.form)
     },
   onClose(){//加一个beforeclose以及防止误触 

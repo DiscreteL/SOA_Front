@@ -25,7 +25,7 @@
     name:"Navigation",
     data() {
       return {
-       url:'https://ui-avatars.com/api/?size=60&length=1&bold=true&background=6699CC&color=ffffff&rounded=true&name=User' ,
+       url:'https://ui-avatars.com/api/?size=60&length=1&bold=true&background=6699CC&color=ffffff&rounded=true&name='+sessionStorage.getItem('userID') ,
        navList: [
         { name: "/home", navItem: "首页" },
         { name: "/news", navItem: "科普资讯" },

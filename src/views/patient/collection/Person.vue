@@ -1,43 +1,49 @@
 <template>
-<el-row>
-  <el-col :span="3" v-for="(o, index) in 6" :key="o" :offset="index > 0 ? 1 : 0">
-    <el-card :body-style="{ padding: '0px' }" shadow="always">
-      <img src="@/assets/doctor.png" class="image">
-      <div style="padding: 14px;">
-        <span>医生</span>
-        <div class="bottom clearfix">
-          <el-button type="text" class="button">查看信息</el-button>
-          <el-button type="text" class="button">取消关注</el-button>
-        </div>
-      </div>
-    </el-card>
-  </el-col>
-</el-row>
+  <div>
+    <cardList ref="listItem" :dataList="followData"></cardList>
+  </div>
 </template>
 
-<style>
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-  }
+<script>
+import cardList from "@/components/docList.vue";
 
-  .button {
-    padding: 0;
-    float: right;
-  }
+export default {
+  components: {
+    cardList,
+  },
+  data() {
+    return {
+      store: {
+        id: "",
+      },
+      followData: [],
+    };
+  },
+  created() {
+    this.getfollowData();
+  },
+  methods: {
+    showForm(mes) {
+      this.$refs.listItem.recordLocation(mes); //告知卡片列表子组件 要求对本页面的点击事件mes进行定位
+    },
+    getfollowData() {
+      this.store.id = window.sessionStorage.getItem("userID");
+      console.log("sessionstorage.id:" + this.store.id);
+      let _this = this;
+      this.axios
+        .get("api/patient-service/getAllFollowing/" + this.store.id)
+        .then(function (res) {
+          console.log("getfollowData.res.data:");
+          console.log(res.data);
+          _this.followData = res.data;
+        })
+        .catch(function (error) {
+          console.log("Get Nothing!" + error);
+        });
+    },
+  },
+};
+</script>
 
-  .image {
-    width: 100%;
-    display: block;
-  }
 
-  .clearfix:before,
-  .clearfix:after {
-      display: table;
-      content: "";
-  }
-  
-  .clearfix:after {
-      clear: both
-  }
-</style>
+

@@ -1,8 +1,15 @@
 <template>
   <el-table
-    :data="tableData.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))"
-    style="width: 100%">
-        <el-table-column type="expand">
+    :default-sort="{ prop: 'subdate', order: 'descending' }"
+    :data="
+      tableData.filter(
+        (data) =>
+          !search || data.title.toLowerCase().includes(search.toLowerCase())
+      )
+    "
+    style="width: 100%"
+  >
+    <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
           <el-form-item label="反馈时间">
@@ -21,17 +28,23 @@
         </el-form>
       </template>
     </el-table-column>
-    <el-table-column label="反馈时间" prop="subdate"> </el-table-column>
+    <el-table-column label="反馈时间" prop="subdate" sortable> </el-table-column>
     <el-table-column label="问题分类" prop="questype"> </el-table-column>
     <el-table-column label="反馈状态" prop="status"> </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
-        <el-input v-model="search" @click="handleEdit(scope.$index, scope.row)" size="mini" placeholder="输入关键字搜索" />
+        <el-input
+          v-model="search"
+          @click="handleEdit(scope.$index, scope.row)"
+          size="mini"
+          placeholder="输入关键字搜索"
+        />
       </template>
-      <template slot-scope="scope">
-        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-          >详细信息</el-button
-        >
+      <template>
+        <el-button size="mini" @click="dialogTableVisible = true">详细信息</el-button>
+        <el-dialog title="反馈" center :visible.sync="dialogTableVisible" width="30%">
+          ???
+        </el-dialog>
       </template>
     </el-table-column>
   </el-table>
@@ -62,33 +75,34 @@ export default {
           subdate: "2021.11.24",
           subtime: "17:20:13",
           questype: "问诊",
-          status:"待处理",
-          content:"如何向医生发起问询",
+          status: "待处理",
+          content: "如何向医生发起问询",
         },
         {
           subdate: "2021.11.24",
           subtime: "17:20:13",
           questype: "服务",
-          status:"待处理",
-          content:"医生回答不满意怎么办？",
+          status: "待处理",
+          content: "医生回答不满意怎么办？",
         },
         {
           subdate: "2021.11.20",
           subtime: "17:20:13",
           questype: "问诊",
-          status:"已处理",
-          content:"回复问题的医生是不是真正的医生？",
+          status: "已处理",
+          content: "回复问题的医生是不是真正的医生？",
         },
         {
           subdate: "2021.11.19",
           subtime: "17:20:13",
           questype: "问诊",
-          status:"已处理",
-          content:"回复问题的医生是不是真正的医生？",
+          status: "已处理",
+          content: "回复问题的医生是不是真正的医生？",
         },
       ],
       search: "",
-    }
+      dialogTableVisible: "false",
+    };
   },
   methods: {
     handleEdit(index, row) {
@@ -98,8 +112,8 @@ export default {
       console.log(index, row);
     },
     handleChange() {
-    this.$forceUpdate();
-},
+      this.$forceUpdate();
+    },
   },
 };
 </script>
