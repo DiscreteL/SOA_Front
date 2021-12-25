@@ -1,35 +1,43 @@
 <template>
   <el-table
-    :data="tableData.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))"
-    style="width: 100%">
+    :data="
+      tableData.filter(
+        (data) =>
+          !search || data.doctorName.toLowerCase().includes(search.toLowerCase())
+      )
+    "
+    style="width: 100%"
+  >
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
           <el-form-item label="问诊时间">
-            <span>{{ props.row.time }}</span>
+            <span>{{ props.row.time | formatDate}}</span>
           </el-form-item>
           <el-form-item label="医生">
-            <span>{{ props.row.doctor }}</span>
+            <span>{{ props.row.doctorName }}</span>
           </el-form-item>
           <el-form-item label="病历">
-            <span>{{ props.row.disrecord }}</span>
+            <span>{{ props.row.diagContent }}</span>
           </el-form-item>
           <el-form-item label="处方">
-            <span>{{ props.row.prescr }}</span>
+            <span>{{ props.row.medicine }}</span>
           </el-form-item>
         </el-form>
       </template>
     </el-table-column>
-    <el-table-column label="问诊时间" prop="time"> </el-table-column>
-    <el-table-column label="医生" prop="doctor"> </el-table-column>
+    <el-table-column label="问诊时间" prop="time" :formatter="dateFormat">
+    </el-table-column>
+    <el-table-column label="医生" prop="doctorName"> </el-table-column>
+    <el-table-column label="疾病名称" prop="diseaseName"> </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
-        <el-input v-model="search" @click="handleEdit(scope.$index, scope.row)" size="mini" placeholder="输入关键字搜索" />
-      </template>
-      <template slot-scope="scope">
-        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-          >详细信息</el-button
-        >
+        <el-input
+          v-model="search"
+          @click="handleEdit(scope.$index, scope.row)"
+          size="mini"
+          placeholder="输入关键字搜索"
+        />
       </template>
     </el-table-column>
   </el-table>
@@ -52,37 +60,29 @@
 </style>
 
 <script>
+import moment from "moment";
+import { formatDate } from "@/utils/date.js";
+
 export default {
   data() {
     return {
-      tableData: [
-        {
-          time: "2021.5.23",
-          doctor: "张三医生",
-          disrecord: "上呼吸道感染",
-          prescr: "正柴胡颗粒",
-        },
-        {
-          time: "2020.12.5",
-          doctor: "李四医生",
-          disrecord: "急性鼻窦炎",
-          prescr: "处方1",
-        },
-        {
-          time: "2019.3.22",
-          doctor: "王五医生",
-          disrecord: "失眠，心律不齐",
-          prescr: "稳心颗粒",
-        },
-        {
-          time: "2019.1.6",
-          doctor: "李六医生",
-          disrecord: "过敏",
-          prescr: "息斯敏（氯雷他定片）",
-        },        
-      ],
+      tableData: [],
+      store: {
+        id: "",
+      },
       search: "",
-    }
+    };
+  },
+  created() {
+    this.gettableData();
+  },
+  filters: {
+    formatDate(time) {
+      // time=Number(time);
+      // console.log(time);
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
+    },
   },
   methods: {
     handleEdit(index, row) {
@@ -92,8 +92,36 @@ export default {
       console.log(index, row);
     },
     handleChange() {
-    this.$forceUpdate();
-},
+      this.$forceUpdate();
+    },
+    gettableData() {
+      this.store.id = window.sessionStorage.getItem("userID");
+      console.log("sessionstorage.id:" + this.store.id);
+      let _this = this;
+      this.axios
+        .get(
+          "api/patient-service/patientGetAllRecord/" + this.store.id
+          // headers: {
+          //   token: window.sessionStorage.getItem("token"),
+          // },
+        )
+        .then(function (res) {
+          console.log("gettableData.res.data:");
+          console.log(res.data);
+          _this.tableData = res.data;
+        })
+        .catch(function (error) {
+          console.log("Get Nothing!" + error);
+        });
+    },
+    //  格式化日期
+    dateFormat(row, column) {
+      const date = row[column.property];
+      if (date == undefined) {
+        return "";
+      }
+      return moment(date).format("YYYY-MM-DD");
+    },
   },
 };
 </script>

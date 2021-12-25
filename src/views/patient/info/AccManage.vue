@@ -133,13 +133,16 @@ export default {
       console.log("sessionstorage.id:" + this.store.id);
       this.$refs[userInfo].validate((valid, wrongstring) => {
         if (valid) {
+          console.log("this.userInfo.password:")
+          console.log(this.userInfo.password)
+          console.log(this.store.id)
           this.axios
             .post("/patient-service/updatePassword", {
+              id: this.store.id,
               password: this.userInfo.password,
-              ID: this.store.id,
             })
             .then((res) => {
-              console.log("updatePsd.res.data:");
+              console.log("updatePsd.res:");
               console.log(res);
               if (res.data !== true) {
                 this.$notify({

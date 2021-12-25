@@ -1,7 +1,13 @@
 <template>
   <el-table
-    :data="tableData.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))"
-    style="width: 100%">
+    :data="
+      tableData.filter(
+        (data) =>
+          !search || data.title.toLowerCase().includes(search.toLowerCase())
+      )
+    "
+    style="width: 100%"
+  >
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
@@ -9,26 +15,32 @@
             <span>{{ props.row.title }}</span>
           </el-form-item>
           <el-form-item label="作者">
-            <span>{{ props.row.author }}</span>
+            <span>{{ props.row.doctorID }}</span>
           </el-form-item>
-          <el-form-item label="发布时间">
-            <span>{{ props.row.launchtime }}</span>
+          <el-form-item label="收藏时间">
+            <span>{{ props.row.time | formatDate }}</span>
           </el-form-item>
           <el-form-item label="分类标签">
-            <span>{{ props.row.tag }}</span>
+            <span>{{ props.row.label }}</span>
           </el-form-item>
         </el-form>
       </template>
     </el-table-column>
-    <el-table-column label="收藏时间" prop="colltime"> </el-table-column>
+    <el-table-column label="收藏时间" prop="time" :formatter="dateFormat">
+    </el-table-column>
     <el-table-column label="标题" prop="title"> </el-table-column>
-    <el-table-column label="作者" prop="author"> </el-table-column>
+    <el-table-column label="作者" prop="doctorID"> </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
-        <el-input v-model="search" @click="handleEdit(scope.$index, scope.row)" size="mini" placeholder="输入关键字搜索" />
+        <el-input
+          v-model="search"
+          @click="handleEdit(scope.$index, scope.row)"
+          size="mini"
+          placeholder="输入关键字搜索"
+        />
       </template>
       <template slot-scope="scope">
-        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+        <el-button size="mini" @click="more(scope.row)"
           >查看全文</el-button
         >
         <el-button
@@ -59,41 +71,28 @@
 </style>
 
 <script>
+import moment from "moment";
+import { formatDate } from "@/utils/date.js";
 export default {
   data() {
     return {
-      tableData: [
-        {
-          title: "金银草有如此功效？！！",
-          author: "张三医生",
-          colltime: "2021.11.24",
-          launchtime: "2021.9.4",
-          tag: "止咳",
-        },
-        {
-          title: "生姜生发？！！",
-          author: "李四医生",
-          colltime: "2021.11.24",
-          launchtime: "2021.8.20",
-          tag: "生发",
-        },
-        {
-          title: "缓解脊椎酸痛小妙招",
-          author: "王五医生",
-          colltime: "2021.11.23",
-          launchtime: "2021.9.30",
-          tag: "脊椎",
-        },
-        {
-          title: "熬夜对身体的影响你知道吗？",
-          author: "李六医生",
-          colltime: "2021.9.4",
-          launchtime: "2021.5.13",
-          tag: "熬夜",
-        },
-      ],
+      tableData: [],
       search: "",
-    }
+      store: {
+        id: "",
+      },
+    };
+  },
+  created() {
+    this.gettableData();
+  },
+  filters: {
+    formatDate(time) {
+      // time=Number(time);
+      // console.log(time);
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
+    },
   },
   methods: {
     handleEdit(index, row) {
@@ -103,8 +102,55 @@ export default {
       console.log(index, row);
     },
     handleChange() {
-    this.$forceUpdate();
-},
+      this.$forceUpdate();
+    },
+    gettableData() {
+      this.store.id = window.sessionStorage.getItem("userID");
+      console.log("sessionstorage.id:" + this.store.id);
+      let _this = this;
+      this.axios
+        .get("api/patient-service/getAllTweetCollection/" + this.store.id)
+        .then(function (res) {
+          console.log("gettabledata.res.data:");
+          console.log(res.data);
+          _this.tableData = res.data;
+        })
+        .catch(function (error) {
+          console.log("Get Nothing!" + error);
+        });
+    },
+    more(data){
+      window.open(data.url)
+    },
+    dateFormat(row, column) {
+      const date = row[column.property];
+      if (date == undefined) {
+        return "";
+      }
+      return moment(date).format("YYYY-MM-DD");
+    },
+        deleteCollect(data) {
+      this.store.id = window.sessionStorage.getItem("userID");
+      this.axios
+        .delete(
+          "patient-service/deleteTweetCollection/" + data.id + "/" + this.store.id
+        )
+        .then((res) => {
+          console.log("res.data:");
+          console.log(res.data);
+          if (res.data === true)
+            this.$message({
+              message: "取消成功",
+              type: "success",
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      this.$router.push({
+        path: "/personempty",
+      });
+    },
   },
 };
 </script>
