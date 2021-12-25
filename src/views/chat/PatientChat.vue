@@ -113,11 +113,10 @@ export default {
   methods: {
     postRate() {
       //上传评价表
-      postRateDataFun({
+      this.axios.post("/patient-service/addEvaluation",{
         pati_id: this.$store.state.inquiry.patientId,
         doctor_id: this.$store.state.inquiry.doctorId,
-        time: this.formAssess.time,
-        content: this.formAssess.content,
+        score: (this.formAssess.value1+this.formAssess.value2+this.formAssess.value3)/3,
       })
         .then((res) => {
           console.log(res);
