@@ -24,11 +24,17 @@
           <!-- :unique-opened="true"->只允许展开一个菜单 -->
           <!-- :collapse-transition="false" -> 关闭动画 -->
           <!-- router -> 导航开启路由模式 -->
-          <el-menu-item index="/userhome1/esseninfo" @click="saveNavState('/esseninfo')">
+          <el-menu-item
+            index="/userhome1/esseninfo"
+            @click="saveNavState('/esseninfo')"
+          >
             <i class="el-icon-date" style="color: #dcdcdc"></i>
             <span slot="title">基本信息</span>
           </el-menu-item>
-          <el-menu-item index="/userhome1/accmanage" @click="saveNavState('/accmanage')">
+          <el-menu-item
+            index="/userhome1/accmanage"
+            @click="saveNavState('/accmanage')"
+          >
             <i class="el-icon-document" style="color: #dcdcdc"></i>
             <span slot="title">账号管理</span>
           </el-menu-item>
@@ -81,7 +87,7 @@ export default {
     };
   },
   created() {
-    this.getMenuList();
+    // this.getMenuList();
     this.activePath = window.sessionStorage.getItem("activePath");
   },
   methods: {

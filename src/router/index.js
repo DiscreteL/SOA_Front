@@ -16,6 +16,8 @@ import report from '../views/report/index.vue'
 Vue.use(VueRouter)
 
 const routes = [
+    {path:'/test',
+compomnent:()=>import('@/views/patient/test.vue')},
     { path: '/', redirect: '/login' },
     {
         path: '/home',

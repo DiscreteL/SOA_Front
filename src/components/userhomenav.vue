@@ -16,7 +16,7 @@
             class="Info"
             style="color: white; font-size: 30px; font-family: 宋体"
           >
-            {{ userName }}<br />
+            {{ userInfo.name }}<br />
           </div>
         </div>
         <div>
@@ -44,10 +44,20 @@
 <script>
 export default {
   name: "UserHomeNav",
+  // props: {
+  //   dataList: {
+  //     default: function () {
+  //       return {};
+  //     },
+  //   },
+  // },
   data() {
     return {
       //   userID: window.sessionStorage.getItem("id"),
-      userName: "王某某",
+      userInfo: {},
+            store: {
+        id: "",
+      },
       navList: [
         { name: "/userhome1", navItem: "个人信息" },
         { name: "/collection", navItem: "收藏中心" },
@@ -56,10 +66,33 @@ export default {
       ],
     };
   },
+  created(){
+    this.getInfo();
+  },
   methods: {
-    returnhome(){
+    returnhome() {
       this.$router.push("/home");
-    }
+    },
+    getInfo() {
+      this.store.id = window.sessionStorage.getItem("userID");
+      // console.log("sessionstorage.id:" + this.store.id);
+      let _this = this;
+      this.axios
+        .get(
+          "api/patient-service/getPatient/" + this.store.id
+          // headers: {
+          //   token: window.sessionStorage.getItem("token"),
+          // },
+        )
+        .then(function (res) {
+          // console.log("res.data:");
+          // console.log(res.data);
+          _this.userInfo = res.data;
+        })
+        .catch(function (error) {
+          console.log("Get Nothing!" + error);
+        });
+    },
   },
 };
 </script>
@@ -79,7 +112,6 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
-
 }
 .left {
   display: flex;
