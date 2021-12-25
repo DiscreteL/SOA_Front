@@ -120,10 +120,6 @@ export default {
       //获得了表单
       //向表单信息添加新信息
       mes.docId = this.$refs.listItem.lastCardInfo._id;
-      console.log(mes.docId);
-      // var date = "1";
-      // console.log(mes.date1);
-      // date = mes.date1;
       this.axios
         .post("patient-service/patientSubmitRequest", {
           // patientID: this.$store.state.userId,

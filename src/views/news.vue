@@ -26,7 +26,7 @@
             align="center"
             prop="time"
             label="日期"
-            width="180px"
+            width="160px"
           >
           </el-table-column>
           <el-table-column
@@ -39,8 +39,8 @@
           <el-table-column
             align="left"
             prop="name"
-            label="新闻公告"
-            width="400px"
+            label="详细内容"
+            width="350px"
           >
             <template slot-scope="scope">
               <!-- 点击进行响应弹出通告具体界面 -->
@@ -48,6 +48,18 @@
                 <a class="link">{{ scope.row.name }}</a>
               </span>
             </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            prop="label"
+            label="关注"
+            width="140px"
+          >
+           <template slot-scope="scope">
+            <el-button type="primary" @click="addFollowing(scope.row.id)" plain
+              >收 藏</el-button
+            >
+             </template>
           </el-table-column>
         </el-table>
         <Idialog
@@ -96,12 +108,6 @@ export default {
     return {
       isDialogVisible: false,
       docList: [
-        {
-          name: "拒绝这些进口器械！北京协和发布重要公告",
-          time: "2021-1-1",
-          content:
-            "国产医疗器械目前处于高速发展期，在部分领域已具备了和国际巨头“拼刺刀”的能力。但基于技术积累以及观念习惯上的原因，医院和相关机构在采购时整体依然偏向进口器械。针对这些问题，国家政策明确提出医院国产医疗器械占比提升要求。《国务院办公厅关于促进医药产业健康发展的指导意见》中曾指出，国产药品和医疗器械能够满足要求的，政府采购项目原则上须采购国产产品，逐步提高公立医疗机构国产设备配置水平。十四五规划出台后，大批医院和科研机构出现设备缺口，在国家政策要求下，采购国产势必是趋势所在。",
-        },
       ],
       diaData: {},
       docData: [],
@@ -109,6 +115,7 @@ export default {
       pageSize: 10, // 每页显示数量
       pageSizes: [8, 12, 16], //可以选择每页显示的数据条数
       currentPageData: {}, //当前页显示内容
+      dataType: 0, //0是文章，1是视频
       // tableData: Array(20).fill(item),
     };
   },
@@ -136,6 +143,7 @@ export default {
               name: i.title,
               url: i.url,
               label: i.label,
+              id:i.id,
               time:
                 y +
                 "-" +
@@ -161,7 +169,7 @@ export default {
         });
     },
 
-     getDataList2() {
+    getDataList2() {
       this.axios
         .get("admin-and-problem-service/getAllVideo")
         .then((res) => {
@@ -178,6 +186,7 @@ export default {
               name: i.title,
               url: i.url,
               label: i.label,
+              id:i.id,
               time:
                 y +
                 "-" +
@@ -242,12 +251,84 @@ export default {
     },
 
     toTweet() {
-      this.docList=[];
+      this.docList = [];
       this.getDataList1();
+      this.dataType = 0;
     },
     toVideo() {
-      this.docList=[];
+      this.docList = [];
       this.getDataList2();
+      this.dataType = 1;
+    },
+    addFollowing(id) {
+      if ((this.dataType == 0)) { //文章
+        this.axios
+          .post("/patient-service/addTweetCollection", {
+            tweetID: id,
+            patientID: sessionStorage.getItem("userID"),
+          })
+          .then((res) => {
+            console.log(res);
+            if (res.data === false) {
+              this.$notify({
+                title: "提示",
+                message: "关注失败",
+                type: "warning",
+                duration: 3000,
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: `关注成功`,
+                type: "success",
+                duration: 0,
+              });
+            }
+          })
+          .catch((err) => {
+            this.$notify({
+              title: "提示",
+              message: "用户访问错误",
+              type: "error",
+              duration: 0,
+            });
+            console.log(err);
+          });
+      }
+      else { //视频
+         this.axios
+          .post("/patient-service/addVideoCollection", {
+            videoID: id,
+            patientID: sessionStorage.getItem("userID"),
+          })
+          .then((res) => {
+            console.log(res);
+            if (res.data === false) {
+              this.$notify({
+                title: "提示",
+                message: "关注失败",
+                type: "warning",
+                duration: 3000,
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: `关注成功`,
+                type: "success",
+                duration: 0,
+              });
+            }
+          })
+          .catch((err) => {
+            this.$notify({
+              title: "提示",
+              message: "用户访问错误",
+              type: "error",
+              duration: 0,
+            });
+            console.log(err);
+          });
+      }
     },
   },
 };

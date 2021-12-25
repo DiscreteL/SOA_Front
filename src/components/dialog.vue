@@ -9,11 +9,12 @@
       <div class="intr">
       <ul>
         <li v-for="(value,Key) in dataList" :key=Key>
-           {{value}}
+           {{Key}}：{{value}}
         </li>
       </ul>
       </div>
       <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="addFollowing" plain>关 注</el-button>
         <el-button type="primary" @click="visible = false">确 定</el-button>
       </span>
     </el-dialog>
@@ -52,6 +53,40 @@ export default {
     handleClose() {
         this.$emit('dialogClick',false)
     },
+    addFollowing(){
+      // console.log(this.dataList.ID)
+      this.axios.post("/patient-service/addFollowing",{
+        doctorID:this.dataList.ID,
+        patientID: sessionStorage.getItem('userID'),
+      })
+      .then((res) => {
+              console.log(res)
+              if (res.data === false) {
+                this.$notify({
+                  title: "提示",
+                  message: "关注失败",
+                  type: "warning",
+                  duration: 3000,
+                });
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: `关注成功`,
+                  type: "success",
+                  duration: 0,
+                });
+              }
+            })
+            .catch((err) => {
+              this.$notify({
+                title: "提示",
+                message: "用户访问错误",
+                type: "error",
+                duration: 0,
+              });
+              console.log(err);
+            });
+    }
   },
   watch:{
         dialogVisible(){

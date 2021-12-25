@@ -156,13 +156,14 @@ export default {
     },
     getDetail(item) {
       let _item = {
-        "姓名：": "姓名：" + item.name,
-        "性别：": "性别：" + item.sex,
-        "职称：": "职称：" + item.title,
-        "所在科室：": "所在科室：" + item.index,
-        "医龄：": "医龄：" + item.workingAge,
-        "所在医院：": "所在医院：" + item.hos,
-        "简介：": "简介：" + item.intro,
+        "ID":item.id,
+        "姓名": item.name,
+        "性别":item.sex,
+        "职称": item.title,
+        "所在科室": item.index,
+        "医龄": item.workingAge,
+        "所在医院": item.hos,
+        "简介":item.intro,
       };
       this.diaData = _item;
     },
