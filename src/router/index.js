@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/home.vue'
 import Login from '../views/login.vue'
 import Register from '../views/register.vue'
 import News from '../views/news.vue'
@@ -16,9 +16,11 @@ import report from '../views/report/index.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-    {path:'/test',
-compomnent:()=>import('@/views/patient/test.vue')},
+const routes = [{
+        path: '/test',
+        compomnent: () =>
+            import ('@/views/patient/test.vue')
+    },
     { path: '/', redirect: '/login' },
     {
         path: '/home',

@@ -2,6 +2,7 @@
   <div class="docAppForm">
     <div class="appForm" style="margin-top: 15px">
       <el-table
+        ref="multipleTable"
         :data="
           tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
         "
@@ -48,61 +49,83 @@
 
         <el-table-column label="查看">
           <template slot-scope="scope">
-          <el-button size="mini" @click="loadDocInfo(scope.row)"
-            >查看详情</el-button
-          >
-          
-          <el-dialog title="申请人详情" :visible.sync="dialogTableVisible" >
-            <el-table :data=docInfo>
-              <el-table-column label="姓名" prop="name"></el-table-column>
-              <el-table-column label="用户ID" prop="id"></el-table-column>
-              <el-table-column label="身份证号" prop="IDNum"></el-table-column>
-              <el-table-column label="性别" prop="gender"></el-table-column>
-              <el-table-column label="邮箱" prop="mail"></el-table-column>
-              <el-table-column label="工作单位" prop="hospital"></el-table-column>
-              <el-table-column label="所属科室" prop="department"></el-table-column>
-              <el-table-column label="职称" prop="title"></el-table-column>
-              <el-table-column label="工作经验" prop="workLength"></el-table-column>
-              <el-table-column label="执业医师资格证书编号" prop="certificationNum"></el-table-column>
-              <el-table-column label="证明文件" prop="certiProof">
-                <template slot-scope="scope">
-                  <el-tooltip content="点击下载" placement="top">
-                    <a style="text-decoration: underline;cursor: pointer;" @click="downloadContent(scope.row)">查看上传文件</a>
-                  </el-tooltip>
-                </template>
-              </el-table-column>
-              <el-table-column label="申请陈述" prop="docIntro"></el-table-column>
-            </el-table>
-          </el-dialog>
+            <el-button size="mini" @click="loadDocInfo(scope.row)"
+              >查看详情</el-button
+            >
+            <el-dialog title="申请人详情" :visible.sync="dialogTableVisible">
+              <el-table :data="docInfo">
+                <el-table-column label="姓名" prop="name"></el-table-column>
+                <el-table-column label="用户ID" prop="id"></el-table-column>
+                <el-table-column
+                  label="身份证号"
+                  prop="IDNum"
+                ></el-table-column>
+                <el-table-column label="性别" prop="gender"></el-table-column>
+                <el-table-column label="邮箱" prop="mail"></el-table-column>
+                <el-table-column
+                  label="工作单位"
+                  prop="hospital"
+                ></el-table-column>
+                <el-table-column
+                  label="所属科室"
+                  prop="department"
+                ></el-table-column>
+                <el-table-column label="职称" prop="title"></el-table-column>
+                <el-table-column
+                  label="工作经验"
+                  prop="workLength"
+                ></el-table-column>
+                <el-table-column
+                  label="执业医师资格证书编号"
+                  prop="certificationNum"
+                ></el-table-column>
+                <el-table-column label="证明文件" prop="certiProof">
+                  <template slot-scope="scope">
+                    <el-tooltip content="点击下载" placement="top">
+                      <a
+                        style="text-decoration: underline; cursor: pointer"
+                        @click="downloadContent(scope.row)"
+                        >查看上传文件</a
+                      >
+                    </el-tooltip>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  label="申请陈述"
+                  prop="docIntro"
+                ></el-table-column>
+              </el-table>
+            </el-dialog>
           </template>
-          </el-table-column>
-
-         <el-table-column label="操作">
-          <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="danger"
-            style="margin-left: 20px"
-            @click="dialogFormVisible = true"
-            >处理</el-button
-          >
-          <el-dialog title="申请处理" :visible.sync="dialogFormVisible">
-            <el-form ref="form" :model="form" style="width: 100%">
-              <el-form-item label="处理结果" :label-width="formLabelWidth">
-                <el-select v-model="form.result" placeholder="请选择处理结果">
-                  <el-option label="通过" value=1></el-option>
-                  <el-option label="拒绝" value=0></el-option>
-                </el-select>
-              </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>             
-              <el-button type="primary" @click="handle(scope.row)">确 定</el-button>
-            </div>
-          </el-dialog>
-         </template>
         </el-table-column>
 
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="danger"
+              style="margin-left: 20px"
+              @click="toOperate(scope.row)"
+              >处理</el-button
+            >
+            <el-dialog title="申请处理" :visible.sync="dialogFormVisible">
+              <el-form ref="form" :model="form" style="width: 100%">
+                <el-form-item label="处理结果" :label-width="formLabelWidth">
+                  <el-select v-model="form.result" placeholder="请选择处理结果">
+                    <el-option label="通过" value="1"></el-option>
+                    <el-option label="拒绝" value="0"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handle(opDoctorID)"
+                  >确 定</el-button
+                >
+              </div>
+            </el-dialog>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div class="block">
@@ -134,9 +157,10 @@ export default {
       pageSize: 20, // 每页的数据条数
       formData: new FormData(), //表单提交的数据
       form: {
-        result: '',
+        result: "",
       },
       formLabelWidth: "120px",
+      opDoctorID:"",
     };
   },
 
@@ -164,29 +188,30 @@ export default {
     },
 
     loadDocInfo(row) {
-      this.dialogTableVisible = true
-      this.docInfo = undefined
+      console.log(row);
+      this.dialogTableVisible = true;
+      this.docInfo = undefined;
       this.docInfo = new Array();
       this.axios({
-        url: "api/admin-and-problem-service/getInfo/"+row.id,
+        url: "api/admin-and-problem-service/getInfo/" + row.id,
         method: "get",
       })
         .then((response) => {
           this.docInfo.push({
-            "id":response.data.id,
-            "name":response.data.name,
-            "IDNum":response.data.idnum,
-            "gender":response.data.gender,
-            "mail":response.data.mail,
-            "hospital":response.data.hospital,
-            "title":response.data.title,
-            "department":response.data.department,
-            "workLength":response.data.workLength,
-            "certificationNum":response.data.certificationNum,
-            "certiProof":response.data.certiProof,
-            "docIntro":response.data.docIntro,
+            id: response.data.id,
+            name: response.data.name,
+            IDNum: response.data.idnum,
+            gender: response.data.gender,
+            mail: response.data.mail,
+            hospital: response.data.hospital,
+            title: response.data.title,
+            department: response.data.department,
+            workLength: response.data.workLength,
+            certificationNum: response.data.certificationNum,
+            certiProof: response.data.certiProof,
+            docIntro: response.data.docIntro,
             // "audit":response.data.audit===0?"未审核":"已审核"
-          })
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -216,11 +241,11 @@ export default {
     },
 
     handle(row) {
-      console.log(row.id);
+      console.log(row);
       this.axios({
-        url: "/admin-and-problem-service/auditDoctor/"+row.id,
+        url: "/admin-and-problem-service/auditDoctor/" + row,
         method: "post",
-        data: {id:row.id,opinion:this.form.result}
+        data: { id: row.id, opinion: this.form.result },
       })
         .then((response) => {
           if (response.data === true) {
@@ -281,6 +306,11 @@ export default {
           });
         });
     },
+
+    toOperate(row){
+      this.dialogFormVisible = true;
+      this.opDoctorID=row.id;
+    }
   },
   mounted() {
     this.loadData();
