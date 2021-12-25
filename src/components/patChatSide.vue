@@ -68,20 +68,8 @@
                 <el-table-column
                     fixed
                     prop="name"
-                    width="160px"
+                    width="410px"
                     label="药品">
-                </el-table-column>
-                <el-table-column
-                    fixed
-                    prop="num"
-                    width="70px"
-                    label="数量/盒">
-                </el-table-column>
-                <el-table-column
-                    fixed
-                    prop="method"
-                    width="180px"
-                    label="用法">
                 </el-table-column>
               </el-table>
             </el-form-item>
@@ -122,7 +110,7 @@ export default {
         data:[],//存储药品表格数据
       },
       diseaseDecidedForm: {//病历表单
-        patientName:this.$store.state.inquiry.patientName,//病人姓名（通过store中patientId与调用getPatient接口获取）
+        patientName:this.$store.state.inquiry.patientId,//病人姓名（通过store中patientId与调用getPatient接口获取）
         disease: '等待医生填写',//疾病
         department:'等待医生填写',//科室
         type:[],//症状多选框数组
@@ -132,26 +120,23 @@ export default {
   },
   methods: {
     getDrugs(){//获取处方信息
-      // getDrugsIncludedListDataFun({
-      //   pre_id:this.$store.state.inquiry.preId
-      // }).then(res=>{
-      //   if(res.result.length!=0){//当成功获取到处方信息时
-      //     for(let i=0;i<res.result.length;i++){
-      //       this.includeForm.data.push({//装入药品表格数据
-      //         name:res.result[i].medicine_name,
-      //         num:res.result[i].quantity,
-      //         method:res.result[i].content
-      //       })
-      //     }
-      //     this.includeButtonDiabled=true;//将刷新处方获取按钮禁用
-      //     this.addDrugsDisabled=false;//将一键购药开放
-      //   }
-      // }).catch(err=>{
-      //   console.log(err);
-      // })
+      this.axios.get("/patient-service/getMedicine/"+this.$store.state.inquiry.preId
+        // this.axios.get("/patient-service/getMedicine/"+"21"
+      ).then(res=>{
+        if(res.length!=0){//当成功获取到处方信息时
+            this.includeForm.data.push({//装入药品表格数据
+              name:res.data,
+            })
+          
+          this.includeButtonDiabled=true;//将刷新处方获取按钮禁用
+          this.addDrugsDisabled=false;//将一键购药开放
+        }
+      }).catch(err=>{
+        console.log(err);
+      })
     },
     getPre(){//获取病历
-      // getPreDataFun({
+      // this.axios.get("/patient-service/getDiagContent"+{
       //   pati_id:this.$store.state.inquiry.patientId,
       //   doctor_id:this.$store.state.inquiry.doctorId
       // }).then(res=>{
@@ -174,21 +159,6 @@ export default {
       //   console.log(err);
       // })
     },
-    autoAddDrugsToCart(){
-      postAutoAddDataFun({
-        pati_id:this.$store.state.inquiry.patientId,
-        pre_id:this.$store.state.inquiry.preId
-      }).then(res=>{
-        this.addDrugsDisabled=true;
-        this.$message({
-          message:'自动加购成功',
-          type:'success'
-        })
-        console.log(res);
-      }).catch(err=>{
-        console.log(err);
-      })
-    }
   },
   mounted() {
     //

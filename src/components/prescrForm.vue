@@ -9,32 +9,14 @@
     <el-form label-position="top" :model="preForm2" size="mini" label-width="90px" :disabled="preFormDisabled">
       <el-form-item  label="处理意见：">
         <el-row>
-          <el-col :span="8">
-            <el-select v-model="preForm2.name" filterable placeholder="请选择">
-              <el-option
-                  v-for="item in drugs"
-                  class="input1"
-                  :key="item.label"
-                  :label="item.label"
-                  :value="item.label">
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="4">
+
+          <el-col :span="12">
 <!--            <el-input-number v-model="preForm2.num" :min="1" :max="10" size="mini"></el-input-number>-->
             <el-input
                 size="mini"
                 class="input2"
-                placeholder="如：1"
+                placeholder="如：莲花清瘟胶囊"
                 v-model="preForm2.num">
-            </el-input>
-          </el-col>
-          <el-col :span="8">
-            <el-input
-                size="mini"
-                class="input1"
-                placeholder="如：每日三次"
-                v-model="preForm2.method">
             </el-input>
           </el-col>
           <el-button @click="addMedicine">添加</el-button>
@@ -44,42 +26,14 @@
           <el-table-column
               fixed
               prop="name"
-              width="90px"
+              width="180px"
               label="药品">
 <!--            <template slot-scope="scope">-->
 <!--              <el-input type="text" v-model="editName" v-if="editIndex === scope.$index" />-->
 <!--              <span v-else>{{ scope.row.name }}</span>-->
 <!--            </template>-->
           </el-table-column>
-          <el-table-column
-              fixed
-              prop="num"
-              width="70px"
-              label="数量/盒">
-<!--            <template slot-scope="scope">-->
-<!--              <el-input-number-->
-<!--                  v-model="editNum"-->
-<!--                  controls-position="right"-->
-<!--                  :min="1" :max="10"-->
-<!--                  size="small"-->
-<!--                  v-if="editIndex === scope.$index"></el-input-number>-->
-<!--              <span v-else>{{ scope.row.num }}</span>-->
-<!--            </template>-->
-            <template slot-scope="scope">
-              <el-input type="text" v-model="editNum" v-if="editIndex === scope.$index" />
-              <span v-else>{{ scope.row.num }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-              fixed
-              prop="method"
-              width="95px"
-              label="用法">
-            <template slot-scope="scope">
-              <el-input type="text" v-model="editMethod" v-if="editIndex === scope.$index" />
-              <span v-else>{{ scope.row.method }}</span>
-            </template>
-          </el-table-column>
+
           <el-table-column
               fixed
               prop="action"
@@ -248,7 +202,7 @@ export default {
   padding-right: 5px
 }
 .input2{
-  width: 65px;
+  width: 150px;
   padding-right: 2px;
   padding-left: 2px;
 }
