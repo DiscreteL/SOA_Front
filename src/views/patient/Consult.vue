@@ -31,7 +31,7 @@
             <span slot="title">问诊记录</span>
           </el-menu-item>
 
-          <el-submenu>
+          <el-submenu index="">
             <template slot="title">
               <i class="el-icon-date" style="color: #dcdcdc"></i>
               <span>我的预约</span>
@@ -68,7 +68,6 @@ export default {
     };
   },
   created() {
-    this.getMenuList();
     this.activePath = window.sessionStorage.getItem("activePath");
   },
   methods: {

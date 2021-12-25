@@ -272,6 +272,21 @@ const routes = [{
         ]
     },
     {
+        path:'/personempty',
+        component: () =>
+            import ('../views/patient/collection/personempty.vue'),        
+    },
+    {
+        path:'/articleempty',
+        component: () =>
+            import ('../views/patient/collection/articleempty.vue'),        
+    },
+    {
+        path:'/videoempty',
+        component: () =>
+            import ('../views/patient/collection/videoempty.vue'),        
+    },
+    {
         path: '/consult',
         name: 'Consult',
         component: () =>
