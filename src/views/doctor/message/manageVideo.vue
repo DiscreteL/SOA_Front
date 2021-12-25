@@ -8,7 +8,7 @@
         style="width: 100%"
       >
         <el-table-column
-          prop="time" 
+          prop="time"
           label="上传时间"
           sortable
           width="300"
@@ -18,7 +18,7 @@
         <el-table-column
           prop="audit"
           label="审核状态"
-          width="80"
+          width="150"
           :filters="[
             { text: '等待审核', value: 0 },
             { text: '已审核', value: 1 },
@@ -31,36 +31,47 @@
               :type="scope.row.audit === 0 ? 'primary' : 'success'"
               disable-transitions
             >
-              {{ scope.row.audit === 0 ? '等待审核' : '已审核' }}
+              {{ scope.row.audit === 0 ? "等待审核" : "已审核" }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="doctorID" label="用户ID" width="120"></el-table-column>
-        <el-table-column prop="title" label="标题" width="200"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column
+          prop="title"
+          label="标题"
+          width="200"
+        ></el-table-column>
+
+        <el-table-column label="查看" width="200">
           <template slot-scope="scope">
-          <el-button size="mini" @click="loadVideoData(scope.row)"
-            >查看详情</el-button
-          >
-          
-          <el-dialog title="资讯信息" :visible.sync="dialogTableVisible" >
-            <el-table :data=videoData>
-              <el-table-column label="视频ID" prop="id"></el-table-column>
-              <el-table-column label="上传时间" prop="time"></el-table-column>
-              <el-table-column label="视频标题" prop="title"></el-table-column>
-              <el-table-column label="视频标签" prop="label"></el-table-column>
-              <el-table-column label="上传内容" prop="url">
-                <template slot-scope="scope">
-                  <el-tooltip content="点击下载" placement="top">
-                    <a style="text-decoration: underline;cursor: pointer;" @click="downloadContent(scope.row)">查看上传文件</a>
-                  </el-tooltip>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-dialog>
-
+            <el-button size="mini" @click="loadVideoInfo(scope.row)"
+              >查看详情</el-button
+            >
+            <el-dialog title="视频详情" :visible.sync="dialogTableVisible">
+              <el-table :data="videoInfo">
+                <el-table-column
+                  label="视频标题"
+                  prop="title"
+                ></el-table-column>
+                <el-table-column label="视频编号" prop="id"></el-table-column>
+                <el-table-column label="上传时间" prop="time"></el-table-column>
+                <el-table-column label="审核状态" prop="audit"
+                  ><template slot-scope="scope">
+                    <el-tag
+                      :type="scope.row.audit === 0 ? 'primary' : 'success'"
+                      disable-transitions
+                    >
+                      {{ scope.row.audit === 0 ? "等待审核" : "已审核" }}
+                    </el-tag>
+                  </template></el-table-column
+                >
+                <el-table-column label="标签" prop="label"></el-table-column>
+                <el-table-column label="链接地址" prop="url"></el-table-column>
+              </el-table>
+            </el-dialog>
           </template>
+        </el-table-column>
 
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -70,7 +81,6 @@
               >删除</el-button
             >
           </template>
-
         </el-table-column>
       </el-table>
     </div>
@@ -94,52 +104,27 @@
 export default {
   data() {
     return {
+      ID: window.sessionStorage.getItem("userID"),
       tableData: [],
-      videoData:[],
       dialogTableVisible: false,
-      dialogFormVisible: false,
       currentPage: 1, // 当前页码
-      total: 20, // 总条数
-      pageSize: 20, // 每页的数据条数
-
+      total: 10, // 总条数
+      pageSize: 10, // 每页的数据条数
+      videoInfo:[]
     };
   },
 
   methods: {
     loadData() {
       this.axios({
-        url: "/",
+        url: "api/doctor-service/getDoctorVideo/" + this.ID,
         method: "get",
         params: {
-          id: this.$route.params.id,
+          id: this.ID,
         },
       })
         .then((response) => {
           this.tableData = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-
-    loadVideoData(row) {
-      this.dialogTableVisible = true
-      this.videoData = undefined
-      this.videoData = new Array();
-      this.axios({
-        url: "api/admin-and-problem-service/getVideo/"+row.id,
-        method: "get",
-      })
-        .then((response) => {
-          this.videoData.push({
-            "doctorID":response.data.doctorID,
-            "id":response.data.id,
-            "time":response.data.time,
-            "title":response.data.title,
-            "label":response.data.label,
-            "url":response.data.url,
-            "audit":response.data.audit===0?"未审核":"已审核"
-          })
         })
         .catch((error) => {
           console.log(error);
@@ -168,39 +153,31 @@ export default {
       this.currentPage = val;
     },
 
-    downloadContent(row){
-      let data = new FormData()
-      data.append("id",row.id)
+    loadVideoInfo(row) {
+      this.dialogTableVisible = true;
+      this.VideoInfo = undefined;
+      this.VideoInfo = new Array();
       this.axios({
-        url:"/",
-        method:"post",
-        data:data
-      }).then((response)=>{
-        let blob = new Blob([response.data]);
-        const disposition = response.headers["content-disposition"];
-        //获得文件名
-        let fileName = disposition.substring(
-            disposition.indexOf("filename=") + 9,
-            disposition.length
-        );
-        //解码
-        fileName = decodeURI(fileName);
-        if (window.navigator.msSaveOrOpenBlob) {
-          navigator.msSaveBlob(blob, fileName);
-        } else {
-          const link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          link.download = fileName;
-          link.click();
-          //释放内存
-          window.URL.revokeObjectURL(link.href);
-        }
-      }).catch(()=>{
-        this.$message({
-          type: "error",
-          message: "下载失败！请重新尝试！",
-        });
+        url: "api/doctor-service/getVideo/" + row.id,
+        method: "get",
+        params: {
+          id: row.id
+        },
       })
+        .then((response) => {
+          this.videoInfo.push({
+            id: response.data.id,
+            url: response.data.url,
+            label: response.data.label,
+            time: response.data.time,
+            coverUrl: response.data.coverUrl,
+            audit: response.data.audit,
+            title: response.data.title
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
 
     del(row) {
@@ -222,7 +199,7 @@ export default {
 
     deleteVideo(data) {
       this.axios({
-        url: "/" + data.title,
+        url: "/doctor-service/deleteVideo/" + data.id,
         method: "delete",
       })
         .then(() => {

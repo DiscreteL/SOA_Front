@@ -6,9 +6,7 @@
       :column="3"
       :size="size"
     >
-      <el-descriptions-item label="用户ID">{{
-        ID
-      }}</el-descriptions-item>
+      <el-descriptions-item label="用户ID">{{ ID }}</el-descriptions-item>
 
       <el-descriptions-item label="姓名">{{
         userInfo.name
@@ -54,7 +52,7 @@
               <el-input v-model="form1.mail"></el-input>
             </el-form-item>
             <el-form-item label="个人简介" required>
-              <el-input type="textarea" v-model="form1.intro"></el-input>
+              <el-input type="textarea" v-model="form1.docIntro"></el-input>
             </el-form-item>
             <span
               style="
@@ -116,11 +114,10 @@ export default {
     return {
       // 返回个人信息
       ID: window.sessionStorage.getItem("userID"),
-      userInfo: {
-      },
+      userInfo: {},
       dialog1Visible: false,
       form1: {
-        intro: "",
+        docIntro: "",
         mail: "",
       },
     };
@@ -131,7 +128,7 @@ export default {
         url: "api/doctor-service/getInfo/" + this.ID,
         method: "get",
         params: {
-          ID: this.ID
+          ID: this.ID,
         },
       })
         .then((response) => {
@@ -145,13 +142,26 @@ export default {
     submitForm1() {
       if (!this.form1.mail) {
         this.$message.error("请输入您的邮箱");
-      } else if (!this.form1.intro) {
+      } else if (!this.form1.docIntro) {
         this.$message.error("请输入您的个人简介");
       } else {
         this.axios
-          .post("/", {
-            id:this.userInfo.id,
-            intro: this.form1.intro,
+          .post("/doctor-service/changeInfo", {
+            id: this.ID,
+            name: this.userInfo.name,
+            gender: this.userInfo.gender,
+            hospital: this.userInfo.hospital,
+            title: this.userInfo.title,
+            department: this.userInfo.department,
+            workLength: this.userInfo.workLength,
+            certificationNum: this.userInfo.certificationNum,
+            certiProof: this.userInfo.certiProof,
+            isCertified: this.userInfo.isCertified,
+            opinion: this.userInfo.opinion,
+            isActive: this.userInfo.isActive,
+            rating: this.userInfo.rating,
+            password:this.userInfo.password,
+            docIntro: this.form1.docIntro,
             mail: this.form1.mail,
           })
           .then((response) => {
@@ -162,7 +172,7 @@ export default {
                 message: "编辑成功！",
               });
               this.dialog1Visible = false;
-              location.reload()
+              location.reload();
             }
             //后端更新失败
             else if (response.data === false) {
@@ -193,7 +203,7 @@ export default {
   },
   mounted() {
     this.loadData();
-  }
+  },
 };
 </script>
 

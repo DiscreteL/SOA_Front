@@ -98,33 +98,12 @@
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2021-05-02",
-          status: "已回复",
-          content: "个人信息界面中的“编辑”按钮点击后没有反应",
-        },
-        {
-          date: "2021-07-03",
-          status: "等待回复",
-          content: "无法修改头像",
-        },
-        {
-          date: "2021-10-13",
-          status: "等待回复",
-          content: "视频问诊过程中卡顿严重",
-        },
-        {
-          date: "2021-05-01",
-          status: "已回复",
-          content: "医生资格认证申请不通过且未给出拒绝理由",
-        }
-      ],
+      tableData: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
       currentPage: 1, // 当前页码
-      total: 20, // 总条数
-      pageSize: 20, // 每页的数据条数
+      total: 10, // 总条数
+      pageSize: 10, // 每页的数据条数
       form: {
         reason: "",
         region: 0,

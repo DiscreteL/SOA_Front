@@ -8,26 +8,7 @@
         "
         style="width: 100%"
       >
-        <!-- <el-table-column
-          prop="status"
-          label="处理状态"
-          width="80"
-          :filters="[
-            { text: '未处理', value: '未处理' },
-            { text: '已处理', value: '已处理' },
-          ]"
-          :filter-method="filterStatus"
-          filter-placement="bottom-end"
-        >
-          <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.status === '未处理' ? 'primary' : 'success'"
-              disable-transitions
-            >
-              {{ scope.row.status }}
-            </el-tag>
-          </template>
-        </el-table-column> -->
+
         <el-table-column prop="id" label="ID" width="100"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100">
         </el-table-column>
@@ -111,10 +92,8 @@
             <el-dialog title="申请处理" :visible.sync="dialogFormVisible">
               <el-form ref="form" :model="form" style="width: 100%">
                 <el-form-item label="处理结果" :label-width="formLabelWidth">
-                  <el-select v-model="form.result" placeholder="请选择处理结果">
-                    <el-option label="通过" value="1"></el-option>
-                    <el-option label="拒绝" value="0"></el-option>
-                  </el-select>
+                    <el-radio v-model="form.result" label="1">通过</el-radio>
+                    <el-radio v-model="form.result" label="0">拒绝</el-radio>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
@@ -153,14 +132,14 @@ export default {
       dialogTableVisible: false,
       dialogFormVisible: false,
       currentPage: 1, // 当前页码
-      total: 20, // 总条数
-      pageSize: 20, // 每页的数据条数
+      total: 5, // 总条数
+      pageSize: 5, // 每页的数据条数
       formData: new FormData(), //表单提交的数据
       form: {
         result: "",
       },
       formLabelWidth: "120px",
-      opDoctorID:"",
+      opDoctorID: "",
     };
   },
 
@@ -243,9 +222,9 @@ export default {
     handle(row) {
       console.log(row);
       this.axios({
-        url: "/admin-and-problem-service/auditDoctor/" + row,
+        url: "/admin-and-problem-service/auditDoctor",
         method: "post",
-        data: { id: row.id, opinion: this.form.result },
+        data: { id: row, opinion: this.form.result },
       })
         .then((response) => {
           if (response.data === true) {
@@ -307,10 +286,10 @@ export default {
         });
     },
 
-    toOperate(row){
+    toOperate(row) {
       this.dialogFormVisible = true;
-      this.opDoctorID=row.id;
-    }
+      this.opDoctorID = row.id;
+    },
   },
   mounted() {
     this.loadData();

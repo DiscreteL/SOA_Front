@@ -35,8 +35,11 @@
                   :on-remove="handleRemove"
                   action=""
                   :file-list="fileList"
-                  :http-request="Upload"
+                  :http-request="uploadFile"
                   :before-upload="BeforeUpload"
+                  :auto-upload="false"
+                  :limit="1"
+                  :on-exceed="handleExceed"
                   drag
                   multiple
                 >
@@ -51,7 +54,7 @@
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="onSubmit">发布</el-button>
-                <el-button type="primary" @click="clear">清空</el-button>
+                <el-button type="primary" @click="dialogFormVisible=false">取消</el-button>
               </el-form-item>
             </el-form>
           </el-dialog>
@@ -94,7 +97,9 @@ export default {
       ],
       dialogFormVisible: false,
       form: {
+        
       },
+      fileList: [],
       newFile: new FormData()
     };
   },
@@ -124,20 +129,32 @@ export default {
     handlePreview (file) {
       console.log(file)
     },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `文件数量限制: 1; 您本次选择了${files.length}个文件，共选择了${
+          files.length + fileList.length
+        }个文件`
+      );
+    },
+
     BeforeUpload (file) {
       if (file) {
-        this.newFile.append('file', file) //  2. 上传之前，拿到file对象，并将它添加到刚刚定义的FormData对象中。
+        this.newFile.append('file', file) //  2. 上传之前，拿到file对象，并将它添加到刚刚定义的FormData对象中
         console.log(this.newFile.get('file'))
       } else {
         return false
       }
     },
-    Upload () {
-      const newData = this.newFile //  3. 拿到刚刚的数据，并将其传给后台
-      axios({
-        url: 'http://114.55.35.220:8081/api/uploadFileUser',
+
+    uploadFile(file) {
+      this.newFile.append("file", file.file);
+    },
+
+    onSubmit () {
+      this.axios({
+        url: 'http://100.78.182.86:9790/upload',
         method: 'post',
-        data: newData,
+        data: this.newFile,
         headers: {
           'Content-Type': 'multipart/form-data'
         }

@@ -3,24 +3,6 @@
     <el-form-item label="反馈内容" required>
       <el-input type="textarea" :rows="10" v-model="form.content"></el-input>
     </el-form-item>
-    <el-form-item label="相关材料">
-      <el-upload
-        class="upload-demo"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :before-remove="beforeRemove"
-        multiple
-        :limit="3"
-        :on-exceed="handleExceed"
-        :file-list="fileList"
-      >
-        <el-button size="small" type="primary">点击上传</el-button>
-        <div slot="tip" class="el-upload__tip">
-          可以选择上传相关文件对要反馈的内容进行展示
-        </div>
-      </el-upload>
-    </el-form-item>
     <el-form-item>
       <el-button type="success" @click="onSubmit">提交</el-button>
     </el-form-item>
@@ -31,14 +13,34 @@
 export default {
   data() {
     return {
+      ID: window.sessionStorage.getItem("userID"),
       form: {
-        content: "",
+        content: ""
       },
     };
   },
   methods: {
     onSubmit() {
-      console.log("submit!");
+      this.axios
+        .post("/admin-and-problem-service/postDoctorFeedback", {
+          doctorID:this.ID,
+          time:'',
+          reply:'',
+          content:this.form.content
+        })
+        .then((response) => {
+          //后端更新成功
+          if (response.data === true) {
+            this.$message({
+              type: "success",
+              message: "提交成功！",
+            });
+            //重置表单
+            location.reload();
+          }
+        })
+        .catch(() => {
+        });
     }
   },
 };

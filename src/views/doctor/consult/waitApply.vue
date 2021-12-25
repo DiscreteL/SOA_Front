@@ -130,8 +130,8 @@ export default {
       patientInfo: [],
       dialogTableVisible: false,
       currentPage: 1, // 当前页码
-      total: 20, // 总条数
-      pageSize: 20, // 每页的数据条数
+      total: 10, // 总条数
+      pageSize: 10, // 每页的数据条数
       formData: new FormData(), //表单提交的数据
     };
   },

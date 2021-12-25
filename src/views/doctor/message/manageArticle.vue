@@ -40,42 +40,38 @@
           label="标题"
           width="400"
         ></el-table-column>
+
+        <el-table-column label="查看">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="loadTweetInfo(scope.row)"
+              >查看详情</el-button
+            >
+            <el-dialog title="文章详情" :visible.sync="dialogTableVisible">
+              <el-table :data="tweetInfo">
+                <el-table-column
+                  label="文章标题"
+                  prop="title"
+                ></el-table-column>
+                <el-table-column label="视频编号" prop="id"></el-table-column>
+                <el-table-column label="上传时间" prop="time"></el-table-column>
+                <el-table-column label="审核状态" prop="audit"
+                  ><template slot-scope="scope">
+                    <el-tag
+                      :type="scope.row.audit === 0 ? 'primary' : 'success'"
+                      disable-transitions
+                    >
+                      {{ scope.row.audit === 0 ? "等待审核" : "已审核" }}
+                    </el-tag>
+                  </template></el-table-column
+                >
+                <el-table-column label="标签" prop="label"></el-table-column>
+                <el-table-column label="链接地址" prop="url"></el-table-column>
+              </el-table>
+            </el-dialog>
+          </template>
+        </el-table-column>
+
         <el-table-column label="操作">
-          <el-button
-            size="mini"
-            @click="dialogTableVisible = true"
-            style="margin-left: 20px"
-            >查看详情</el-button
-          >
-          <el-dialog title="推文详情" :visible.sync="dialogTableVisible">
-            <el-descriptions direction="vertical" :column="4" border>
-              <el-descriptions-item
-                label="标题"
-                prop="title"
-                :span="4"
-              ></el-descriptions-item>
-              <el-descriptions-item
-                label="上传时间"
-                prop="time"
-                :span="4"
-              ></el-descriptions-item>
-              <el-descriptions-item
-                label="状态"
-                prop="audit"
-                :span="4"
-              ></el-descriptions-item>
-              <el-descriptions-item
-                label="标签"
-                prop="label"
-                :span="4"
-              ></el-descriptions-item>
-              <el-descriptions-item
-                label="内容"
-                prop="content"
-                :span="4"
-              ></el-descriptions-item>
-            </el-descriptions>
-          </el-dialog>
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -114,6 +110,7 @@ export default {
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 20, // 每页的数据条数
+      tweetInfo:[]
     };
   },
 
@@ -130,7 +127,7 @@ export default {
           this.tableData = response.data;
         })
         .catch((error) => {
-          console.log(error); 
+          console.log(error);
         });
     },
 
@@ -156,6 +153,33 @@ export default {
       this.currentPage = val;
     },
 
+    loadTweetInfo(row) {
+      this.dialogTableVisible = true;
+      this.tweetInfo = undefined;
+      this.tweetInfo = new Array();
+      this.axios({
+        url: "api/doctor-service/getTweet/" + row.id,
+        method: "get",
+        params: {
+          id: row.id
+        },
+      })
+        .then((response) => {
+          this.tweetInfo.push({
+            id: response.data.id,
+            url: response.data.url,
+            label: response.data.label,
+            time: response.data.time,
+            coverUrl: response.data.coverUrl,
+            audit: response.data.audit,
+            title: response.data.title
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
     del(row) {
       this.$confirm("确定要删除此推文吗?", "提示", {
         confirmButtonText: "确定",
@@ -175,7 +199,7 @@ export default {
 
     deleteTweet(data) {
       this.axios({
-        url: "/" + data.title,
+        url: "/doctor-service/deleteTweet/" + data.id,
         method: "delete",
       })
         .then(() => {
