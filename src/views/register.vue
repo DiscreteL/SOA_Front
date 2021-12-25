@@ -50,7 +50,7 @@
             <el-row>
               <el-col :span="11">
                 <!-- 性别 -->
-                <el-form-item label="性别" prop="sex" style="width=100%">
+                <el-form-item label="性别" prop="sex" style="width:100%">
                   <el-radio-group v-model="loginForm1.sex">
                     <el-radio label="男"></el-radio>
                     <el-radio label="女"></el-radio>
@@ -92,7 +92,7 @@
               ></el-input>
             </el-form-item>
             <!-- 按钮区域 -->
-            <el-form-item style="margin-right=0;width:100%" align="right">
+            <el-form-item style="margin-right:0;width:100%" align="right">
               <!-- class="btns" -->
               <el-button type="text" @click="toLogin">已有账号，登陆</el-button>
               <el-button type="primary" @click="register1('loginForm1')"
@@ -252,7 +252,7 @@
           
             <!-- 按钮区域 -->
             <el-form-item
-              style="margin-right=0;width:100%"
+              style="margin-right:0;width:100%"
               align="right"
               size="medium"
             >

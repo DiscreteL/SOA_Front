@@ -1,20 +1,31 @@
 <template>
   <el-table
-    :data="tableData.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))"
-    style="width: 100%">
+    :data="
+      tableData.filter(
+        (data) =>
+          !search || data.title.toLowerCase().includes(search.toLowerCase())
+      )
+    "
+    style="width: 100%"
+  >
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
           <el-form-item label="解答">
-            <span>{{ props.row.answer }}</span>
+            <span>{{ props.row.problemAnswer }}</span>
           </el-form-item>
         </el-form>
       </template>
     </el-table-column>
-    <el-table-column label="问题名称" prop="problem"> </el-table-column>
+    <el-table-column label="问题名称" prop="problemContent"> </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
-        <el-input v-model="search" @click="handleEdit(scope.$index, scope.row)" size="mini" placeholder="输入关键字搜索" />
+        <el-input
+          v-model="search"
+          @click="handleEdit(scope.$index, scope.row)"
+          size="mini"
+          placeholder="输入关键字搜索"
+        />
       </template>
     </el-table-column>
   </el-table>
@@ -40,26 +51,44 @@
 export default {
   data() {
     return {
-      tableData: [
-        {
-          problem:"主页加载不出来怎么办？",
-          answer:"建议多刷新几次页面，或关闭页面重新进入。"
-        },
-        {
-          problem:"为什么修改密码失败？",
-          answer:"请根据操作提示检查密码长度于安全性符合规范。"
-        },
-        {
-          problem:"如何更新个人信息？",
-          answer:"在个人信息中点击“编辑”按钮。"
-        },
-        {
-          problem:"医生的评分是如何得出的？",
-          answer:"我们通过计算医生历次问诊结束后患者的有效评分平均数得到医生的评分。"
-        },        
-      ],
+      tableData: [],
       search: "",
-    }
-  }
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 20, // 每页的数据条数
+    };
+  },
+  methods: {
+    //加载问题列表
+    loadData() {
+      this.axios({
+        url: "api/admin-and-problem-service/getAllProblem",
+        method: "get",
+        params: {
+        },
+      })
+        .then((response) => {
+          this.tableData = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    //每页条数改变时触发 选择一页显示多少行
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.currentPage = 1;
+      this.pageSize = val;
+    },
+    //当前页改变时触发 跳转其他页
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.currentPage = val;
+    },
+  },
+  mounted() {
+    this.loadData();
+  },
 };
 </script>

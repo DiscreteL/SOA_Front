@@ -1,138 +1,90 @@
 <template>
-  <div class="articleForm">
-    <div class="form" style="margin-top: 15px">
+  <div class="messageForm">
+    <div class="form1" style="margin-top: 15px">
       <el-table
-        ref="filterTable"
         :data="
           tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
         "
         style="width: 100%"
       >
         <el-table-column
-          prop="date"
-          label="上传日期"
+          prop="time"
+          label="上传时间"
           sortable
-          width="150"
+          width="300"
           column-key="date"
         >
         </el-table-column>
         <el-table-column
-          prop="status"
+          prop="audit"
           label="审核状态"
-          width="120"
+          width="150"
           :filters="[
-            { text: '等待审核', value: '等待审核' },
-            { text: '通过审核', value: '通过审核' },
-            { text: '未通过审核', value: '未通过审核' },
+            { text: '等待审核', value: 0 },
+            { text: '已审核', value: 1 },
           ]"
           :filter-method="filterStatus"
           filter-placement="bottom-end"
         >
           <template slot-scope="scope">
             <el-tag
-              :type="scope.row.status === '未通过审核' ? 'danger' : 'success'"
+              :type="scope.row.audit === 0 ? 'primary' : 'success'"
               disable-transitions
             >
-              {{ scope.row.status }}
+              {{ scope.row.audit === 0 ? "等待审核" : "已审核" }}
             </el-tag>
           </template>
         </el-table-column>
         <el-table-column
           prop="title"
-          label="文章标题"
-          :show-overflow-tooltip="true"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="label"
-          label="标签"
-          width="120"
-          :filters="[
-            { text: '疾病科普', value: '疾病科普' },
-            { text: '生活常识', value: '生活常识' },
-            { text: '养生妙招', value: '养生妙招' },
-            { text: '其他', value: '其他' },
-          ]"
-          :filter-method="filterLabel"
-          filter-placement="bottom-end"
-        >
-          <template slot-scope="scope">
-            <el-tag :type="primary" disable-transitions>
-              {{ scope.row.label }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="content"
-          label="内容概览"
-          :show-overflow-tooltip="true"
-        >
-        </el-table-column>
+          label="标题"
+          width="400"
+        ></el-table-column>
         <el-table-column label="操作">
-          <el-button size="mini" @click="dialogTableVisible2 = true"
-            >查看详情</el-button
-          >
-          <el-dialog :visible.sync="dialogTableVisible2">
-            <el-descriptions
-              title="发布内容详情"
-              direction="vertical"
-              :column="4"
-              border
-            >
-              <el-descriptions-item label="上传时间"
-                >2021-05-02</el-descriptions-item
-              >
-              <el-descriptions-item label="标签">
-                <el-tag size="small">生活常识</el-tag>
-              </el-descriptions-item>
-              <el-descriptions-item label="审核状态">
-                <el-tag size="small" type="success">等待审核</el-tag>
-              </el-descriptions-item>
-              <el-descriptions-item label="审核反馈">NULL</el-descriptions-item>
-              <el-descriptions-item label="标题" :span="4"
-                >过敏性哮喘患者在饮食上有什么禁忌</el-descriptions-item
-              >
-              <el-descriptions-item label="内容"
-                >社会的发展使人们的生活更加方便快捷，推动了人民中国质量的提高。但是另一方面也给人类带来了一些危害，社会快速发展的背后就是工业的发展，工业发展必然会带来一些环境污染，环境未来竟然又会影响到人类，所以如何实现人地协调发展是一个非常重要的问题。如果不能实现人地协调发展，就会给人类带来很大的危害。就比如说现在各种疾病的患病率越来越高，和工业污染有一定的关联。今天就给大家介绍一下，过敏性哮喘患者在饮食上有什么样的禁忌。</el-descriptions-item
-              >
-            </el-descriptions>
-          </el-dialog>
-          <el-button size="mini" style="margin-left:20px"  @click="dialogTableVisible1 = true"
-            >编辑</el-button
-          >
-          <el-dialog title="编辑文章内容" :visible.sync="dialogTableVisible1">
-            <el-form ref="formArticle" :model="formArticle" label-width="80px">
-              <el-form-item label="文章标题" required>
-                <el-input v-model="formArticle.title"></el-input>
-              </el-form-item>
-              <el-form-item label="文章标签" required>
-                <el-radio-group v-model="formArticle.label">
-                  <el-radio label="疾病科普" name="label"></el-radio>
-                  <el-radio label="生活常识" name="label"></el-radio>
-                  <el-radio label="养生妙招" name="label"></el-radio>
-                  <el-radio label="其他" name="label"></el-radio>
-                </el-radio-group>
-              </el-form-item>
-              <el-form-item label="文章内容" required>
-                <el-input
-                  type="textarea"
-                  :rows="10"
-                  v-model="formArticle.content"
-                ></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="onSubmit">提交编辑</el-button>
-                <el-button type="primary" @click="clear">清空</el-button>
-              </el-form-item>
-            </el-form>
-          </el-dialog>
           <el-button
             size="mini"
-            type="danger"
+            @click="dialogTableVisible = true"
             style="margin-left: 20px"
-            @click="del"
-            >删除</el-button
+            >查看详情</el-button
           >
+          <el-dialog title="推文详情" :visible.sync="dialogTableVisible">
+            <el-descriptions direction="vertical" :column="4" border>
+              <el-descriptions-item
+                label="标题"
+                prop="title"
+                :span="4"
+              ></el-descriptions-item>
+              <el-descriptions-item
+                label="上传时间"
+                prop="time"
+                :span="4"
+              ></el-descriptions-item>
+              <el-descriptions-item
+                label="状态"
+                prop="audit"
+                :span="4"
+              ></el-descriptions-item>
+              <el-descriptions-item
+                label="标签"
+                prop="label"
+                :span="4"
+              ></el-descriptions-item>
+              <el-descriptions-item
+                label="内容"
+                prop="content"
+                :span="4"
+              ></el-descriptions-item>
+            </el-descriptions>
+          </el-dialog>
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="danger"
+              style="margin-left: 20px"
+              @click="del(scope.row)"
+              >删除</el-button
+            >
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -156,75 +108,32 @@
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2021-05-02",
-          status: "等待审核",
-          title: "过敏性哮喘患者在饮食上有什么禁忌？",
-          label: "生活常识",
-          content:
-            "社会的发展使人们的生活更加方便快捷，推动了人民中国质量的提高。但是另一方面也给人类带来了一些危害，社会快速发展的背后就是工业的发展，工业发展必然会带来一些环境污染，环境未来竟然又会影响到人类，所以如何实现人地协调发展是一个非常重要的问题。如果不能实现人地协调发展，就会给人类带来很大的危害。就比如说现在各种疾病的患病率越来越高，和工业污染有一定的关联。今天就给大家介绍一下，过敏性哮喘患者在饮食上有什么样的禁忌。",
-        },
-        {
-          date: "2021-05-04",
-          status: "未通过审核",
-          title: "小儿支气管炎，别怕！六招教你如何护理！",
-          label: "生活常识",
-          content:
-            "如果家里的宝宝得了小儿支气管炎，牵动着各位爸爸妈心，家长朋友往往比患儿还要着急，看着孩子难受，内心也是备受煎熬，那各位宝爸宝妈们，你们知道如何护理吗？知道如何给宝宝做膳食吗？我们一起来学学吧。",
-        },
-        {
-          date: "2021-05-01",
-          status: "通过审核",
-          title: "新生儿黄疸要注意！你知道引起黄疸的真正原因吗？",
-          label: "疾病科普",
-          content:
-            "本病是一种少见的先天性畸形，黄疸乃因胚胎发育异常造成的胆道闭锁或狭窄，胆汁不能排泄或排泄不畅所致。黄疸的特点是出生不久即发生，呈进行性加重，全身皮肤深桔黄色，尿布被尿液染黄后用清水常冲洗不掉。此病预后恶劣，应早期手术",
-        },
-        {
-          date: "2020-05-03",
-          status: "通过审核",
-          title: "新生儿黄疸护理方法出来啦，一起来学学吧",
-          label: "其他",
-          content:
-            "本病病源是细胞巨病毒，由无症状的带病毒孕妇通过胎盘感染胎儿。新生儿在出生一个月内出现黄疸、精神不振、咳嗽、肝脾肿大、消化不良和生长停滞等，应考虑是本病。",
-        },
-        {
-          date: "2020-05-03",
-          status: "未通过审核",
-          title: "小儿先天性膈疝临床表现有哪些",
-          label: "疾病科普",
-          content:
-            "小儿先天性膈疝的临床表现主要以呼吸道症状为主，新生儿、婴幼儿和儿童的临床表现各异。",
-        },
-        {
-          date: "2020-05-03",
-          status: "通过审核",
-          title: "小儿慢性肾衰如何治疗，需要注意什么",
-          label: "疾病科普",
-          content:
-            "患小儿慢性肾衰的原因与第1次检出肾衰时的患儿年龄密切相关。5岁以下的慢性肾衰常是解剖异常的结果，如肾发育不全、肾发育异常、尿路梗阻以及其他先天畸形；5岁以后的慢性肾衰则以后天性肾小球疾病如小球肾炎、溶血性尿毒综合征或遗传性病变，如Alport综合征、肾囊性病变为主。",
-        },
-      ],
-      dialogTableVisible1: false,
-      dialogTableVisible2: false,
-      dialogFormVisible: false,
+      ID: window.sessionStorage.getItem("userID"),
+      tableData: [],
+      dialogTableVisible: false,
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 20, // 每页的数据条数
-      form: {
-        reason: "",
-        region: 0,
-        delivery: false,
-      },
-      formLabelWidth: "120px",
-      formArticle: {
-        title: "",
-        content: "",
-      },
     };
   },
+
   methods: {
+    loadData() {
+      this.axios({
+        url: "api/doctor-service/getDoctorTweet/" + this.ID,
+        method: "get",
+        params: {
+          id: this.ID,
+        },
+      })
+        .then((response) => {
+          this.tableData = response.data;
+        })
+        .catch((error) => {
+          console.log(error); 
+        });
+    },
+
     filterHandler(value, row, column) {
       const property = column["property"];
       return row[property] === value;
@@ -232,8 +141,8 @@ export default {
     filterStatus(value, row) {
       return row.status === value;
     },
-    filterLabel(value, row) {
-      return row.label === value;
+    filterType(value, row) {
+      return row.type === value;
     },
     //每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
@@ -246,13 +155,31 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
-    del() {
-      this.$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
+
+    del(row) {
+      this.$confirm("确定要删除此推文吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
+          this.deleteTweet(row);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "操作取消",
+          });
+        });
+    },
+
+    deleteTweet(data) {
+      this.axios({
+        url: "/" + data.title,
+        method: "delete",
+      })
+        .then(() => {
+          this.tableData.splice(data, 1);
           this.$message({
             type: "success",
             message: "删除成功!",
@@ -260,28 +187,26 @@ export default {
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消删除",
+            type: "error",
+            message: "删除失败! 请稍后再试",
           });
         });
     },
-    onSubmit() {
-      console.log("submit!");
-    },
-    clear() {
-      this.$refs.form.resetFields();
-    },
+  },
+
+  mounted() {
+    this.loadData();
   },
 };
 </script>
 
 <style scoped>
-.articleForm {
+.messageForm {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
-.form {
+.form1 {
   float: left;
   width: 100%;
 }
@@ -295,7 +220,7 @@ export default {
 .block {
   float: left;
   width: 100%;
-  /* position: fixed;
-  bottom: 75px; */
+  position: fixed;
+  bottom: 75px;
 }
 </style>

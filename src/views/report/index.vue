@@ -1,65 +1,44 @@
 <template>
-  <div class="reportForm">
-    <div class="form" style="margin-top: 15px">
+  <div class="messageForm">
+    <div class="form1" style="margin-top: 15px">
       <el-table
-        ref="filterTable"
         :data="
           tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
         "
         style="width: 100%"
       >
         <el-table-column
-          prop="date" 
-          label="反馈日期"
+          prop="time" 
+          label="反馈时间"
           sortable
-          width="150"
-          column-key="date"
+          width="300"
         >
         </el-table-column>
-        <el-table-column
-          prop="status"
+        <!-- <el-table-column
+          prop="audit"
           label="处理状态"
           width="80"
           :filters="[
-            { text: '未处理', value: '未处理' },
-            { text: '已处理', value: '已处理' },
+            { text: '未处理', value: 0 },
+            { text: '已处理', value: 1 },
           ]"
           :filter-method="filterStatus"
           filter-placement="bottom-end"
         >
           <template slot-scope="scope">
             <el-tag
-              :type="scope.row.status === '未处理' ? 'primary' : 'success'"
+              :type="scope.row.audit === 0 ? 'primary' : 'success'"
               disable-transitions
             >
-              {{ scope.row.status }}
+              {{ scope.row.audit === 0 ? '未处理' : '已处理' }}
             </el-tag>
           </template>
-        </el-table-column>
-        <el-table-column prop="id" label="用户id" width="100">
-        </el-table-column>
-        <el-table-column
-          prop="content"
-          label="反馈内容"
-          :show-overflow-tooltip="true"
-        >
-        </el-table-column>
+        </el-table-column> -->
+        <el-table-column prop="id" label="用户ID" width="120"></el-table-column>
+        <el-table-column prop="content" label="反馈内容" width="200"></el-table-column>
+        <el-table-column prop="reply" label="反馈回复" width="200"></el-table-column>
         <el-table-column label="操作">
-          <el-button size="mini" @click="dialogTableVisible = true"
-            >查看详情</el-button
-          >
-          <el-dialog title="反馈信息" :visible.sync="dialogTableVisible">
-            <el-descriptions direction="vertical" :column="4" border>
-              <el-descriptions-item label="用户id">123456789</el-descriptions-item>
-              <el-descriptions-item label="反馈时间">2016-05-02</el-descriptions-item>
-              <el-descriptions-item label="反馈内容"
-                >页面闪退</el-descriptions-item
-              >
-              <el-descriptions-item label="处理结果"
-                >NULL</el-descriptions-item
-              >
-            </el-descriptions>
-          </el-dialog>
+          <template slot-scope="scope">
           <el-button
             size="mini"
             type="danger"
@@ -67,17 +46,19 @@
             @click="dialogFormVisible = true"
             >处理</el-button
           >
+                   
           <el-dialog title="反馈处理" :visible.sync="dialogFormVisible">
-            <el-form :model="form">
-              <el-form-item label="处理结果" :label-width="formLabelWidth">
+            <el-form ref="form" :model="form" style="width: 100%">
+              <el-form-item label="回复内容" :label-width="formLabelWidth">
                 <el-input v-model="form.reply" autocomplete="off"></el-input>
               </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+              <el-button type="primary" @click="submit(scope.row)">确 定</el-button>
             </div>
           </el-dialog>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -101,52 +82,71 @@
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          status: "未处理",
-          id: '123456789',
-          content: '页面闪退'
-        },
-        {
-          date: "2016-05-04",
-          status: "未处理",
-          id: '123456789',
-          content: '页面闪退'
-        },
-        {
-          date: "2016-05-01",
-          status: "已处理",
-          id: '123456789',
-          content: '页面闪退'
-        },
-        {
-          date: "2016-05-03",
-          status: "未处理",
-          id: '123456789',
-          content: '页面闪退'
-        },
-      ],
-      dialogTableVisible: false,
+      tableData: [],
       dialogFormVisible: false,
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 20, // 每页的数据条数
+      formData: new FormData(), //表单提交的数据
       form: {
-          reason: '',
-          region: 0,
-          delivery: false
+          reply: ''
         },
         formLabelWidth: '120px'
     };
   },
+
   methods: {
+    loadData() {
+      this.axios({
+        url: "api/admin-and-problem-service/getAllDoctorFeedback",
+        method: "get",
+        params: {
+        },
+      })
+        .then((response) => {
+          for (let i = 0; i < response.data.length; i++) {
+          this.tableData.push({
+            id: response.data[i].doctorID,
+            time: response.data[i].time,
+            reply: response.data[i].reply,
+            content: response.data[i].content,
+          });
+        }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      this.axios({
+        url: "api/admin-and-problem-service/getAllPatientFeedback",
+        method: "get",
+        params: {
+        },
+      })
+        .then((response) => {
+          for (let i = 0; i < response.data.length; i++) {
+          this.tableData.push({
+            id: response.data[i].patientID,
+            time: response.data[i].time,
+            reply: response.data[i].reply,
+            content: response.data[i].content,
+          });
+        }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
     filterHandler(value, row, column) {
       const property = column["property"];
       return row[property] === value;
     },
     filterStatus(value, row) {
       return row.status === value;
+    },
+    filterType(value, row) {
+      return row.type === value;
     },
     //每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
@@ -159,17 +159,55 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
+
+    // submit(row) {
+    //   this.formData.append("id", row.id);
+    //   data.append("result", this.form.result);
+    //   data.append("reply", this.form.reply);
+    //   this.axios({
+    //     url: "/admin-and-problem-service/auditTweet"+row.id,
+    //     method: "post",
+    //     data: this.formData,
+    //   })
+    //     .then((response) => {
+    //       if (response.data === true) {
+    //         this.$refs.form.resetFields();
+    //         this.dialogFormVisible = false;
+    //         this.$message({
+    //           type: "success",
+    //           message: "处理成功",
+    //         });
+    //       } else {
+    //         this.$message({
+    //           type: "error",
+    //           message: "处理失败！",
+    //         });
+    //       }
+    //     })
+    //     .catch(() => {
+    //       this.$message({
+    //         type: "error",
+    //         message: "处理失败！",
+    //       });
+    //     });
+    //     this.formData = new FormData();
+    // },
+
+  },
+
+  mounted() {
+    this.loadData();
   },
 };
 </script>
 
 <style scoped>
-.reportForm {
+.messageForm {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
-.form {
+.form1 {
   float: left;
   width: 100%;
 }

@@ -10,24 +10,29 @@
   >
     <el-table-column type="expand">
       <template slot-scope="props">
-        <el-form label-position="left" inline class="demo-table-expand" label-width="200px">
-          <el-form-item label="预约日期">
-            <span>{{ props.row.date }}</span>
+        <el-form
+          label-position="left"
+          inline
+          class="demo-table-expand"
+          label-width="200px"
+        >
+          <el-form-item label="预约单号">
+            <span>{{ props.row.reserveNum }}</span>
           </el-form-item>
           <el-form-item label="预约时间">
             <span>{{ props.row.time }}</span>
           </el-form-item>
           <el-form-item label="患者姓名">
-            <span>{{ props.row.name }}</span>
+            <span>{{ props.row.patientName }}</span>
           </el-form-item>
           <el-form-item label="患者主诉">
-            <span>{{ props.row.description }}</span>
+            <span>{{ props.row.initDescription }}</span>
           </el-form-item>
           <el-form-item label="性别">
             <span>{{ props.row.gender }}</span>
           </el-form-item>
           <el-form-item label="出生日期">
-            <span>{{ props.row.birthday }}</span>
+            <span>{{ props.row.bornDate }}</span>
           </el-form-item>
           <el-form-item label="身高(cm)">
             <span>{{ props.row.height }}</span>
@@ -35,19 +40,20 @@
           <el-form-item label="体重(kg)">
             <span>{{ props.row.weight }}</span>
           </el-form-item>
-          <el-form-item label="血压(收缩压/舒张压)">
-            <span>{{ props.row.bloodPressure }}</span>
-          </el-form-item>
           <el-form-item label="心率(次/分钟)">
             <span>{{ props.row.heartRate }}</span>
           </el-form-item>
         </el-form>
       </template>
     </el-table-column>
-    <el-table-column label="预约日期" prop="date"> </el-table-column>
     <el-table-column label="预约时间" prop="time"> </el-table-column>
-    <el-table-column label="患者姓名" prop="name"> </el-table-column>
-    <el-table-column label="患者主诉" prop="description" :show-overflow-tooltip="true"> </el-table-column>
+    <el-table-column label="患者姓名" prop="patientName"> </el-table-column>
+    <el-table-column
+      label="患者主诉"
+      prop="description"
+      :show-overflow-tooltip="true"
+    >
+    </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
         <el-input
@@ -57,9 +63,9 @@
           placeholder="输入关键字搜索"
         />
       </template>
-        <el-button size="mini" type="primary" @click="goConsult()"
-          >前往问诊界面</el-button
-        >
+      <el-button size="mini" type="primary" @click="goConsult()"
+        >前往问诊界面</el-button
+      >
     </el-table-column>
   </el-table>
 </template>
@@ -84,36 +90,43 @@
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2021-11-27",
-          time: "13:30",
-          name: "EEE",
-          description: "四肢乏力，脾胃虚寒",
-          gender: "女",
-          birthday: "1997-05-06",
-          height: "165",
-          weight: "55",
-          bloodPressure: "110/80",
-          heartRate: "87",
-        },
-        {
-          date: "2021-11-28",
-          time: "17:30",
-          name: "FFFF",
-          description: "起病较急，初期有咽干、咽痒或烧灼感，发病同时或数小时后有喷嚏、鼻塞。伴咽痛。无发热及全身症状，仅有低热、不适、轻度畏寒和头痛。鼻腔粘膜充血、水肿、有分泌物，咽部轻度充血。",
-          gender: "女",
-          birthday: "1997-05-06",
-          height: "165",
-          weight: "55",
-          bloodPressure: "110/80",
-          heartRate: "87",
-        },
-      ],
+      ID: window.sessionStorage.getItem("userID"),
+      tableData: [],
       search: "",
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 20, // 每页的数据条数
     };
   },
   methods: {
+    loadData() {
+      this.axios({
+        url: "/doctor-service/doctorGetAcceptedRequest/" + this.ID,
+        method: "get",
+        params: {
+          id: this.ID,
+        },
+      })
+        .then((response) => {
+          for (let i = 0; i < response.data.length; i++) {
+            this.tableData.push({
+              reserveNum: response.data[i].reserveNum,
+              patientName: response.data[i].patientName,
+              time: response.data[i].time,
+              gender: response.data[i].gender,
+              bornDate: response.data[i].nornDate,
+              height: response.data[i].height,
+              weight: response.data[i].weight,
+              heartRate: response.data[i].heartRate,
+              initDescription: response.data[i].initDescription,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
     handleEdit(index, row) {
       console.log(index, row);
     },
@@ -124,8 +137,11 @@ export default {
       this.$forceUpdate();
     },
     goConsult() {
-        this.$router.push("/doctorchat");
-    }
+      this.$router.push("/doctorchat");
+    },
+  },
+  mounted() {
+    this.loadData();
   },
 };
 </script>

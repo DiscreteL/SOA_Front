@@ -69,9 +69,13 @@
           <span>资讯审核</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/message">
+          <el-menu-item index="/video">
             <i class="el-icon-chat-dot-square"></i>
-            <span slot="title">资讯列表</span>
+            <span slot="title">视频列表</span>
+          </el-menu-item>
+          <el-menu-item index="/tweet">
+            <i class="el-icon-chat-dot-square"></i>
+            <span slot="title">推文列表</span>
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>

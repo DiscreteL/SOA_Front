@@ -1,22 +1,13 @@
 <template>
   <div class="docAppForm">
-    <div class="form" style="margin-top: 15px">
+    <div class="appForm" style="margin-top: 15px">
       <el-table
-        ref="filterTable"
         :data="
           tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
         "
         style="width: 100%"
       >
-        <el-table-column
-          prop="date" 
-          label="申请日期"
-          sortable
-          width="150"
-          column-key="date"
-        >
-        </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="status"
           label="处理状态"
           width="80"
@@ -35,7 +26,8 @@
               {{ scope.row.status }}
             </el-tag>
           </template>
-        </el-table-column>
+        </el-table-column> -->
+        <el-table-column prop="id" label="ID" width="100"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100">
         </el-table-column>
         <el-table-column
@@ -53,35 +45,40 @@
           :show-overflow-tooltip="true"
         >
         </el-table-column>
-        <el-table-column label="操作">
-          <el-button size="mini" @click="dialogTableVisible = true"
+
+        <el-table-column label="查看">
+          <template slot-scope="scope">
+          <el-button size="mini" @click="loadDocInfo(scope.row)"
             >查看详情</el-button
           >
-          <el-dialog title="申请信息" :visible.sync="dialogTableVisible">
-            <el-descriptions direction="vertical" :column="4" border>
-              <el-descriptions-item label="姓名">AAA</el-descriptions-item>
-              <el-descriptions-item label="性别">男</el-descriptions-item>
-              <el-descriptions-item label="执业医师资格证编号"
-                >123456789</el-descriptions-item
-              >
-              <el-descriptions-item label="身份证号"
-                >9876543210000</el-descriptions-item
-              >
-              <el-descriptions-item label="工作单位" :span="4"
-                >上海市第一医院</el-descriptions-item
-              >
-              <el-descriptions-item label="科室" :span="2"
-                >皮肤科</el-descriptions-item
-              >
-              <el-descriptions-item label="职称">主任医师</el-descriptions-item>
-              <el-descriptions-item label="资格证书证明">
-                <el-link type="primary">查看文件</el-link>
-              </el-descriptions-item>
-              <el-descriptions-item label="申请陈述" :span="4"
-                >我有十年工作经验</el-descriptions-item
-              >
-            </el-descriptions>
+          
+          <el-dialog title="申请人详情" :visible.sync="dialogTableVisible" >
+            <el-table :data=docInfo>
+              <el-table-column label="姓名" prop="name"></el-table-column>
+              <el-table-column label="用户ID" prop="id"></el-table-column>
+              <el-table-column label="身份证号" prop="IDNum"></el-table-column>
+              <el-table-column label="性别" prop="gender"></el-table-column>
+              <el-table-column label="邮箱" prop="mail"></el-table-column>
+              <el-table-column label="工作单位" prop="hospital"></el-table-column>
+              <el-table-column label="所属科室" prop="department"></el-table-column>
+              <el-table-column label="职称" prop="title"></el-table-column>
+              <el-table-column label="工作经验" prop="workLength"></el-table-column>
+              <el-table-column label="执业医师资格证书编号" prop="certificationNum"></el-table-column>
+              <el-table-column label="证明文件" prop="certiProof">
+                <template slot-scope="scope">
+                  <el-tooltip content="点击下载" placement="top">
+                    <a style="text-decoration: underline;cursor: pointer;" @click="downloadContent(scope.row)">查看上传文件</a>
+                  </el-tooltip>
+                </template>
+              </el-table-column>
+              <el-table-column label="申请陈述" prop="docIntro"></el-table-column>
+            </el-table>
           </el-dialog>
+          </template>
+          </el-table-column>
+
+         <el-table-column label="操作">
+          <template slot-scope="scope">
           <el-button
             size="mini"
             type="danger"
@@ -90,23 +87,22 @@
             >处理</el-button
           >
           <el-dialog title="申请处理" :visible.sync="dialogFormVisible">
-            <el-form :model="form">
+            <el-form ref="form" :model="form" style="width: 100%">
               <el-form-item label="处理结果" :label-width="formLabelWidth">
                 <el-select v-model="form.result" placeholder="请选择处理结果">
-                  <el-option label="通过申请" value=1></el-option>
-                  <el-option label="拒绝申请" value=2></el-option>
+                  <el-option label="通过" value=1></el-option>
+                  <el-option label="拒绝" value=0></el-option>
                 </el-select>
-              </el-form-item>
-              <el-form-item label="处理意见" :label-width="formLabelWidth">
-                <el-input v-model="form.reply" autocomplete="off"></el-input>
               </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+              <el-button @click="dialogFormVisible = false">取 消</el-button>             
+              <el-button type="primary" @click="handle(scope.row)">确 定</el-button>
             </div>
           </el-dialog>
+         </template>
         </el-table-column>
+
       </el-table>
     </div>
     <div class="block">
@@ -129,54 +125,74 @@
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "AAA",
-          hospital: "上海市普陀区金沙江路 1518 弄",
-          title: "主任医师",
-          description: "我有十年工作经验",
-          status: "未处理",
-        },
-        {
-          date: "2016-05-04",
-          name: "BBB",
-          hospital: "上海市普陀区金沙江路 1517 弄",
-          title: "副主任医师",
-          description: "我有5年工作经验",
-          status: "未处理",
-        },
-        {
-          date: "2016-05-01",
-          name: "CCC",
-          hospital: "上海市普陀区金沙江路 1519 弄",
-          title: "见习医师",
-          description: "我有1年工作经验",
-          status: "已处理",
-        },
-        {
-          date: "2016-05-03",
-          name: "DDD",
-          hospital: "上海市普陀区金沙江路 1516 弄",
-          description: "我有20年工作经验",
-          title: "主任医师",
-          status: "已处理",
-        },
-      ],
+      tableData: [],
+      docInfo: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 20, // 每页的数据条数
+      formData: new FormData(), //表单提交的数据
       form: {
-          reason: '',
-          region: 0,
-          delivery: false
-        },
-        formLabelWidth: '120px'
+        result: '',
+      },
+      formLabelWidth: "120px",
     };
   },
+
   methods: {
+    //加载医生申请信息列表
+    loadData() {
+      this.axios({
+        url: "api/admin-and-problem-service/getDoctorList",
+        method: "get",
+        params: {},
+      }).then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+          this.tableData.push({
+            id: response.data[i].id,
+            // date: response.data[i].date,
+            // status: response.data[i].status,
+            name: response.data[i].name,
+            hospital: response.data[i].hospital,
+            description: response.data[i].docIntro,
+            title: response.data[i].title,
+            department: response.data[i].department,
+          });
+        }
+      });
+    },
+
+    loadDocInfo(row) {
+      this.dialogTableVisible = true
+      this.docInfo = undefined
+      this.docInfo = new Array();
+      this.axios({
+        url: "api/admin-and-problem-service/getInfo/"+row.id,
+        method: "get",
+      })
+        .then((response) => {
+          this.docInfo.push({
+            "id":response.data.id,
+            "name":response.data.name,
+            "IDNum":response.data.idnum,
+            "gender":response.data.gender,
+            "mail":response.data.mail,
+            "hospital":response.data.hospital,
+            "title":response.data.title,
+            "department":response.data.department,
+            "workLength":response.data.workLength,
+            "certificationNum":response.data.certificationNum,
+            "certiProof":response.data.certiProof,
+            "docIntro":response.data.docIntro,
+            // "audit":response.data.audit===0?"未审核":"已审核"
+          })
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
     formatter(row, column) {
       return row.hospital;
     },
@@ -198,6 +214,76 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
+
+    handle(row) {
+      console.log(row.id);
+      this.axios({
+        url: "/admin-and-problem-service/auditDoctor/"+row.id,
+        method: "post",
+        data: {id:row.id,opinion:this.form.result}
+      })
+        .then((response) => {
+          if (response.data === true) {
+            this.$refs.form.resetFields();
+            this.dialogFormVisible = false;
+            this.$message({
+              type: "success",
+              message: "处理成功",
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: "处理失败！",
+            });
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "error",
+            message: "处理失败！",
+          });
+        });
+    },
+
+    downloadProof(row) {
+      let data = new FormData();
+      data.append("ApplicationID", row.applicationID);
+      this.$axios({
+        url: "/downloadProof",
+        method: "post",
+        data: data,
+      })
+        .then((response) => {
+          let blob = new Blob([response.data]);
+          const disposition = response.headers["content-disposition"];
+          //获得文件名
+          let fileName = disposition.substring(
+            disposition.indexOf("filename=") + 9,
+            disposition.length
+          );
+          //解码
+          fileName = decodeURI(fileName);
+          if (window.navigator.msSaveOrOpenBlob) {
+            navigator.msSaveBlob(blob, fileName);
+          } else {
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+            //释放内存
+            window.URL.revokeObjectURL(link.href);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "error",
+            message: "下载失败！请重新尝试！",
+          });
+        });
+    },
+  },
+  mounted() {
+    this.loadData();
   },
 };
 </script>
@@ -208,7 +294,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.form {
+.appForm {
   float: left;
   width: 100%;
 }

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/home.vue'
+import Home from '../views/Home.vue'
 import Login from '../views/login.vue'
 import Register from '../views/register.vue'
 import News from '../views/news.vue'
@@ -10,7 +10,8 @@ import adminHome from '../views/admin/adminHome.vue'
 import docApp from '../views/docApplication/index.vue'
 import problemList from '../views/problem/index.vue'
 import problemAdd from '../views/problem/problemAdd.vue'
-import message from '../views/message/index.vue'
+import tweet from '../views/tweet/index.vue'
+import video from '../views/video/index.vue'
 import report from '../views/report/index.vue'
 
 Vue.use(VueRouter)
@@ -100,9 +101,14 @@ const routes = [
                 meta: { title: '反馈列表' }
             },
             {
-                path: '/message',
-                component: message,
-                meta: { title: '资讯列表' }
+                path: '/video',
+                component: video,
+                meta: { title: '视频列表' }
+            },
+            {
+                path: '/tweet',
+                component: tweet,
+                meta: { title: '推文列表' }
             },
         ]
     },

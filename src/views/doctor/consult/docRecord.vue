@@ -1,7 +1,13 @@
 <template>
   <el-table
-    :data="tableData.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))"
-    style="width: 100%">
+    :data="
+      tableData.filter(
+        (data) =>
+          !search || data.title.toLowerCase().includes(search.toLowerCase())
+      )
+    "
+    style="width: 100%"
+  >
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
@@ -9,22 +15,30 @@
             <span>{{ props.row.time }}</span>
           </el-form-item>
           <el-form-item label="患者姓名">
-            <span>{{ props.row.name }}</span>
+            <span>{{ props.row.patientName }}</span>
           </el-form-item>
-          <el-form-item label="病历">
-            <span>{{ props.row.disrecord }}</span>
+          <el-form-item label="疾病名称">
+            <span>{{ props.row.diseaseName }}</span>
           </el-form-item>
-          <el-form-item label="处方">
-            <span>{{ props.row.prescr }}</span>
+          <el-form-item label="诊断内容">
+            <span>{{ props.row.diagContent }}</span>
+          </el-form-item>
+          <el-form-item label="药品">
+            <span>{{ props.row.medicine }}</span>
           </el-form-item>
         </el-form>
       </template>
     </el-table-column>
     <el-table-column label="问诊时间" prop="time" sortable> </el-table-column>
-    <el-table-column label="患者姓名" prop="name"> </el-table-column>
+    <el-table-column label="患者姓名" prop="patientName"> </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
-        <el-input v-model="search" @click="handleEdit(scope.$index, scope.row)" size="mini" placeholder="输入关键字搜索" />
+        <el-input
+          v-model="search"
+          @click="handleEdit(scope.$index, scope.row)"
+          size="mini"
+          placeholder="输入关键字搜索"
+        />
       </template>
     </el-table-column>
   </el-table>
@@ -47,39 +61,35 @@
 </style>
 
 <script>
+
 export default {
   data() {
     return {
-      tableData: [
-        {
-          time: "2021-5-23",
-          name: "GGG",
-          disrecord: "上呼吸道感染",
-          prescr: "正柴胡颗粒",
-        },
-        {
-          time: "2020-12-5",
-          name: "HHH",
-          disrecord: "急性鼻窦炎",
-          prescr: "处方1",
-        },
-        {
-          time: "2019-3-22",
-          name: "KKK",
-          disrecord: "失眠，心律不齐",
-          prescr: "稳心颗粒",
-        },
-        {
-          time: "2019-1-6",
-          name: "JJJ",
-          disrecord: "过敏",
-          prescr: "息斯敏（氯雷他定片）",
-        },        
-      ],
+      ID: window.sessionStorage.getItem("userID"),
+      tableData: [],
       search: "",
-    }
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 20, // 每页的数据条数
+    };
   },
   methods: {
+    loadData() {
+      this.axios({
+        url: "api/doctor-service/doctorGetAllRecord/" + this.ID,
+        method: "get",
+        params: {
+          doctorID: this.ID,
+        },
+      })
+        .then((response) => {
+          this.tableData = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
     handleEdit(index, row) {
       console.log(index, row);
     },
@@ -87,8 +97,12 @@ export default {
       console.log(index, row);
     },
     handleChange() {
-    this.$forceUpdate();
-},
+      this.$forceUpdate();
+    },
+  },
+
+  mounted() {
+    this.loadData();
   },
 };
 </script>

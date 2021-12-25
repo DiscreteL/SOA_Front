@@ -17,11 +17,11 @@
         </el-table-column>
         <el-table-column
           prop="audit"
-          label="审核状态"
+          label="处理状态"
           width="80"
           :filters="[
-            { text: '等待审核', value: 0 },
-            { text: '已审核', value: 1 },
+            { text: '未处理', value: 0 },
+            { text: '已处理', value: 1 },
           ]"
           :filter-method="filterStatus"
           filter-placement="bottom-end"
@@ -31,7 +31,7 @@
               :type="scope.row.audit === 0 ? 'primary' : 'success'"
               disable-transitions
             >
-              {{ scope.row.audit === 0 ? '等待审核' : '已审核' }}
+              {{ scope.row.audit === 0 ? '未处理' : '已处理' }}
             </el-tag>
           </template>
         </el-table-column>
@@ -42,9 +42,16 @@
           <el-button size="mini" @click="loadVideoData(scope.row)"
             >查看详情</el-button
           >
-          
+          <el-button
+            size="mini"
+            type="danger"
+            style="margin-left: 20px"
+            @click="dialogFormVisible = true"
+            >处理</el-button
+          >
           <el-dialog title="资讯信息" :visible.sync="dialogTableVisible" >
             <el-table :data=videoData>
+              <el-table-column label="上传用户ID" prop="doctorID"></el-table-column>
               <el-table-column label="视频ID" prop="id"></el-table-column>
               <el-table-column label="上传时间" prop="time"></el-table-column>
               <el-table-column label="视频标题" prop="title"></el-table-column>
@@ -59,18 +66,25 @@
             </el-table>
           </el-dialog>
 
+          
+          <el-dialog title="申请处理" :visible.sync="dialogFormVisible">
+            <el-form ref="form" :model="form">
+              <el-form-item label="处理结果" :label-width="formLabelWidth">
+                <el-select v-model="form.result" placeholder="请选择处理结果">
+                  <el-option label="通过" value=1></el-option>
+                  <el-option label="拒绝" value=2></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="处理意见" :label-width="formLabelWidth">
+                <el-input v-model="form.reply" autocomplete="off"></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="handle(scope.row)">确 定</el-button>
+            </div>
+          </el-dialog>
           </template>
-
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="danger"
-              style="margin-left: 20px"
-              @click="del(scope.row)"
-              >删除</el-button
-            >
-          </template>
-
         </el-table-column>
       </el-table>
     </div>
@@ -101,17 +115,21 @@ export default {
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 20, // 每页的数据条数
-
+      formData: new FormData(), //表单提交的数据
+      form: {
+          result: '',
+          reply: ''
+        },
+        formLabelWidth: '120px'
     };
   },
 
   methods: {
     loadData() {
       this.axios({
-        url: "/",
+        url: "api/admin-and-problem-service/getAllVideo",
         method: "get",
         params: {
-          id: this.$route.params.id,
         },
       })
         .then((response) => {
@@ -138,6 +156,7 @@ export default {
             "title":response.data.title,
             "label":response.data.label,
             "url":response.data.url,
+            "coverUrl":response.data.coverUrl,
             "audit":response.data.audit===0?"未审核":"已审核"
           })
         })
@@ -167,8 +186,40 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
+    handle(row) {
+      this.formData.append("id", row.id);
+      data.append("result", this.form.result);
+      data.append("reply", this.form.reply);
+      this.axios({
+        url: "/admin-and-problem-service/auditTweet"+row.id,
+        method: "post",
+        data: this.formData,
+      })
+        .then((response) => {
+          if (response.data === true) {
+            this.$refs.form.resetFields();
+            this.dialogFormVisible = false;
+            this.$message({
+              type: "success",
+              message: "处理成功",
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: "处理失败！",
+            });
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "error",
+            message: "处理失败！",
+          });
+        });
+        this.formData = new FormData();
+    },
 
-    downloadContent(row){
+    downloadProof(row){
       let data = new FormData()
       data.append("id",row.id)
       this.axios({
@@ -201,44 +252,7 @@ export default {
           message: "下载失败！请重新尝试！",
         });
       })
-    },
-
-    del(row) {
-      this.$confirm("确定要删除此视频吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.deleteVideo(row);
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "操作取消",
-          });
-        });
-    },
-
-    deleteVideo(data) {
-      this.axios({
-        url: "/" + data.title,
-        method: "delete",
-      })
-        .then(() => {
-          this.tableData.splice(data, 1);
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "error",
-            message: "删除失败! 请稍后再试",
-          });
-        });
-    },
+    }
   },
 
   mounted() {
