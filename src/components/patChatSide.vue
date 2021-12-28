@@ -4,7 +4,7 @@
       <el-tab-pane label="查看病历" name="first" >
         <el-form :model="diseaseDecidedForm" size="mini" label-width="90px" >
           <el-form-item label="患者姓名：">
-            <span>王某某{{diseaseDecidedForm.patientName}}</span>
+            <span>{{diseaseDecidedForm.patientName}}</span>
           </el-form-item>
           <el-form-item label="患者主诉：">
             <span>{{diseaseDecidedForm.desc}}</span>
@@ -57,7 +57,7 @@
         <div class="form_body">
           <el-form :model="includeForm" size="mini" label-width="90px" >
             <el-form-item label="患者姓名：">
-              <span>王某某{{diseaseDecidedForm.patientName}}</span>
+              <span>{{diseaseDecidedForm.patientName}}</span>
             </el-form-item>
             <el-form-item label-position="top"  label="初步诊断：">{{diseaseDecidedForm.disease}}</el-form-item>
           </el-form>
@@ -110,15 +110,36 @@ export default {
         data:[],//存储药品表格数据
       },
       diseaseDecidedForm: {//病历表单
-        patientName:this.$store.state.inquiry.patientId,//病人姓名（通过store中patientId与调用getPatient接口获取）
+        patientName:'',//病人姓名（通过store中patientId与调用getPatient接口获取）
         disease: '等待医生填写',//疾病
         department:'等待医生填写',//科室
         type:[],//症状多选框数组
         desc: '等待医生填写'//主诉
+      },
+      store:{
+        id:this.$store.state.inquiry.patientId,
       }
     };
   },
+  created(){
+    this.getName();
+  },
   methods: {
+    getName() {
+      let _this = this;
+      this.axios
+        .get(
+          "api/patient-service/getPatient/" + this.store.id
+        )
+        .then(function (res) {
+          console.log("getInfo.res.data:");
+          console.log(res.data.name);
+          _this.diseaseDecidedForm.patientName = res.data.name;
+        })
+        .catch(function (error) {
+          console.log("Get Nothing!" + error);
+        });
+    },
     getDrugs(){//获取处方信息
       this.axios.get("/patient-service/getMedicine/"+this.$store.state.inquiry.preId
         // this.axios.get("/patient-service/getMedicine/"+"21"

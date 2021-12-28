@@ -106,7 +106,7 @@ export default {
     }
   },
   created() {
-    this.getDrugs();
+    // this.getDrugs();
   },
   methods: {
     // bh

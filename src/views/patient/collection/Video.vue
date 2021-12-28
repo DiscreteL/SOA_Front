@@ -15,7 +15,7 @@
             <span>{{ props.row.title }}</span>
           </el-form-item>
           <el-form-item label="作者">
-            <span>{{ props.row.doctorID }}</span>
+            <span>{{ props.row.name }}</span>
           </el-form-item>
           <el-form-item label="收藏时间">
             <span>{{ props.row.time | formatDate }}</span>
@@ -29,7 +29,7 @@
     <el-table-column label="收藏时间" prop="time" :formatter="dateFormat">
     </el-table-column>
     <el-table-column label="标题" prop="title"> </el-table-column>
-    <el-table-column label="作者" prop="doctorID"> </el-table-column>
+    <el-table-column label="作者" prop="name"> </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
         <el-input

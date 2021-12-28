@@ -3,7 +3,8 @@
     :data="
       tableData.filter(
         (data) =>
-          !search || data.doctor.toLowerCase().includes(search.toLowerCase())
+          !search ||
+          data.doctorName.toLowerCase().includes(search.toLowerCase())
       )
     "
     style="width: 100%"
@@ -11,37 +12,58 @@
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
-          <el-form-item label="预约日期">
-            <span>{{ props.row.date }}</span>
+          <el-form-item label="预约问诊时间" label-width="100px">
+            <span>{{ props.row.time | formatDate }}</span>
           </el-form-item>
-          <el-form-item label="问诊时间">
-            <span>{{ props.row.time }}</span>
+          <el-form-item label="医生" label-width="100px">
+            <span>{{ props.row.name }}</span>
           </el-form-item>
-          <el-form-item label="医生">
-            <span>{{ props.row.doctor }}</span>
+          <el-form-item label="预约状态" label-width="100px">
+            <span v-if="props.row.status == 2">已拒绝</span>
           </el-form-item>
-          <el-form-item label="预约状态">
-            <span>{{ props.row.status }}</span>
+          <el-form-item label="主诉" label-width="100px">
+            <span>{{ props.row.initDescription }}</span>
           </el-form-item>
         </el-form>
       </template>
     </el-table-column>
-    <el-table-column label="预约日期" prop="date"> </el-table-column>
-    <el-table-column label="预约时间" prop="time"> </el-table-column>
-    <el-table-column label="预约医生" prop="doctor"> </el-table-column>
-    <el-table-column label="预约状态" prop="status"> </el-table-column>
+
+    <el-table-column
+      label="预约日期"
+      prop="time"
+      :formatter="dateFormat1"
+      sortable
+    >
+    </el-table-column>
+
+    <el-table-column label="预约时间" prop="time" :formatter="dateFormat2">
+    </el-table-column>
+    <el-table-column label="预约医生" prop="name"> </el-table-column>
+    <el-table-column label="预约状态" prop="status">
+      <template slot-scope="scope">
+        <el-tag v-if="scope.row.status == 2" type="danger" size="mini"
+          >已拒绝</el-tag
+        >
+      </template>
+    </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
         <el-input
           v-model="search"
-          @click="handleEdit(scope.$index, scope.row)"
+          @click="handleEdit(scope.row)"
           size="mini"
-          placeholder="输入关键字搜索"
+          placeholder="输入医生关键字搜索"
         />
       </template>
-      <template>
-        <el-button size="mini" @click="open()">查看原因</el-button>
-      </template>
+      <el-button slot-scope="scope" size="mini" @click="ViewReason(scope.row)"
+        >查看原因</el-button
+      >
+      <el-dialog title="拒绝原因" :visible.sync="dialogFormVisible" :append-to-body="true">
+        {{ this.currentrow }}
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">确 定</el-button>
+        </div>
+      </el-dialog>
     </el-table-column>
   </el-table>
 </template>
@@ -63,20 +85,28 @@
 </style>
 
 <script>
+import { formatDate } from "@/utils/date.js";
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2021.11.26",
-          time: "15：00",
-          doctor: "李四医生",
-          status: "已拒绝",
-          reason: "时间冲突，不好意思！",
-        },
-      ],
+      tableData: [],
       search: "",
+      dialogFormVisible: false,
+      store: {
+        id: "",
+      },
+      currentrow:'',
     };
+  },
+  filters: {
+    formatDate(time) {
+      time = Number(time);
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
+    },
+  },
+  created() {
+    this.gettableData();
   },
   methods: {
     handleEdit(index, row) {
@@ -88,11 +118,48 @@ export default {
     handleChange() {
       this.$forceUpdate();
     },
-    open() {
-      this.$alert("时间冲突，不好意思！", "李四医生：", {
-        confirmButtonText: "确定",
-      });
+    //  格式化日期
+    dateFormat1(row, column) {
+      let time = row[column.property];
+      if (time == undefined) {
+        return "";
+      }
+      time = Number(time);
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
     },
+    //  格式化日期
+    dateFormat2(row, column) {
+      let time = row[column.property];
+      if (time == undefined) {
+        return "";
+      }
+      time = Number(time);
+      var date = new Date(time);
+      return formatDate(date, "hh:mm:ss");
+    },
+    gettableData() {
+      this.store.id = window.sessionStorage.getItem("userID");
+      console.log("sessionstorage.id:" + this.store.id);
+      let _this = this;
+      this.axios
+        .get("api/patient-service/patientGetRefusedRequest/" + this.store.id)
+        .then(function (res) {
+          console.log("gettableData.res.data:");
+          console.log(res.data);
+          _this.tableData = res.data;
+        })
+        .catch(function (error) {
+          console.log("Get Nothing!" + error);
+        });
+    },
+    ViewReason(data){
+      console.log("this.scope.row")
+      console.log(data.rejectionReason)
+      this.dialogFormVisible=true;
+      this.currentrow=data.rejectionReason;
+      console.log(this.currentrow)
+    }
   },
 };
 </script>

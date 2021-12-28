@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/home.vue'
 import Login from '../views/login.vue'
 import Register from '../views/register.vue'
 import News from '../views/news.vue'
@@ -270,6 +270,11 @@ const routes = [{
                 meta: { title: '收藏推文' },
             },
         ]
+    },
+    {
+        path:'/waitempty',
+        component: () =>
+            import ('../views/patient/consult/apply/waitempty.vue'),        
     },
     {
         path:'/personempty',
