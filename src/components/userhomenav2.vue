@@ -47,7 +47,7 @@
                     将文件拖到此处，或<em>点击上传</em>
                   </div>
                   <div class="el-upload__tip" slot="tip">
-                    支持的文件格式有：pdf
+                    支持的文件格式有：pdf/jpg
                   </div>
                 </el-upload>
               </el-form-item>
