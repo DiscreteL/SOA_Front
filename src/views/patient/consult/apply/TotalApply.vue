@@ -3,7 +3,8 @@
     :data="
       tableData.filter(
         (data) =>
-          !search || data.doctor.toLowerCase().includes(search.toLowerCase())
+          !search ||
+          data.doctorName.toLowerCase().includes(search.toLowerCase())
       )
     "
     style="width: 100%"
@@ -11,69 +12,51 @@
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
-          <el-form-item label="预约日期">
-            <span>{{ props.row.date }}</span>
+          <el-form-item label="预约问诊时间" label-width="100px">
+            <span>{{ props.row.time | formatDate }}</span>
           </el-form-item>
-          <el-form-item label="问诊时间">
-            <span>{{ props.row.time }}</span>
+          <el-form-item label="医生" label-width="100px">
+            <span>{{ props.row.name }}</span>
           </el-form-item>
-          <el-form-item label="医生">
-            <span>{{ props.row.doctor }}</span>
+          <el-form-item label="预约状态" label-width="100px">
+            <span v-if="props.row.status == 0">待处理</span>
+            <span v-if="props.row.status == 1">待问诊</span>
+            <span v-if="props.row.status == 2">已拒绝</span>
           </el-form-item>
-          <el-form-item label="预约状态">
-            <span>{{ props.row.status }}</span>
+          <el-form-item label="主诉" label-width="100px">
+            <span>{{ props.row.initDescription }}</span>
           </el-form-item>
         </el-form>
       </template>
     </el-table-column>
 
-    <el-table-column label="预约日期" prop="date"> </el-table-column>
-    <el-table-column label="预约时间" prop="time"> </el-table-column>
-    <el-table-column label="预约医生" prop="doctor"> </el-table-column>
-    <el-table-column label="预约状态" prop="status"> </el-table-column>
+    <el-table-column label="预约日期" prop="time" :formatter="dateFormat1" sortable>
+    </el-table-column>
+
+    <el-table-column label="预约时间" prop="time" :formatter="dateFormat2">
+    </el-table-column>
+    <el-table-column label="预约医生" prop="name"> </el-table-column>
+    <el-table-column label="预约状态" prop="status">
+      <template slot-scope="scope">
+        <el-tag v-if="scope.row.status == 0" type="primary" size="mini"
+          >待处理</el-tag
+        >
+        <el-tag v-if="scope.row.status == 1" type="success" size="mini"
+          >待问诊</el-tag
+        >
+        <el-tag v-if="scope.row.status == 2" type="danger" size="mini"
+          >已拒绝</el-tag
+        >
+      </template>
+    </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
         <el-input
           v-model="search"
-          @click="handleEdit(scope.$index, scope.row)"
+          @click="handleEdit(scope.row)"
           size="mini"
-          placeholder="输入关键字搜索"
+          placeholder="输入医生关键字搜索"
         />
-      </template>
-      <template>
-        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-          >详细信息</el-button
-        >
-        <!-- <el-button size="mini" @click="dialogTableVisible = true"
-          >查看详情</el-button
-        >
-        <el-dialog title="预约信息" :visible.sync="dialogTableVisible">
-          <el-descriptions direction="vertical" :column="4" border>
-            <el-descriptions-item label="预约日期" :span="2"
-              >{{ date }}</el-descriptions-item
-            >
-            <el-descriptions-item label="预约时间" :span="2"
-              >15:00</el-descriptions-item
-            >
-            <el-descriptions-item label="姓名">AAA</el-descriptions-item>
-            <el-descriptions-item label="性别">男</el-descriptions-item>
-            <el-descriptions-item label="出生日期"
-              >2000-01-01</el-descriptions-item
-            >
-            <el-descriptions-item label="身高(cm)">175</el-descriptions-item>
-            <el-descriptions-item label="体重(kg)">65</el-descriptions-item>
-            <el-descriptions-item label="血压(收缩压/舒张压)" :span="2"
-              >120/80</el-descriptions-item
-            >
-            <el-descriptions-item label="心率(次/分钟)"
-              >75</el-descriptions-item
-            >
-            <el-descriptions-item label="患者主诉" :span="4"
-              >头疼持续一周</el-descriptions-item
-            >
-          </el-descriptions>
-        </el-dialog> -->
-
       </template>
     </el-table-column>
   </el-table>
@@ -96,38 +79,28 @@
 </style>
 
 <script>
+import { formatDate } from "@/utils/date.js";
 export default {
   data() {
     return {
       tableData: [
-        {
-          date: "2021.12.26",
-          time: "14：00",
-          doctor: "张三医生",
-          status: "待接受",
-        },
-        {
-          date: "2021.11.29",
-          time: "9：30",
-          doctor: "杜九医生",
-          status: "待接受",
-        },
-        {
-          date: "2021.11.27",
-          time: "13：30",
-          doctor: "刘大医生",
-          status: "待问诊",
-        },
-        {
-          date: "2021.11.26",
-          time: "15：00",
-          doctor: "李四医生",
-          status: "已拒绝",
-        },
       ],
       search: "",
       dialogTableVisible: false,
+      store: {
+        id: "",
+      },
     };
+  },
+  filters: {
+    formatDate(time) {
+      time = Number(time);
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
+    },
+  },
+  created() {
+    this.gettableData();
   },
   methods: {
     handleEdit(index, row) {
@@ -138,6 +111,46 @@ export default {
     },
     handleChange() {
       this.$forceUpdate();
+    },
+    //  格式化日期
+    dateFormat1(row, column) {
+      let time = row[column.property];
+      if (time == undefined) {
+        return "";
+      }
+      time = Number(time);
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
+    },
+    //  格式化日期
+    dateFormat2(row, column) {
+      let time = row[column.property];
+      if (time == undefined) {
+        return "";
+      }
+      time = Number(time);
+      var date = new Date(time);
+      return formatDate(date, "hh:mm:ss");
+    },
+    gettableData() {
+      this.store.id = window.sessionStorage.getItem("userID");
+      console.log("sessionstorage.id:" + this.store.id);
+      let _this = this;
+      this.axios
+        .get(
+          "api/patient-service/patientGetAllRequest/" + this.store.id
+          // headers: {
+          //   token: window.sessionStorage.getItem("token"),
+          // },
+        )
+        .then(function (res) {
+          console.log("gettableData.res.data:");
+          console.log(res.data);
+          _this.tableData = res.data;
+        })
+        .catch(function (error) {
+          console.log("Get Nothing!" + error);
+        });
     },
   },
 };

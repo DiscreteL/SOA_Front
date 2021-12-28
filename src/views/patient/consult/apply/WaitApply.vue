@@ -3,7 +3,8 @@
     :data="
       tableData.filter(
         (data) =>
-          !search || data.doctor.toLowerCase().includes(search.toLowerCase())
+          !search ||
+          data.doctorName.toLowerCase().includes(search.toLowerCase())
       )
     "
     style="width: 100%"
@@ -11,37 +12,52 @@
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
-          <el-form-item label="预约日期">
-            <span>{{ props.row.date }}</span>
+          <el-form-item label="预约问诊时间" label-width="100px">
+            <span>{{ props.row.time | formatDate }}</span>
           </el-form-item>
-          <el-form-item label="问诊时间">
-            <span>{{ props.row.time }}</span>
+          <el-form-item label="医生" label-width="100px">
+            <span>{{ props.row.name }}</span>
           </el-form-item>
-          <el-form-item label="医生">
-            <span>{{ props.row.doctor }}</span>
+          <el-form-item label="预约状态" label-width="100px">
+            <span v-if="props.row.status == 0">待处理</span>
           </el-form-item>
-          <el-form-item label="预约状态">
-            <span>{{ props.row.status }}</span>
+          <el-form-item label="主诉" label-width="100px">
+            <span>{{ props.row.initDescription }}</span>
           </el-form-item>
         </el-form>
       </template>
     </el-table-column>
-    <el-table-column label="预约日期" prop="date"> </el-table-column>
-    <el-table-column label="预约时间" prop="time"> </el-table-column>
-    <el-table-column label="预约医生" prop="doctor"> </el-table-column>
-    <el-table-column label="预约状态" prop="status"> </el-table-column>
+
+    <el-table-column
+      label="预约日期"
+      prop="time"
+      :formatter="dateFormat1"
+      sortable
+    >
+    </el-table-column>
+
+    <el-table-column label="预约时间" prop="time" :formatter="dateFormat2">
+    </el-table-column>
+    <el-table-column label="预约医生" prop="name"> </el-table-column>
+    <el-table-column label="预约状态" prop="status">
+      <template slot-scope="scope">
+        <el-tag v-if="scope.row.status == 0" type="primary" size="mini"
+          >待处理</el-tag
+        >
+      </template>
+    </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
         <el-input
           v-model="search"
-          @click="handleEdit(scope.$index, scope.row)"
+          @click="handleEdit(scope.row)"
           size="mini"
-          placeholder="输入关键字搜索"
+          placeholder="输入医生关键字搜索"
         />
       </template>
       <template slot-scope="scope">
-        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-          >详细信息</el-button
+        <el-button size="mini" type="danger" @click="deleteApply(scope.row)"
+          >取消预约</el-button
         >
       </template>
     </el-table-column>
@@ -65,25 +81,27 @@
 </style>
 
 <script>
+import { formatDate } from "@/utils/date.js";
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2021.12.26",
-          time: "14：00",
-          doctor: "张三医生",
-          status: "待接受",
-        },
-        {
-          date: "2021.11.29",
-          time: "9：30",
-          doctor: "杜九医生",
-          status: "待接受",
-        },
-      ],
+      tableData: [],
       search: "",
+      dialogTableVisible: false,
+      store: {
+        id: "",
+      },
     };
+  },
+  filters: {
+    formatDate(time) {
+      time = Number(time);
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
+    },
+  },
+  created() {
+    this.gettableData();
   },
   methods: {
     handleEdit(index, row) {
@@ -94,6 +112,69 @@ export default {
     },
     handleChange() {
       this.$forceUpdate();
+    },
+    //  格式化日期
+    dateFormat1(row, column) {
+      let time = row[column.property];
+      if (time == undefined) {
+        return "";
+      }
+      time = Number(time);
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
+    },
+    //  格式化日期
+    dateFormat2(row, column) {
+      let time = row[column.property];
+      if (time == undefined) {
+        return "";
+      }
+      time = Number(time);
+      var date = new Date(time);
+      return formatDate(date, "hh:mm:ss");
+    },
+    gettableData() {
+      this.store.id = window.sessionStorage.getItem("userID");
+      console.log("sessionstorage.id:" + this.store.id);
+      let _this = this;
+      this.axios
+        .get(
+          "api/patient-service/patientGetToBeAcceptRequest/" + this.store.id
+          // headers: {
+          //   token: window.sessionStorage.getItem("token"),
+          // },
+        )
+        .then(function (res) {
+          console.log("gettableData.res.data:");
+          console.log(res.data);
+          _this.tableData = res.data;
+        })
+        .catch(function (error) {
+          console.log("Get Nothing!" + error);
+        });
+    },
+    deleteApply(data) {
+      this.store.id = window.sessionStorage.getItem("userID");
+      this.axios
+        .delete(
+          "patient-service/patientCancelRequest/" +
+            data.reserveNum
+        )
+        .then((res) => {
+          console.log("res.data:");
+          console.log(res.data);
+          if (res.data === true)
+            this.$message({
+              message: "取消成功",
+              type: "success",
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      this.$router.push({
+        path: "/waitempty",
+      });
     },
   },
 };

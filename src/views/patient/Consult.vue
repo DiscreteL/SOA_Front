@@ -37,7 +37,7 @@
               <span>我的预约</span>
             </template>
             <el-menu-item index="total">全部</el-menu-item>
-            <el-menu-item index="wait">待接受</el-menu-item>
+            <el-menu-item index="wait">待处理</el-menu-item>
             <el-menu-item index="success">待问诊</el-menu-item>
             <el-menu-item index="fail">已拒绝</el-menu-item>
           </el-submenu>
