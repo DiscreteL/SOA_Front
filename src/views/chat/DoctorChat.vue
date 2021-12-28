@@ -46,21 +46,21 @@ export default {
     };
   },
   created() {
-    getDocInfoData({
-      id: this.$store.state.inquiry.doctorId,
-    })
-      .then((res) => {
-        let temp = res.result.picture_url;
-        if (temp.length == 32) {
-          this.num = res.result.picture_url.substring(27, 28);
-        } else {
-          this.num = res.result.picture_url.substring(27, 29);
-        }
-        this.num = temp;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // getDocInfoData({
+    //   id: this.$store.state.inquiry.doctorId,
+    // })
+    //   .then((res) => {
+    //     let temp = res.result.picture_url;
+    //     if (temp.length == 32) {
+    //       this.num = res.result.picture_url.substring(27, 28);
+    //     } else {
+    //       this.num = res.result.picture_url.substring(27, 29);
+    //     }
+    //     this.num = temp;
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   },
   methods: {
     quit() {

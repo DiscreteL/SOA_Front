@@ -126,7 +126,7 @@ export default {
     };
   },
   created() {
-    this.load(); //加载用于选择/筛选的疾病信息，药品信息，科室信息
+    // this.load(); //加载用于选择/筛选的疾病信息，药品信息，科室信息
   },
   methods: {
     postPre() {
@@ -147,32 +147,32 @@ export default {
           console.log(err);
         });
     },
-    load() {
-      //预加载
-      getDiseaseListDataFun() //加载所有疾病
-        .then((res) => {
-          for (let i = 0; i < res.result.length; i++) {
-            this.diseases.push({
-              // "value":"选项"+i,
-              label: res.result[i].disease_Name,
-            });
-            // console.log(this.diseases);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      getDepartmentListDataFun() //加载所有科室
-        .then((res) => {
-          for (let i = 0; i < res.result.length; i++) {
-            this.departments.push({
-              label: res.result[i].department,
-            });
-          }
-          // console.log(this.departments);
-        })
-        .catch((err) => {});
-    },
+    // load() {
+    //   //预加载
+    //   getDiseaseListDataFun() //加载所有疾病
+    //     .then((res) => {
+    //       for (let i = 0; i < res.result.length; i++) {
+    //         this.diseases.push({
+    //           // "value":"选项"+i,
+    //           label: res.result[i].disease_Name,
+    //         });
+    //         // console.log(this.diseases);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    //   getDepartmentListDataFun() //加载所有科室
+    //     .then((res) => {
+    //       for (let i = 0; i < res.result.length; i++) {
+    //         this.departments.push({
+    //           label: res.result[i].department,
+    //         });
+    //       }
+    //       // console.log(this.departments);
+    //     })
+    //     .catch((err) => {});
+    // },
     onSubmit() {
       //提交病历表单
       let date = new Date().getDate();

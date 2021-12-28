@@ -155,15 +155,35 @@ export default {
         });
     },
     goConsult(data) {
-      console.log("data.time" + data.time);
+      // console.log("data.time" + data.time);
       var strtime = Number(data.time);
-      console.log("strtime" + strtime);
+      // console.log("strtime" + strtime);
       var date1 = new Date(strtime);
-      console.log("date1" + date1);
+      // console.log("date1" + date1);
       var date2 = new Date();
-      console.log("date2" + date2);
-      if (date1 < date2) this.$router.push("/patientchat");
-      else
+      // console.log("date2" + date2);
+      if (date1 < date2) {
+        // console.log(window.sessionStorage.getItem('userID'))
+        this.$store.commit(
+          "editPatientId",
+          window.sessionStorage.getItem("userID")
+        );
+        this.$store.commit("editDoctorId", data.doctorID);
+        this.axios
+          .get("api/doctor-service/completeRequest/" + data.reserveNum)
+          .then(function (res) {
+            console.log("gettableData.res.data:");
+            console.log(res.data);
+          })
+          .catch(function (error) {
+            console.log("Failed!" + error);
+          });
+        console.log("this.$store.state.inquiry.patientId");
+        console.log(this.$store.state.inquiry.patientId);
+        console.log("this.$store.state.inquiry.doctorId");
+        console.log(this.$store.state.inquiry.doctorId);
+        this.$router.push("/patientchat");
+      } else
         this.$confirm("时间未到，聊天室还未开启！", "提示", {
           confirmButtonText: "确定",
           type: "warning",

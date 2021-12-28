@@ -20,10 +20,10 @@
             <span>{{ props.row.reserveNum }}</span>
           </el-form-item>
           <el-form-item label="预约时间">
-            <span>{{ props.row.time }}</span>
+            <span>{{ props.row.time | formatDate}}</span>
           </el-form-item>
           <el-form-item label="患者姓名">
-            <span>{{ props.row.patientName }}</span>
+            <span>{{ props.row.name }}</span>
           </el-form-item>
           <el-form-item label="患者主诉">
             <span>{{ props.row.initDescription }}</span>
@@ -46,11 +46,14 @@
         </el-form>
       </template>
     </el-table-column>
-    <el-table-column label="预约时间" prop="time"> </el-table-column>
-    <el-table-column label="患者姓名" prop="patientName"> </el-table-column>
+    <el-table-column label="预约日期" prop="time" :formatter="dateFormat1">
+    </el-table-column>
+    <el-table-column label="预约时间" prop="time" :formatter="dateFormat2">
+    </el-table-column>
+    <el-table-column label="患者姓名" prop="name"> </el-table-column>
     <el-table-column
       label="患者主诉"
-      prop="description"
+      prop="initDescription"
       :show-overflow-tooltip="true"
     >
     </el-table-column>
@@ -63,9 +66,11 @@
           placeholder="输入关键字搜索"
         />
       </template>
-      <el-button size="mini" type="primary" @click="goConsult()"
-        >前往问诊界面</el-button
-      >
+      <template slot-scope="scope">
+        <el-button size="mini" type="primary" @click="goConsult(scope.row)"
+          >前往问诊界面</el-button
+        >
+      </template>
     </el-table-column>
   </el-table>
 </template>
@@ -87,6 +92,7 @@
 </style>
 
 <script>
+import { formatDate } from "@/utils/date.js";
 export default {
   data() {
     return {
@@ -98,6 +104,13 @@ export default {
       pageSize: 20, // 每页的数据条数
     };
   },
+  filters: {
+    formatDate(time) {
+      time = Number(time);
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
+    },
+  },
   methods: {
     loadData() {
       this.axios({
@@ -108,19 +121,8 @@ export default {
         },
       })
         .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push({
-              reserveNum: response.data[i].reserveNum,
-              patientName: response.data[i].patientName,
-              time: response.data[i].time,
-              gender: response.data[i].gender,
-              bornDate: response.data[i].nornDate,
-              height: response.data[i].height,
-              weight: response.data[i].weight,
-              heartRate: response.data[i].heartRate,
-              initDescription: response.data[i].initDescription,
-            });
-          }
+          console.log(response.data);
+          this.tableData = response.data;
         })
         .catch((error) => {
           console.log(error);
@@ -136,8 +138,52 @@ export default {
     handleChange() {
       this.$forceUpdate();
     },
-    goConsult() {
-      this.$router.push("/doctorchat");
+    //  格式化日期
+    dateFormat1(row, column) {
+      let time = row[column.property];
+      if (time == undefined) {
+        return "";
+      }
+      time = Number(time);
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
+    },
+    //  格式化日期
+    dateFormat2(row, column) {
+      let time = row[column.property];
+      if (time == undefined) {
+        return "";
+      }
+      time = Number(time);
+      var date = new Date(time);
+      return formatDate(date, "hh:mm:ss");
+    },
+    goConsult(data) {
+      // console.log("data.time" + data.time);
+      var strtime = Number(data.time);
+      // console.log("strtime" + strtime);
+      var date1 = new Date(strtime);
+      // console.log("date1" + date1);
+      var date2 = new Date();
+      // console.log("date2" + date2);
+      if (date1 < date2) {
+        // console.log(window.sessionStorage.getItem('userID'))
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!这里等传patientid！！！！！！！！！！！！！！！！！！！
+        this.$store.commit("editPatientId",'123');
+        this.$store.commit(
+          "editDoctorId",
+          window.sessionStorage.getItem("userID")
+        );
+        console.log("this.$store.state.inquiry.patientId");
+        console.log(this.$store.state.inquiry.patientId);
+        console.log("this.$store.state.inquiry.doctorId");
+        console.log(this.$store.state.inquiry.doctorId);
+        this.$router.push("/doctorchat");
+      } else
+        this.$confirm("时间未到，聊天室还未开启！", "提示", {
+          confirmButtonText: "确定",
+          type: "warning",
+        });
     },
   },
   mounted() {

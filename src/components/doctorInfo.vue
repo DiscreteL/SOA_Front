@@ -2,28 +2,28 @@
   <div class="form_body">
     <el-form ref="doc" :model="doc" size="mini" label-width="90px" >
       <el-form-item label="医生姓名：">
-        <span>刘某某{{doc.name}}</span>
+        <span>{{doc.name}}</span>
       </el-form-item>
       <el-form-item label="医生性别：">
-        <span>女{{doc.sex}}</span>
+        <span>{{doc.sex}}</span>
       </el-form-item>
       <el-form-item label="从医时长：">
-        <span>10年{{doc.workAge}}</span>
+        <span>{{doc.workAge}}</span>
       </el-form-item>
 <!--      <el-form-item label="身份证号：">-->
 <!--        <span>{{doc.identi}}</span>-->
 <!--      </el-form-item>-->
       <el-form-item label="就职医院：">
-        <span>xx区第一人民医院{{doc.hos}}</span>
+        <span>{{doc.hos}}</span>
       </el-form-item>
       <el-form-item label="所属科室：">
-        <span>内科{{doc.department}}</span>
+        <span>{{doc.department}}</span>
       </el-form-item>
       <el-form-item label="担任职称：">
-        <span>副主任医师{{doc.workBench}}</span>
+        <span>{{doc.workBench}}</span>
       </el-form-item>
       <el-form-item label="医生简介：">
-        <span>专业内科，专业内科，专业内科{{doc.intro}}</span>
+        <span>{{doc.intro}}</span>
       </el-form-item>
     </el-form>
   </div>
@@ -58,24 +58,29 @@ export default {
   },
   methods:{
     getDocInfo(){
-      // getDocInfoData({
-      //   id:this.$store.state.inquiry.doctorId
-      // }).then(res=>{
-      //   console.log("ok");
-      //   console.log(res);
-      //   this.doc.Id=res.result.doctor_ID;
-      //   // this.doc.identi=res.result.identification;
-      //   this.doc.name=res.result.doctor_name;
-      //   this.doc.workAge=res.result.working_age+'年';
-      //   this.doc.sex=res.result.sex;
-      //   this.doc.workBench=res.result.title;
-      //   this.doc.hos=res.result.hos_name;
-      //   this.doc.department=res.result.department;
-      //   this.doc.intro=res.result.introduction;
-      //   this.$store.commit("editInquiryDocName",this.doc.name);
-      // }).catch(err=>{
-      //   console.log(err);
-      // })
+      this.axios({
+        url: "api/doctor-service/getInfo/" + this.$store.state.inquiry.doctorId,
+        method: "get",
+        params: {
+          ID: this.$store.state.inquiry.doctorId,
+        },
+      })
+      .then(res=>{
+        console.log("ok");
+        console.log(res);
+        this.doc.Id=res.data.id;
+        // this.doc.identi=res.result.identification;
+        this.doc.name=res.data.name;
+        this.doc.workAge=res.data.workLength+'年';
+        this.doc.sex=res.data.gender;
+        this.doc.workBench=res.data.title;
+        this.doc.hos=res.data.hospital;
+        this.doc.department=res.data.department;
+        this.doc.intro=res.data.docIntro;
+        this.$store.commit("editInquiryDocName",this.doc.name);
+      }).catch(err=>{
+        console.log(err);
+      })
     }
   }
 }
