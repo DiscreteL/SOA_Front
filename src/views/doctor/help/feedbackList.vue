@@ -9,72 +9,24 @@
         style="width: 100%"
       >
         <el-table-column
-          prop="date"
+          prop="time"
           label="反馈日期"
           sortable
           width="150"
-          column-key="date"
+          column-key="time"
         >
-        </el-table-column>
-        <el-table-column
-          prop="status"
-          label="状态"
-          width="120"
-          :filters="[
-            { text: '等待回复', value: '等待回复' },
-            { text: '已回复', value: '已回复' }
-          ]"
-          :filter-method="filterStatus"
-          filter-placement="bottom-end"
-        >
-          <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.status === '等待回复' ? 'primary' : 'success'"
-              disable-transitions
-            >
-              {{ scope.row.status }}
-            </el-tag>
-          </template>
         </el-table-column>
         <el-table-column
           prop="content"
           label="反馈内容"
           width="500"
-          :show-overflow-tooltip="true"
         >
         </el-table-column>
-        <el-table-column label="操作">
-            <el-button size="mini" @click="dialogTableVisible = true"
-            >查看详情</el-button
-          >
-          <el-dialog :visible.sync="dialogTableVisible">
-            <el-descriptions
-              title="反馈内容详情"
-              direction="vertical"
-              :column="4"
-              border
-            >
-              <el-descriptions-item label="反馈提交时间"
-                >2021-05-02</el-descriptions-item
-              >
-              <el-descriptions-item label="状态">
-                <el-tag size="small" type="success">已回复</el-tag>
-              </el-descriptions-item>
-              <el-descriptions-item label="相关文件" :span="2">
-                  <el-link href="https://element.eleme.io" type="primary" >点击下载</el-link>
-             </el-descriptions-item>
-             <el-descriptions-item label="回复内容" :span="4"
-                >感谢您的反馈！现已对bug进行了修复！</el-descriptions-item
-              >
-            </el-descriptions>
-          </el-dialog>
-          <el-button
-            size="mini"
-            type="danger"
-            style="margin-left: 20px"
-            @click="del"
-            >删除</el-button
-          >
+        <el-table-column
+          prop="reply"
+          label="反馈回复"
+          width="300"
+        >
         </el-table-column>
       </el-table>
     </div>
@@ -98,25 +50,33 @@
 export default {
   data() {
     return {
+      ID: window.sessionStorage.getItem("userID"),
       tableData: [],
-      dialogTableVisible: false,
-      dialogFormVisible: false,
       currentPage: 1, // 当前页码
       total: 10, // 总条数
-      pageSize: 10, // 每页的数据条数
-      form: {
-        reason: "",
-        region: 0,
-        delivery: false,
-      },
-      formLabelWidth: "120px",
-      formArticle: {
-        title: "",
-        content: "",
-      },
+      pageSize: 10,
     };
   },
   methods: {
+    loadData() {
+      this.axios({
+        url: "api/admin-and-problem-service/getDoctorFeedback/" + this.ID,
+        method: "get",
+        params: {
+          id:this.ID
+        },
+      })
+        .then((response) => {
+          this.tableData.push({
+            time: response.data.time,
+            reply: response.data.reply,
+            content: response.data.content
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     filterHandler(value, row, column) {
       const property = column["property"];
       return row[property] === value;
@@ -138,31 +98,10 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
-    del() {
-      this.$confirm("此操作将永久删除该条记录, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
-    },
-    onSubmit() {
-      console.log("submit!");
-    },
-    clear() {
-      this.$refs.form.resetFields();
-    },
+  },
+
+  mounted() {
+    this.loadData();
   },
 };
 </script>

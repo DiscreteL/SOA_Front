@@ -38,7 +38,7 @@
         <el-table-column
           prop="title"
           label="标题"
-          width="400"
+          width="300"
         ></el-table-column>
 
         <el-table-column label="查看">
@@ -52,7 +52,7 @@
                   label="文章标题"
                   prop="title"
                 ></el-table-column>
-                <el-table-column label="视频编号" prop="id"></el-table-column>
+                <el-table-column label="文章编号" prop="id"></el-table-column>
                 <el-table-column label="上传时间" prop="time"></el-table-column>
                 <el-table-column label="审核状态" prop="audit"
                   ><template slot-scope="scope">
@@ -65,7 +65,14 @@
                   </template></el-table-column
                 >
                 <el-table-column label="标签" prop="label"></el-table-column>
-                <el-table-column label="链接地址" prop="url"></el-table-column>
+                <el-table-column label="链接地址" prop="url">
+                  <template slot-scope="scope">
+                    <!-- 点击进行响应弹出通告具体界面-->
+                    <span @click="getDetail(scope.row)" styLe="cursor: pointer">
+                      <a class="link">{{ scope.row.url }}</a>
+                    </span>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-dialog>
           </template>
@@ -110,7 +117,7 @@ export default {
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 20, // 每页的数据条数
-      tweetInfo:[]
+      tweetInfo: [],
     };
   },
 
@@ -161,7 +168,7 @@ export default {
         url: "api/doctor-service/getTweet/" + row.id,
         method: "get",
         params: {
-          id: row.id
+          id: row.id,
         },
       })
         .then((response) => {
@@ -172,12 +179,16 @@ export default {
             time: response.data.time,
             coverUrl: response.data.coverUrl,
             audit: response.data.audit,
-            title: response.data.title
+            title: response.data.title,
           });
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+
+    getDetail(mes) {
+      window.open(mes.url)
     },
 
     del(row) {

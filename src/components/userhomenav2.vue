@@ -37,7 +37,6 @@
                   :file-list="fileList"
                   :http-request="uploadFile"
                   :before-upload="BeforeUpload"
-                  :auto-upload="false"
                   :limit="1"
                   :on-exceed="handleExceed"
                   drag
@@ -138,12 +137,18 @@ export default {
     },
 
     BeforeUpload (file) {
-      if (file) {
-        this.newFile.append('file', file) //  2. 上传之前，拿到file对象，并将它添加到刚刚定义的FormData对象中
-        console.log(this.newFile.get('file'))
-      } else {
-        return false
+      const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const whiteList = ["pdf","jpg"];
+      if (whiteList.indexOf(fileSuffix) === -1) {
+        this.$msg("上传文件只能是pdf/jpg格式", "error");
+        return false;
       }
+      // if (file) {
+      //   this.newFile.append('file', file) //  2. 上传之前，拿到file对象，并将它添加到刚刚定义的FormData对象中
+      //   console.log(this.newFile.get('file'))
+      // } else {
+      //   return false
+      // }
     },
 
     uploadFile(file) {
@@ -161,6 +166,11 @@ export default {
       })
         .then((res) => {
           console.log('res:', res)
+          this.dialogFormVisible=false,
+          this.$message({
+            type: "success",
+            message: "提交成功!",
+          });
         })
         .catch((err) => {
           console.log(err)

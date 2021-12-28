@@ -1,21 +1,39 @@
 <template>
-  <el-form ref="form" :model="form" label-width="80px">
-    <el-form-item label="文章标题" required>
-      <el-input v-model="form.title"></el-input>
+  <el-form ref="articleInfo" :model="articleInfo" label-width="80px">
+    <el-form-item label="文章标题" required prop="title">
+      <el-input v-model="articleInfo.title"></el-input>
     </el-form-item>
-    <el-form-item label="文章标签" required>
-      <el-radio-group v-model="form.label">
+    <el-form-item label="文章标签" required prop="label">
+      <el-radio-group v-model="articleInfo.label">
         <el-radio label="疾病科普"></el-radio>
         <el-radio label="生活常识"></el-radio>
         <el-radio label="养生妙招"></el-radio>
         <el-radio label="其他"></el-radio>
       </el-radio-group>
     </el-form-item>
-    <el-form-item label="文章内容" required>
-      <el-input type="textarea" :rows="10" v-model="form.content"></el-input>
+    <el-form-item label="上传文件" required>
+      <el-upload
+        class="upload-demo"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        action=""
+        :file-list="fileList"
+        :http-request="uploadFile"
+        :before-upload="BeforeUpload"
+        :limit="1"
+        :on-exceed="handleExceed"
+        drag
+        multiple
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">
+          支持的文件格式有：doc/pdf/docx
+        </div>
+      </el-upload>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="onSubmit">发布</el-button>
+      <el-button type="primary" @click="submit">发布</el-button>
       <el-button type="primary" @click="clear">清空</el-button>
     </el-form-item>
   </el-form>
@@ -25,58 +43,95 @@
 export default {
   data() {
     return {
-      form: {
+      ID: window.sessionStorage.getItem("userID"),
+      articleInfo: {
         title: "",
         label: "",
-        content: "",
       },
+      fileList: [],
+      newFile: new FormData(),
     };
   },
   methods: {
-    onSubmit() {
-      if (!this.form.title) {
-        this.$message.error("请输入文章标题");
-      } else if (!this.form.label) {
-        this.$message.error("请选择文章标签");
-      } else if (!this.form.content) {
-        this.$message.error("请输入文章内容");
-      } else{
-        this.axios
-          .post("/", {
-            id: this.$route.params.id,
-            title: this.form.title,
-            label: this.form.label,
-            content: this.form.content,
-          })
-          .then((response) => {
-            //后端更新成功
-            if (response.data === true) {
-              this.$message({
-                type: "success",
-                message: "发布成功！",
-              });
-              //重置表单
-              this.clear();
-            }
-            //后端更新失败
-            else if (response.data === false) {
-              this.$message({
-                type: "error",
-                message: "发布失败！请稍后重新尝试",
-              });
-            }
-          })
-          .catch(() => {
-            this.$message({
-              type: "error",
-              message: "发布失败！请稍后重新尝试",
-            });
-          });
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `文件数量限制: 1; 您本次选择了${files.length}个文件，共选择了${
+          files.length + fileList.length
+        }个文件`
+      );
+    },
+
+    BeforeUpload(file) {
+      const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const whiteList = ["pdf"];
+      if (whiteList.indexOf(fileSuffix) === -1) {
+        this.$msg("上传文件只能是pdf格式", "error");
+        return false;
+      }
+
+      if (file) {
+        this.newFile.append("file", file); //  2. 上传之前，拿到file对象，并将它添加到刚刚定义的FormData对象中
+        console.log(this.newFile.get("file"));
+      } else {
+        return false;
       }
     },
 
+    uploadFile(file) {
+      this.newFile.append("file", file.file);
+    },
+
+    submit() {
+      if (!this.articleInfo.title) {
+        this.$message.error("请输入文章标题");
+      } else if (!this.articleInfo.label) {
+        this.$message.error("请选择文章标签");
+      } else if (!this.fileList) {
+        this.$message.error("请选择文件");
+      } else {
+        this.submitFile();
+      }
+    },
+    async submitFile() {
+      await this.axios({
+        url: "http://100.78.182.86:9790/upload",
+        method: "post",
+        data: this.newFile,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+        .then((response) => {
+          const articleUrl = response.data; //  3. 拿到刚刚的数据，并将其传给后台
+          this.axios
+            .post("/doctor-service/publishTweet", {
+              doctorID: this.ID,
+              title: this.articleInfo.title,
+              label: this.articleInfo.label,
+              url: articleUrl,
+              time: "",
+              coverUrl: "",
+              audit: 0,
+              id: "",
+            })
+            .then((response) => {
+              this.$message.success("发布成功！");
+              location.reload();
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     clear() {
-      this.$refs.form.resetFields();
+      this.$refs.articleInfo.resetFields();
     },
   },
 };

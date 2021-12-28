@@ -63,9 +63,10 @@
           placeholder="输入关键字搜索"
         />
       </template>
-      <el-button size="mini" type="primary" @click="goConsult()"
+      <template slot-scope="scope">
+      <el-button size="mini" type="primary" @click="goConsult(scope.row)"
         >前往问诊界面</el-button
-      >
+      ></template>
     </el-table-column>
   </el-table>
 </template>
@@ -111,10 +112,11 @@ export default {
           for (let i = 0; i < response.data.length; i++) {
             this.tableData.push({
               reserveNum: response.data[i].reserveNum,
-              patientName: response.data[i].patientName,
+              patientName: response.data[i].name,
+              patientID: response.data[i].patientID,
               time: response.data[i].time,
               gender: response.data[i].gender,
-              bornDate: response.data[i].nornDate,
+              bornDate: response.data[i].bornDate,
               height: response.data[i].height,
               weight: response.data[i].weight,
               heartRate: response.data[i].heartRate,
@@ -136,7 +138,9 @@ export default {
     handleChange() {
       this.$forceUpdate();
     },
-    goConsult() {
+    goConsult(row) {
+      clearInterval(this.$store.commit.inquiry('doctorId',this.ID));
+      clearInterval(this.$store.commit.inquiry('patientId',row.patientID));
       this.$router.push("/doctorchat");
     },
   },

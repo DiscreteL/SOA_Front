@@ -74,34 +74,6 @@
               >拒绝
             </el-button>
           </template>
-          <!-- <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="danger"
-              style="margin-left: 20px"
-              @click="dialogFormVisible = true"
-              >处理</el-button
-            >
-            <el-dialog title="申请处理" :visible.sync="dialogFormVisible">
-              <el-form ref="form" :model="form" style="width: 100%">
-                <el-form-item label="处理结果" :label-width="formLabelWidth">
-                  <el-select v-model="form.result" placeholder="请选择处理结果">
-                    <el-option label="通过" value="1"></el-option>
-                    <el-option label="拒绝" value="2"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="处理意见" :label-width="formLabelWidth">
-                  <el-input v-model="form.reply" autocomplete="off"></el-input>
-                </el-form-item>
-              </el-form>
-              <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="handle(scope.row)"
-                  >确 定</el-button
-                >
-              </div>
-            </el-dialog>
-          </template> -->
         </el-table-column>
       </el-table>
     </div>
@@ -147,6 +119,7 @@ export default {
         },
       }).then((response) => {
         for (let i = 0; i < response.data.length; i++) {
+          if(response.data[i].status!==0)
           this.tableData.push({
             reserveNum: response.data[i].reserveNum,
             patientID: response.data[i].patientID,

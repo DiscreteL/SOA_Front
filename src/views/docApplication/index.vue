@@ -8,7 +8,6 @@
         "
         style="width: 100%"
       >
-
         <el-table-column prop="id" label="ID" width="100"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100">
         </el-table-column>
@@ -92,8 +91,8 @@
             <el-dialog title="申请处理" :visible.sync="dialogFormVisible">
               <el-form ref="form" :model="form" style="width: 100%">
                 <el-form-item label="处理结果" :label-width="formLabelWidth">
-                    <el-radio v-model="form.result" label="1">通过</el-radio>
-                    <el-radio v-model="form.result" label="0">拒绝</el-radio>
+                  <el-radio v-model="form.result" label="1">通过</el-radio>
+                  <el-radio v-model="form.result" label="0">拒绝</el-radio>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
@@ -132,8 +131,8 @@ export default {
       dialogTableVisible: false,
       dialogFormVisible: false,
       currentPage: 1, // 当前页码
-      total: 5, // 总条数
-      pageSize: 5, // 每页的数据条数
+      total: 20, // 总条数
+      pageSize: 10, // 每页的数据条数
       formData: new FormData(), //表单提交的数据
       form: {
         result: "",
@@ -152,16 +151,18 @@ export default {
         params: {},
       }).then((response) => {
         for (let i = 0; i < response.data.length; i++) {
-          this.tableData.push({
-            id: response.data[i].id,
-            // date: response.data[i].date,
-            // status: response.data[i].status,
-            name: response.data[i].name,
-            hospital: response.data[i].hospital,
-            description: response.data[i].docIntro,
-            title: response.data[i].title,
-            department: response.data[i].department,
-          });
+          if (!response.data[i].opinion) {
+            this.tableData.push({
+              id: response.data[i].id,
+              // date: response.data[i].date,
+              // status: response.data[i].status,
+              name: response.data[i].name,
+              hospital: response.data[i].hospital,
+              description: response.data[i].docIntro,
+              title: response.data[i].title,
+              department: response.data[i].department,
+            });
+          }
         }
       });
     },
@@ -220,7 +221,6 @@ export default {
     },
 
     handle(row) {
-      console.log(row);
       this.axios({
         url: "/admin-and-problem-service/auditDoctor",
         method: "post",
@@ -234,6 +234,7 @@ export default {
               type: "success",
               message: "处理成功",
             });
+            location.reload();
           } else {
             this.$message({
               type: "error",
@@ -245,43 +246,6 @@ export default {
           this.$message({
             type: "error",
             message: "处理失败！",
-          });
-        });
-    },
-
-    downloadProof(row) {
-      let data = new FormData();
-      data.append("ApplicationID", row.applicationID);
-      this.$axios({
-        url: "/downloadProof",
-        method: "post",
-        data: data,
-      })
-        .then((response) => {
-          let blob = new Blob([response.data]);
-          const disposition = response.headers["content-disposition"];
-          //获得文件名
-          let fileName = disposition.substring(
-            disposition.indexOf("filename=") + 9,
-            disposition.length
-          );
-          //解码
-          fileName = decodeURI(fileName);
-          if (window.navigator.msSaveOrOpenBlob) {
-            navigator.msSaveBlob(blob, fileName);
-          } else {
-            const link = document.createElement("a");
-            link.href = window.URL.createObjectURL(blob);
-            link.download = fileName;
-            link.click();
-            //释放内存
-            window.URL.revokeObjectURL(link.href);
-          }
-        })
-        .catch(() => {
-          this.$message({
-            type: "error",
-            message: "下载失败！请重新尝试！",
           });
         });
     },

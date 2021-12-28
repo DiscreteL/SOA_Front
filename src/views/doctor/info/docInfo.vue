@@ -73,9 +73,6 @@
       <el-descriptions-item label="执业医师资格证编号">{{
         userInfo.certificationNum
       }}</el-descriptions-item>
-      <el-descriptions-item label="资格证书证明">
-        <el-link type="primary" @click="download">查看文件</el-link>
-      </el-descriptions-item>
       <el-descriptions-item label="从业时长">{{
         userInfo.workLength
       }}</el-descriptions-item>

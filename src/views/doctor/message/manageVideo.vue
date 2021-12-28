@@ -38,16 +38,16 @@
         <el-table-column
           prop="title"
           label="标题"
-          width="200"
+          width="300"
         ></el-table-column>
 
-        <el-table-column label="查看" width="200">
+        <el-table-column label="查看">
           <template slot-scope="scope">
-            <el-button size="mini" @click="loadVideoInfo(scope.row)"
+            <el-button size="mini" @click="loadTweetInfo(scope.row)"
               >查看详情</el-button
             >
             <el-dialog title="视频详情" :visible.sync="dialogTableVisible">
-              <el-table :data="videoInfo">
+              <el-table :data="tweetInfo">
                 <el-table-column
                   label="视频标题"
                   prop="title"
@@ -65,7 +65,14 @@
                   </template></el-table-column
                 >
                 <el-table-column label="标签" prop="label"></el-table-column>
-                <el-table-column label="链接地址" prop="url"></el-table-column>
+                <el-table-column label="链接地址" prop="url">
+                  <template slot-scope="scope">
+                    <!-- 点击进行响应弹出通告具体界面-->
+                    <span @click="getDetail(scope.row)" styLe="cursor: pointer">
+                      <a class="link">{{ scope.row.url }}</a>
+                    </span>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-dialog>
           </template>
@@ -108,9 +115,9 @@ export default {
       tableData: [],
       dialogTableVisible: false,
       currentPage: 1, // 当前页码
-      total: 10, // 总条数
-      pageSize: 10, // 每页的数据条数
-      videoInfo:[]
+      total: 20, // 总条数
+      pageSize: 20, // 每页的数据条数
+      tweetInfo: [],
     };
   },
 
@@ -153,15 +160,15 @@ export default {
       this.currentPage = val;
     },
 
-    loadVideoInfo(row) {
+    loadTweetInfo(row) {
       this.dialogTableVisible = true;
-      this.VideoInfo = undefined;
-      this.VideoInfo = new Array();
+      this.videoInfo = undefined;
+      this.videoInfo = new Array();
       this.axios({
         url: "api/doctor-service/getVideo/" + row.id,
         method: "get",
         params: {
-          id: row.id
+          id: row.id,
         },
       })
         .then((response) => {
@@ -172,12 +179,16 @@ export default {
             time: response.data.time,
             coverUrl: response.data.coverUrl,
             audit: response.data.audit,
-            title: response.data.title
+            title: response.data.title,
           });
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+
+    getDetail(mes) {
+      window.open(mes.url)
     },
 
     del(row) {
@@ -187,7 +198,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.deleteVideo(row);
+          this.deleteTweet(row);
         })
         .catch(() => {
           this.$message({
@@ -197,7 +208,7 @@ export default {
         });
     },
 
-    deleteVideo(data) {
+    deleteTweet(data) {
       this.axios({
         url: "/doctor-service/deleteVideo/" + data.id,
         method: "delete",

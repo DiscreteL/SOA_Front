@@ -8,7 +8,7 @@
         style="width: 100%"
       >
         <el-table-column
-          prop="time" 
+          prop="time"
           label="上传时间"
           sortable
           width="300"
@@ -31,59 +31,72 @@
               :type="scope.row.audit === 0 ? 'primary' : 'success'"
               disable-transitions
             >
-              {{ scope.row.audit === 0 ? '未处理' : '已处理' }}
+              {{ scope.row.audit === 0 ? "未处理" : "已处理" }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="doctorID" label="用户ID" width="120"></el-table-column>
-        <el-table-column prop="title" label="标题" width="200"></el-table-column>
+        <el-table-column
+          prop="doctorID"
+          label="用户ID"
+          width="120"
+        ></el-table-column>
+        <el-table-column
+          prop="title"
+          label="标题"
+          width="200"
+        ></el-table-column>
+
+        <el-table-column label="查看">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="loadTweetData(scope.row)"
+              >点击查看详情</el-button
+            >
+            <el-dialog title="资讯信息" :visible.sync="dialogTableVisible">
+              <el-table :data="tweetData">
+                <el-table-column
+                  label="上传用户ID"
+                  prop="doctorID"
+                ></el-table-column>
+                <el-table-column label="视频ID" prop="id"></el-table-column>
+                <el-table-column label="上传时间" prop="time"></el-table-column>
+                <el-table-column
+                  label="视频标题"
+                  prop="title"
+                ></el-table-column>
+                <el-table-column
+                  label="视频标签"
+                  prop="label"
+                ></el-table-column>
+                <el-table-column label="上传内容" prop="url">
+                  <template slot-scope="scope">
+                    <span @click="getDetail(scope.row)" styLe="cursor: pointer">
+                      <a class="link">{{ scope.row.url }}</a>
+                    </span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-dialog>
+          </template>
+        </el-table-column>
+
         <el-table-column label="操作">
           <template slot-scope="scope">
-          <el-button size="mini" @click="loadVideoData(scope.row)"
-            >查看详情</el-button
-          >
-          <el-button
-            size="mini"
-            type="danger"
-            style="margin-left: 20px"
-            @click="dialogFormVisible = true"
-            >处理</el-button
-          >
-          <el-dialog title="资讯信息" :visible.sync="dialogTableVisible" >
-            <el-table :data=videoData>
-              <el-table-column label="上传用户ID" prop="doctorID"></el-table-column>
-              <el-table-column label="视频ID" prop="id"></el-table-column>
-              <el-table-column label="上传时间" prop="time"></el-table-column>
-              <el-table-column label="视频标题" prop="title"></el-table-column>
-              <el-table-column label="视频标签" prop="label"></el-table-column>
-              <el-table-column label="上传内容" prop="url">
-                <template slot-scope="scope">
-                  <el-tooltip content="点击下载" placement="top">
-                    <a style="text-decoration: underline;cursor: pointer;" @click="downloadContent(scope.row)">查看上传文件</a>
-                  </el-tooltip>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-dialog>
-
-          
-          <el-dialog title="申请处理" :visible.sync="dialogFormVisible">
-            <el-form ref="form" :model="form">
-              <el-form-item label="处理结果" :label-width="formLabelWidth">
-                <el-select v-model="form.result" placeholder="请选择处理结果">
-                  <el-option label="通过" value=1></el-option>
-                  <el-option label="拒绝" value=2></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="处理意见" :label-width="formLabelWidth">
-                <el-input v-model="form.reply" autocomplete="off"></el-input>
-              </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="handle(scope.row)">确 定</el-button>
-            </div>
-          </el-dialog>
+            <el-button
+              size="mini"
+              type="success"
+              style="margin-left: 20px"
+              @click="toOperate(scope.row)"
+              >同意</el-button
+            >
+            <el-dialog title="确认审核通过" :visible.sync="dialogFormVisible">
+              <span>确认该资讯通过审核？</span>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handle(opTweetID)"
+                  >确 定</el-button
+                >
+              </div>
+            </el-dialog>
           </template>
         </el-table-column>
       </el-table>
@@ -109,7 +122,7 @@ export default {
   data() {
     return {
       tableData: [],
-      videoData:[],
+      tweetData: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
       currentPage: 1, // 当前页码
@@ -117,10 +130,11 @@ export default {
       pageSize: 20, // 每页的数据条数
       formData: new FormData(), //表单提交的数据
       form: {
-          result: '',
-          reply: ''
-        },
-        formLabelWidth: '120px'
+        result: "",
+        reply: "",
+      },
+      formLabelWidth: "120px",
+      opTweetID: "",
     };
   },
 
@@ -129,8 +143,7 @@ export default {
       this.axios({
         url: "api/admin-and-problem-service/getAllVideo",
         method: "get",
-        params: {
-        },
+        params: {},
       })
         .then((response) => {
           this.tableData = response.data;
@@ -140,25 +153,25 @@ export default {
         });
     },
 
-    loadVideoData(row) {
-      this.dialogTableVisible = true
-      this.videoData = undefined
-      this.videoData = new Array();
+    loadTweetData(row) {
+      this.dialogTableVisible = true;
+      this.tweetData = undefined;
+      this.tweetData = new Array();
       this.axios({
-        url: "api/admin-and-problem-service/getVideo/"+row.id,
+        url: "api/admin-and-problem-service/getVideo/" + row.id,
         method: "get",
       })
         .then((response) => {
-          this.videoData.push({
-            "doctorID":response.data.doctorID,
-            "id":response.data.id,
-            "time":response.data.time,
-            "title":response.data.title,
-            "label":response.data.label,
-            "url":response.data.url,
-            "coverUrl":response.data.coverUrl,
-            "audit":response.data.audit===0?"未审核":"已审核"
-          })
+          this.tweetData.push({
+            doctorID: response.data.doctorID,
+            id: response.data.id,
+            time: response.data.time,
+            title: response.data.title,
+            label: response.data.label,
+            url: response.data.url,
+            coverUrl: response.data.coverUrl,
+            audit: response.data.audit === 0 ? "未审核" : "已审核",
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -186,73 +199,51 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
+
+    getDetail(mes) {
+      window.open(mes.url);
+    },
+
     handle(row) {
-      this.formData.append("id", row.id);
-      data.append("result", this.form.result);
-      data.append("reply", this.form.reply);
       this.axios({
-        url: "/admin-and-problem-service/auditTweet"+row.id,
+        url: "/admin-and-problem-service/auditVideo/" + row,
         method: "post",
-        data: this.formData,
+        data: { id: row},
       })
         .then((response) => {
-          if (response.data === true) {
+          if (response.data == true) {
             this.$refs.form.resetFields();
             this.dialogFormVisible = false;
             this.$message({
               type: "success",
               message: "处理成功",
             });
+            location.reload()
           } else {
             this.$message({
               type: "error",
-              message: "处理失败！",
+              message: "处理失败la！",
             });
           }
         })
         .catch(() => {
+          this.dialogFormVisible = false;
           this.$message({
-            type: "error",
-            message: "处理失败！",
-          });
+              type: "success",
+              message: "处理成功",
+            })
+            location.reload()
+          // this.$message({
+          //   type: "error",
+          //   message: "处理失败aaaaa！",
+          // });
         });
-        this.formData = new FormData();
     },
 
-    downloadProof(row){
-      let data = new FormData()
-      data.append("id",row.id)
-      this.axios({
-        url:"/",
-        method:"post",
-        data:data
-      }).then((response)=>{
-        let blob = new Blob([response.data]);
-        const disposition = response.headers["content-disposition"];
-        //获得文件名
-        let fileName = disposition.substring(
-            disposition.indexOf("filename=") + 9,
-            disposition.length
-        );
-        //解码
-        fileName = decodeURI(fileName);
-        if (window.navigator.msSaveOrOpenBlob) {
-          navigator.msSaveBlob(blob, fileName);
-        } else {
-          const link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          link.download = fileName;
-          link.click();
-          //释放内存
-          window.URL.revokeObjectURL(link.href);
-        }
-      }).catch(()=>{
-        this.$message({
-          type: "error",
-          message: "下载失败！请重新尝试！",
-        });
-      })
-    }
+    toOperate(row) {
+      this.dialogFormVisible = true;
+      this.opTweetID = row.id;
+    },
   },
 
   mounted() {
