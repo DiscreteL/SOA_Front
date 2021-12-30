@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/home.vue'
 import Login from '../views/login.vue'
 import Register from '../views/register.vue'
 import News from '../views/news.vue'
@@ -272,24 +272,24 @@ const routes = [{
         ]
     },
     {
-        path:'/waitempty',
+        path: '/waitempty',
         component: () =>
-            import ('../views/patient/consult/apply/waitempty.vue'),        
+            import ('../views/patient/consult/apply/waitempty.vue'),
     },
     {
-        path:'/personempty',
+        path: '/personempty',
         component: () =>
-            import ('../views/patient/collection/personempty.vue'),        
+            import ('../views/patient/collection/personempty.vue'),
     },
     {
-        path:'/articleempty',
+        path: '/articleempty',
         component: () =>
-            import ('../views/patient/collection/articleempty.vue'),        
+            import ('../views/patient/collection/articleempty.vue'),
     },
     {
-        path:'/videoempty',
+        path: '/videoempty',
         component: () =>
-            import ('../views/patient/collection/videoempty.vue'),        
+            import ('../views/patient/collection/videoempty.vue'),
     },
     {
         path: '/consult',
