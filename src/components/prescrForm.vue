@@ -16,7 +16,7 @@
                 size="mini"
                 class="input2"
                 placeholder="如：莲花清瘟胶囊"
-                v-model="preForm2.num">
+                v-model="preForm2.name">
             </el-input>
           </el-col>
           <el-button @click="addMedicine">添加</el-button>
@@ -89,8 +89,8 @@ export default {
       preForm1: {},//处方表
       preForm2: {//处方表
         name:'',//药品名输入绑定
-        num:'',//数量输入绑定
-        method:'',//用法输入绑定
+        // num:'',//数量输入绑定
+        // method:'',//用法输入绑定
         data:[],//药品表信息
       },
       editIndex:-1,//表格编辑索引
@@ -127,8 +127,8 @@ export default {
       postMedicineIncludedDataFun({
         m_name:this.submit.name,
         p_id:this.$store.state.inquiry.preId,
-        quantity:this.submit.num,
-        content:this.submit.method
+        // quantity:this.submit.num,
+        // content:this.submit.method
       }).then(res => {
         // console.log(res);
       }).catch(err => {
@@ -144,9 +144,9 @@ export default {
         });
       }else{
         for(let i=0;i<this.preForm2.data.length;i++){
-          this.submit.name=this.preForm2.data[i].name;
-          this.submit.num=this.preForm2.data[i].num;
-          this.submit.method=this.preForm2.data[i].method;
+          this.submit.name=this.submit.name+this.preForm2.data[i].name;
+          // this.submit.num=this.preForm2.data[i].num;
+          // this.submit.method=this.preForm2.data[i].method;
           // console.log(this.submit);
           this.postMedicineIncluded();
         }
@@ -160,27 +160,27 @@ export default {
     },
     addMedicine(){//添加药品到药品表
       let _this=this;
-      if(_this.preForm2.name!=''&&_this.preForm2.num!=''&&_this.preForm2.method!=''){
+      if(_this.preForm2.name!=''){
         _this.preForm2.data.push({
           name:_this.preForm2.name,
-          num:_this.preForm2.num,
-          method:_this.preForm2.method
+          // num:_this.preForm2.num,
+          // method:_this.preForm2.method
         })
         _this.preForm2.name='';
-        _this.preForm2.num='';
-        _this.preForm2.method='';
+        // _this.preForm2.num='';
+        // _this.preForm2.method='';
       }
     },
     handleEdit(row,index){//编辑药品表
-      // this.editName=row.name;
-      this.editNum=row.num;
-      this.editMethod=row.method;
-      this.editIndex=index;
+      this.editName=row.name;
+      // this.editNum=row.num;
+      // this.editMethod=row.method;
+      // this.editIndex=index;
     },
     handleSave(index){//保存编辑
-      // this.preForm2.data[index].name=this.editName;
-      this.preForm2.data[index].num=this.editNum;
-      this.preForm2.data[index].method=this.editMethod;
+      this.preForm2.data[index].name=this.editName;
+      // this.preForm2.data[index].num=this.editNum;
+      // this.preForm2.data[index].method=this.editMethod;
       this.editIndex=-1;
     },
     remove(index){//删除一条药品表信息
@@ -188,9 +188,9 @@ export default {
     },
     clearAll(){//清空处方表
       this.preForm2.data=[];
-      this.preForm2.num='';
+      // this.preForm2.num='';
       this.preForm2.name='';
-      this.preForm2.method='';
+      // this.preForm2.method='';
     }
   },
 }

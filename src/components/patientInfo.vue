@@ -56,7 +56,7 @@ export default {
       //     ID: '123',
       //   },
       // })
-            this.axios({
+        this.axios({
         url:
           "api/patient-service/getPatient/" +
           this.$store.state.inquiry.patientId,
