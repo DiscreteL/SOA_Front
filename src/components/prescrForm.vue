@@ -2,12 +2,12 @@
   <div class="form_body">
     <el-form :model="preForm1" size="mini" label-width="90px" :disabled="preFormDisabled">
       <el-form-item label="患者姓名：">
-        <span>王某某{{this.$store.state.inquiry.patientName}}</span>
+        <span>{{this.$store.state.inquiry.patientName}}</span>
       </el-form-item>
       <el-form-item label-position="top"  label="初步诊断：">{{$store.state.inquiry.diseaseDecided}}</el-form-item>
     </el-form>
     <el-form label-position="top" :model="preForm2" size="mini" label-width="90px" :disabled="preFormDisabled">
-      <el-form-item  label="处理意见：">
+      <el-form-item  label="开具处方：">
         <el-row>
 
           <el-col :span="12">
@@ -45,8 +45,8 @@
                 <el-button @click="editIndex = -1">取消</el-button>
               </div>
               <div v-else>
-                <el-button @click="handleEdit(scope.row, scope.$index)">编辑</el-button>
-                <el-button type="error"  @click="remove(scope.$index)">删除</el-button>
+                <!-- <el-button @click="handleEdit(scope.row, scope.$index)">编辑</el-button> -->
+                <el-button type="danger"  @click="remove(scope.$index)">删除</el-button>
               </div>
             </template>
           </el-table-column>
@@ -70,22 +70,22 @@ export default {
   name: "prescription_form",
   data() {
     return {
-      drugs:[{
-          value: '选项1',
-          label: '药品1'
-        }, {
-          value: '选项2',
-          label: '药品2'
-        }, {
-          value: '选项3',
-          label: '药品3'
-        }, {
-          value: '选项4',
-          label: '药品4'
-        }, {
-          value: '选项5',
-          label: '药品5'
-        }],
+      // drugs:[{
+      //     value: '选项1',
+      //     label: '药品1'
+      //   }, {
+      //     value: '选项2',
+      //     label: '药品2'
+      //   }, {
+      //     value: '选项3',
+      //     label: '药品3'
+      //   }, {
+      //     value: '选项4',
+      //     label: '药品4'
+      //   }, {
+      //     value: '选项5',
+      //     label: '药品5'
+      //   }],
       preForm1: {},//处方表
       preForm2: {//处方表
         name:'',//药品名输入绑定
@@ -99,8 +99,8 @@ export default {
       editMethod:'',//编辑用法绑定
       submit:{//提交药品
         name:'',
-        num:'',
-        method:''
+        // num:'',
+        // method:''
       },
       preFormDisabled:false,//处方表禁用设置
     }
@@ -124,13 +124,20 @@ export default {
     //   })
     // },
     postMedicineIncluded() {//上传处方表
-      postMedicineIncludedDataFun({
-        m_name:this.submit.name,
-        p_id:this.$store.state.inquiry.preId,
-        // quantity:this.submit.num,
-        // content:this.submit.method
-      }).then(res => {
-        // console.log(res);
+      this.axios
+        .post("/doctor-service/newRecord", {
+          recordID:this.$store.state.inquiry.preId,
+          time:'',
+          doctorID:this.$store.state.inquiry.doctorId,
+          doctorName:'',
+          patientID:this.$store.state.inquiry.patientId,
+          patientName:'',
+          diseaseName:'',
+          diagContent:'',
+          medicine:this.submit.name
+        })
+      .then(res => {
+        this.$message.success("提交成功！");
       }).catch(err => {
         // console.log(err);
       })
@@ -145,13 +152,9 @@ export default {
       }else{
         for(let i=0;i<this.preForm2.data.length;i++){
           this.submit.name=this.submit.name+this.preForm2.data[i].name;
-          // this.submit.num=this.preForm2.data[i].num;
-          // this.submit.method=this.preForm2.data[i].method;
-          // console.log(this.submit);
           this.postMedicineIncluded();
         }
         this.preFormDisabled=true;
-        // console.log('submit!');
       }
 
     },
@@ -171,18 +174,18 @@ export default {
         // _this.preForm2.method='';
       }
     },
-    handleEdit(row,index){//编辑药品表
-      this.editName=row.name;
-      // this.editNum=row.num;
-      // this.editMethod=row.method;
-      // this.editIndex=index;
-    },
-    handleSave(index){//保存编辑
-      this.preForm2.data[index].name=this.editName;
-      // this.preForm2.data[index].num=this.editNum;
-      // this.preForm2.data[index].method=this.editMethod;
-      this.editIndex=-1;
-    },
+    //     handleEdit(row,index){//编辑药品表
+    //   this.editName=row.name;
+    //   // this.editNum=row.num;
+    //   // this.editMethod=row.method;
+    //   // this.editIndex=index;
+    // },
+    // handleSave(index){//保存编辑
+    //   this.preForm2.data[index].name=this.editName;
+    //   // this.preForm2.data[index].num=this.editNum;
+    //   // this.preForm2.data[index].method=this.editMethod;
+    //   this.editIndex=-1;
+    // },
     remove(index){//删除一条药品表信息
       this.preForm2.data.splice(index,1);
     },

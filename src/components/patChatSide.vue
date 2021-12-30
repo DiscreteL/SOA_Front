@@ -6,18 +6,19 @@
           <el-form-item label="患者姓名：">
             <span>{{diseaseDecidedForm.patientName}}</span>
           </el-form-item>
-          <el-form-item label="患者主诉：">
+          <!-- <el-form-item label="患者主诉：">
             <span>{{diseaseDecidedForm.desc}}</span>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="诊断疾病：">
             <span>{{diseaseDecidedForm.disease}}</span>
           </el-form-item>
-          <el-form-item label="所属科室：">
+          <!-- <el-form-item label="所属科室：">
             <span>{{diseaseDecidedForm.department}}</span>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="相应症状：">
-            <el-checkbox-group v-model="diseaseDecidedForm.type" disabled>
-              <el-checkbox label="头痛"></el-checkbox>
+            <span>{{diseaseDecidedForm.content}}</span>
+            <!-- <el-checkbox-group v-model="diseaseDecidedForm.type" disabled> -->
+              <!-- <el-checkbox label="头痛"></el-checkbox>
               <el-checkbox label="头昏"></el-checkbox>
               <el-checkbox label="心悸"></el-checkbox>
               <el-checkbox label="胸闷"></el-checkbox>
@@ -43,7 +44,7 @@
               <el-checkbox label="关节肿痛"></el-checkbox>
               <el-checkbox label="视力模糊"></el-checkbox>
               <el-checkbox label="四肢麻木"></el-checkbox>
-            </el-checkbox-group>
+            </el-checkbox-group> -->
           </el-form-item>
         </el-form>
         <el-form :model="buttonForm" size="mini" label-width="90px" :disabled="preButtonDiabled">
@@ -112,9 +113,9 @@ export default {
       diseaseDecidedForm: {//病历表单
         patientName:'',//病人姓名（通过store中patientId与调用getPatient接口获取）
         disease: '等待医生填写',//疾病
-        department:'等待医生填写',//科室
-        type:[],//症状多选框数组
-        desc: '等待医生填写'//主诉
+        // department:'等待医生填写',//科室
+        content:'等待生成',//症状多选框数组
+        // desc: '等待医生填写'//主诉
       },
       store:{
         id:this.$store.state.inquiry.patientId,
@@ -142,7 +143,6 @@ export default {
     },
     getDrugs(){//获取处方信息
       this.axios.get("/patient-service/getMedicine/"+this.$store.state.inquiry.preId
-        // this.axios.get("/patient-service/getMedicine/"+"21"
       ).then(res=>{
         if(res.length!=0){//当成功获取到处方信息时
             this.includeForm.data.push({//装入药品表格数据
@@ -157,6 +157,18 @@ export default {
       })
     },
     getPre(){//获取病历
+    this.axios.get("/patient-service/getDiagContent/"+this.$store.state.inquiry.preId
+      ).then(res=>{
+        if(res.length!=0){//当成功获取到处方信息时
+            this.diseaseDecidedForm.disease=this.$store.state.inquiry.diseaseDecided,
+            this.diseaseDecidedForm.content=res.data;
+            }
+          
+          this.preButtonDiabled=true;//设置病历刷新按钮禁用
+          this.includeTabDisabled=false;//设置处方tab单元可用
+      }).catch(err=>{
+        console.log(err);
+      })
       // this.axios.get("/patient-service/getDiagContent"+{
       //   pati_id:this.$store.state.inquiry.patientId,
       //   doctor_id:this.$store.state.inquiry.doctorId

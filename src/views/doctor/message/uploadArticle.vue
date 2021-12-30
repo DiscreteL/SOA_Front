@@ -100,7 +100,7 @@ export default {
     },
     async submitFile() {
       await this.axios({
-        url: "http://100.78.182.86:9790/upload",
+        url: "http://100.78.155.102:9790/upload",
         method: "post",
         data: this.newFile,
         headers: {
@@ -118,7 +118,6 @@ export default {
               time: "",
               coverUrl: "",
               audit: 0,
-              id: "",
             })
             .then((response) => {
               this.$message.success("发布成功！");

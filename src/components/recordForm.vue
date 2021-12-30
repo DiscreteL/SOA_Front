@@ -3,15 +3,17 @@
     <el-form
       :model="diseaseDecidedForm"
       size="mini"
-      label-width="90px"
+      label-width="120px"
       :disabled="writeDisabled"
     >
       <el-form-item label="患者姓名：">
-        <span>王某某{{ this.$store.state.inquiry.patientName }}</span>
+        <span>{{ this.$store.state.inquiry.patientName }}</span>
       </el-form-item>
       <el-form-item label="患者主诉：">
         <el-input
           placeholder="请输入内容"
+          type="textarea"
+          :rows="2"
           class="input"
           v-model="diseaseDecidedForm.desc"
           clearable
@@ -25,7 +27,13 @@
         <!--        ></el-input>-->
       </el-form-item>
       <el-form-item label="诊断疾病：">
-        <el-input placeholder="请输入内容" class="input" v-model="diseaseDecidedForm.disease" clearable> </el-input>
+        <el-input
+          placeholder="请输入内容"
+          class="input"
+          v-model="diseaseDecidedForm.disease"
+          clearable
+        >
+        </el-input>
         <!-- <el-select v-model="diseaseDecidedForm.disease" filterable placeholder="请选择疾病">
           <el-option
               v-for="item in diseases"
@@ -35,7 +43,7 @@
           </el-option>
         </el-select> -->
       </el-form-item>
-      <el-form-item label="所属科室：">
+      <!-- <el-form-item label="所属科室：">
         <el-select
           v-model="diseaseDecidedForm.department"
           filterable
@@ -49,9 +57,18 @@
           >
           </el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="相应症状：">
-        <el-checkbox-group v-model="diseaseDecidedForm.type">
+        <el-input
+          placeholder="请输入内容"
+          type="textarea"
+          :rows="4"
+          class="input"
+          v-model="diseaseDecidedForm.type"
+          clearable
+        >
+        </el-input>
+        <!-- <el-checkbox-group v-model="diseaseDecidedForm.type">
           <el-checkbox label="头痛"></el-checkbox>
           <el-checkbox label="头昏"></el-checkbox>
           <el-checkbox label="心悸"></el-checkbox>
@@ -78,7 +95,7 @@
           <el-checkbox label="关节肿痛"></el-checkbox>
           <el-checkbox label="视力模糊"></el-checkbox>
           <el-checkbox label="四肢麻木"></el-checkbox>
-        </el-checkbox-group>
+        </el-checkbox-group> -->
       </el-form-item>
       <el-form-item>
         <el-button size="medium" type="primary" @click="onSubmit"
@@ -96,31 +113,31 @@ export default {
   name: "inquiry_record",
   data() {
     return {
-    //   departments: [], //所有科室
-       departments: [{
-          value: '选项1',
-          label: '骨科'
-        }, {
-          value: '选项2',
-          label: '口腔科'
-        }, {
-          value: '选项3',
-          label: '五官科'
-        }, {
-          value: '选项4',
-          label: '皮肤科'
-        }, {
-          value: '选项5',
-          label: '内分泌科'
-        }],
+      //   departments: [], //所有科室
+      //  departments: [{
+      //     value: '选项1',
+      //     label: '骨科'
+      //   }, {
+      //     value: '选项2',
+      //     label: '口腔科'
+      //   }, {
+      //     value: '选项3',
+      //     label: '五官科'
+      //   }, {
+      //     value: '选项4',
+      //     label: '皮肤科'
+      //   }, {
+      //     value: '选项5',
+      //     label: '内分泌科'
+      //   }],
       diseases: [], //所有疾病
       diseaseDecidedForm: {
+        desc: "", //患者主诉
         disease: "", //疾病
-        department: "", //科室
-        type: [], //症状
+        // department: "", //科室
+        type: "", //症状
         content: "",
         time: "",
-        desc: "", //患者主诉
       },
       writeDisabled: false, //病历表单禁用设置
     };
@@ -130,16 +147,22 @@ export default {
   },
   methods: {
     postPre() {
-      postPreDataFun({
-        //上传病历信息
-        Pati_ID: this.$store.state.inquiry.patientId,
-        Doctor_ID: this.$store.state.inquiry.doctorId,
-        department: this.diseaseDecidedForm.department,
-        time: this.diseaseDecidedForm.time,
-        content: this.diseaseDecidedForm.content,
-      })
+      this.axios
+        .post("/doctor-service/newRecord", {
+          recordID:this.$store.state.inquiry.doctorId + "-" + this.$store.state.inquiry.patientId + "-" + this.diseaseDecidedForm.time,
+          time:this.diseaseDecidedForm.time,
+          doctorID:window.sessionStorage.getItem("userID"),
+          //doctorID:this.$store.state.inquiry.doctorId,
+          doctorName:'',
+          // patientID:this.$store.state.inquiry.patientId,
+          patientID:'123',
+          patientName:'',
+          diseaseName:this.diseaseDecidedForm.disease,
+          diagContent:this.diseaseDecidedForm.content,
+          medicine:''
+        })
         .then((res) => {
-          let preId = res.result.prescription_ID;
+          let preId = this.$store.state.inquiry.doctorId + "-" + this.$store.state.inquiry.patientId + "-" + this.diseaseDecidedForm.time;
           this.$store.commit("editInquiryPreId", preId);
           console.log(res);
         })
@@ -179,18 +202,23 @@ export default {
       let month = new Date().getMonth() + 1;
       let year = new Date().getFullYear();
       this.diseaseDecidedForm.time = month + "-" + date + "-" + year;
+
       let content =
+        "患者主诉：" +
         this.diseaseDecidedForm.desc +
-        "——" +
-        this.diseaseDecidedForm.disease +
+        "；" +
+        "相应症状：" +
+        this.diseaseDecidedForm.type +
         "——";
-      let i = 0;
-      for (i = 0; i < this.diseaseDecidedForm.type.length - 1; i++) {
-        content = content + this.diseaseDecidedForm.type[i] + "-";
-      }
-      content = content + this.diseaseDecidedForm.type[i];
+      // let i = 0;
+      // for (i = 0; i < this.diseaseDecidedForm.type.length - 1; i++) {
+      //   content = content + this.diseaseDecidedForm.type[i] + "-";
+      // }
+      // content = content + this.diseaseDecidedForm.type[i];
       this.diseaseDecidedForm.content = content;
+
       this.$store.commit("editDiseaseDecided", this.diseaseDecidedForm.disease);
+
       this.postPre();
       this.writeDisabled = true;
       this.$store.commit("editInquiryIncludeDisabled", false);
@@ -200,8 +228,8 @@ export default {
       //清空病历表单内容
       this.diseaseDecidedForm.desc = "";
       this.diseaseDecidedForm.disease = "";
-      this.diseaseDecidedForm.department = "";
-      this.diseaseDecidedForm.type = [];
+      // this.diseaseDecidedForm.department = "";
+      this.diseaseDecidedForm.type = "";
     },
   },
 };

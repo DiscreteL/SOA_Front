@@ -67,11 +67,13 @@ export default {
         },
       })
         .then((response) => {
+          for (let i = 0; i < response.data.length; i++) {
           this.tableData.push({
-            time: response.data.time,
-            reply: response.data.reply,
-            content: response.data.content
+            reply: response.data[i].reply,
+            content: response.data[i].content,
+            time: response.data[i].time
           });
+        }
         })
         .catch((error) => {
           console.log(error);
