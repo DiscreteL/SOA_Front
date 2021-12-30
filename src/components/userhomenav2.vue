@@ -157,7 +157,7 @@ export default {
 
     onSubmit () {
       this.axios({
-        url: 'http://100.78.182.86:9790/upload',
+        url: 'http://100.78.155.102:9790/upload',
         method: 'post',
         data: this.newFile,
         headers: {

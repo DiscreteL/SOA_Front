@@ -151,9 +151,11 @@ export default {
         .post("/doctor-service/newRecord", {
           recordID:this.$store.state.inquiry.doctorId + "-" + this.$store.state.inquiry.patientId + "-" + this.diseaseDecidedForm.time,
           time:this.diseaseDecidedForm.time,
-          doctorID:this.$store.state.inquiry.doctorId,
+          doctorID:window.sessionStorage.getItem("userID"),
+          //doctorID:this.$store.state.inquiry.doctorId,
           doctorName:'',
-          patientID:this.$store.state.inquiry.patientId,
+          // patientID:this.$store.state.inquiry.patientId,
+          patientID:'123',
           patientName:'',
           diseaseName:this.diseaseDecidedForm.disease,
           diagContent:this.diseaseDecidedForm.content,
