@@ -14,13 +14,13 @@ let options = {
     channel: "test",
     // Set the user ID.  改成用户ID
     // uid: 123456,
-    uid: sessionStorage.getItem('userID')
+    uid: 21,
 };
 
 // 从 服务器获取 Token  地址要改
 function fetchToken(uid, channelName) {
     return new Promise(function(resolve) {
-        axios.get("http://100.78.155.102:9780/webrtc/getToken/" + channelName + "/" + uid
+        axios.get("http://47.101.37.108:9780/webrtc/getToken/" + channelName + "/" + uid
                 // 'webrtc-service/' + 'webrtc/getToken/'
                 // , {
                 //     headers: {

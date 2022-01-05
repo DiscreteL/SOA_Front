@@ -56,7 +56,7 @@ export default {
       //     ID: '123',
       //   },
       // })
-        this.axios({
+      this.axios({
         url:
           "api/patient-service/getPatient/" +
           this.$store.state.inquiry.patientId,
@@ -66,14 +66,14 @@ export default {
         },
       })
         .then((res) => {
-          this.patient.patiId = res.result.id;
-          this.patient.patiName = res.result.name;
-          this.patient.sex = res.result.gender;
-          this.patient.email = res.result.email;
+          this.patient.patiId = res.data.id;
+          this.patient.patiName = res.data.name;
+          this.patient.sex = res.data.gender;
+          this.patient.email = res.data.email;
           this.$store.commit("editInquiryPatientName", this.patient.patiName);
-          this.patient.height = res.result.height + " cm";
-          this.patient.weight = res.result.weight + " kg";
-          this.patient.heartRate = res.result.heartRate + " bmp";
+          this.patient.height = res.data.height + " cm";
+          this.patient.weight = res.data.weight + " kg";
+          this.patient.heartRate = res.data.heartRate + " bmp";
         })
         .catch((err) => {
           console.log(err);
