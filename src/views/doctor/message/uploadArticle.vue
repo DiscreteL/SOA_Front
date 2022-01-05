@@ -100,7 +100,7 @@ export default {
     },
     async submitFile() {
       await this.axios({
-        url: "http://100.78.155.102:9790/upload",
+        url: "http://192.168.43.147:9790/upload",
         method: "post",
         data: this.newFile,
         headers: {

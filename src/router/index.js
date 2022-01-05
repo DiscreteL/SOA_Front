@@ -143,6 +143,7 @@ const routes = [{
         name: 'MessageCenter',
         component: () =>
             import ('../views/doctor/messageCenter.vue'),
+        redirect: '/uploadArticle',
         children: [{
                 path: '/uploadArticle',
                 component: () =>
@@ -175,6 +176,7 @@ const routes = [{
         name: 'ConsultCenter',
         component: () =>
             import ('../views/doctor/consultCenter.vue'),
+            redirect: '/waitApply',
         children: [{
                 path: '/waitApply',
                 component: () =>
@@ -201,6 +203,7 @@ const routes = [{
         name: 'HelpCenter',
         component: () =>
             import ('../views/doctor/helpCenter.vue'),
+        redirect: '/problems',    
         children: [{
                 path: '/feedback',
                 component: () =>
@@ -338,38 +341,57 @@ const routes = [{
         meta: { title: '帮助中心' },
         redirect: '/help/faq',
         children: [{
-                path: 'faq',
-                name: 'FAQ',
-                component: () =>
-                    import ('../views/patient/help/FAQ.vue'),
-                meta: { title: '常见问题' }
-            },
-            {
-                path: 'releaseq',
-                name: 'ReleaseQ',
-                component: () =>
-                    import ('../views/patient/help/ReleaseQ.vue'),
-                meta: { title: '反馈问题' }
-            },
-            {
-                path: 'totalq',
-                component: () =>
-                    import ('../views/patient//help/myquestion/TotalQ.vue'),
-                meta: { title: '我的反馈' }
-            },
-            {
-                path: 'successq',
-                component: () =>
-                    import ('../views/patient/help/myquestion/SucQ.vue'),
-                meta: { title: '我的反馈' },
-            },
-            {
-                path: 'waitq',
-                component: () =>
-                    import ('../views/patient/help/myquestion/WaitQ.vue'),
-                meta: { title: '我的反馈' },
-            },
-        ]
+            path: 'releaseq',
+            component: () =>
+                import ('../views/patient/help/ReleaseQ.vue'),
+            meta: { title: '问题反馈' },
+        },
+        {
+            path: 'totalq',
+            component: () =>
+                import ('../views/patient/help/TotalQ.vue'),
+            meta: { title: '反馈记录' },
+        },
+        {
+            path: 'faq',
+            component: () =>
+                import ('../views/patient/help/FAQ.vue'),
+            meta: { title: '常见问题解答' },
+        }
+    ]
+        // children: [{
+        //         path: 'faq',
+        //         name: 'FAQ',
+        //         component: () =>
+        //             import ('../views/patient/help/FAQ.vue'),
+        //         meta: { title: '常见问题' }
+        //     },
+        //     {
+        //         path: 'releaseq',
+        //         name: 'ReleaseQ',
+        //         component: () =>
+        //             import ('../views/patient/help/ReleaseQ.vue'),
+        //         meta: { title: '反馈问题' }
+        //     },
+        //     {
+        //         path: 'totalq',
+        //         component: () =>
+        //             import ('../views/patient/help/TotalQ.vue'),
+        //         meta: { title: '我的反馈' }
+        //     },
+        //     {
+        //         path: 'successq',
+        //         component: () =>
+        //             import ('../views/patient/help/myquestion/SucQ.vue'),
+        //         meta: { title: '我的反馈' },
+        //     },
+        //     {
+        //         path: 'waitq',
+        //         component: () =>
+        //             import ('../views/patient/help/myquestion/WaitQ.vue'),
+        //         meta: { title: '我的反馈' },
+        //     },
+        // ]
     },
 
     // {

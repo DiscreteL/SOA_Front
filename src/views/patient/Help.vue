@@ -42,7 +42,14 @@
             <i class="el-icon-document" style="color: #dcdcdc"></i>
             <span slot="title">我的反馈</span>
           </el-menu-item> -->
-                    <el-submenu>
+          <el-menu-item
+            index="/help/totalq"
+            @click="saveNavState('/totalq')"
+          >
+            <i class="el-icon-document" style="color: #dcdcdc"></i>
+            <span slot="title">我的反馈</span>
+          </el-menu-item>
+                    <!-- <el-submenu>
             <template slot="title">
               <i class="el-icon-document" style="color: #dcdcdc"></i>
               <span>我的反馈</span>
@@ -50,7 +57,7 @@
             <el-menu-item index="totalq">全部</el-menu-item>
             <el-menu-item index="waitq">待处理</el-menu-item>
             <el-menu-item index="successq">已处理</el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
         </el-menu>
       </el-aside>
       <!--右侧主体区-->

@@ -35,11 +35,9 @@ module.exports = {
                 }
             },
             '/patient-service': {
+                target: "http://192.168.43.147:8891",
                 target: "http://121.4.85.6:8891",
-                changeOrigin: true, //是否开启跨域
-                ws: true, //websocket支持
                 pathRewrite: {
-                    '^/patient-service': ''
                 }
             },
         }

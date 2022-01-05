@@ -1,50 +1,94 @@
 <template>
-  <el-card>
-    <el-collapse v-model="activeNames" @change="handleChange">
-      <el-collapse-item title="问诊是否有保证？" name="1">
-        <div class="reply">
-          答：平台通过认证的医生，需要提供身份证、医师资格证、医师执业证、医师专业技术资格证、职称证明，通过人工审核的对比，进行严格的认证对比。
-        </div>
-      </el-collapse-item>
-      <el-collapse-item title="隐私保护" name="2">
-        <div class="reply">
-          答：在未获得授权的情况下，个人信息不会输出、共享给第三方。
-        </div>
-      </el-collapse-item>
-            <el-collapse-item title="如何提高问诊效率" name="3">
-        <div class="reply">
-          答：详细描述您的目前健康情况，如果有相关的检查报告单或者患处照片一并发给医生。以便医生对您的问题进行综合判断问诊。
-        </div>
-      </el-collapse-item>
-            <el-collapse-item title="怎么向医生表示感谢" name="4">
-        <div class="reply">
-          答：问诊结束后，可以给医生五星评价，对医生进行肯定和鼓励。
-        </div>
-      </el-collapse-item>
-            <el-collapse-item title="预约的医生拒绝了我的问诊请求怎么办？" name="5">
-        <div class="reply">
-          答：如果医生评估了您的问题之后，发现于自己的擅长不符，或者医生当前时间紧张，暂时无法提供咨询。您可以重新选择医生咨询，或者重新提交预约给当前医生。
-        </div>
-      </el-collapse-item>
-    </el-collapse>
-  </el-card>
+  <el-table
+    :data="
+      tableData.filter(
+        (data) =>
+          !search || data.title.toLowerCase().includes(search.toLowerCase())
+      )
+    "
+    style="width: 100%"
+  >
+    <el-table-column type="expand">
+      <template slot-scope="props">
+        <el-form label-position="left" inline class="demo-table-expand">
+          <el-form-item label="解答">
+            <span>{{ props.row.problemAnswer }}</span>
+          </el-form-item>
+        </el-form>
+      </template>
+    </el-table-column>
+    <el-table-column label="问题名称" prop="problemContent"> </el-table-column>
+    <el-table-column align="right">
+      <template slot="header" slot-scope="scope">
+        <el-input
+          v-model="search"
+          @click="handleEdit(scope.$index, scope.row)"
+          size="mini"
+          placeholder="输入关键字搜索"
+        />
+      </template>
+    </el-table-column>
+  </el-table>
 </template>
+
+<style>
+.demo-table-expand {
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-left: 2%;
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
+}
+</style>
+
 <script>
 export default {
   data() {
     return {
-      activeNames: ["1"],
+      tableData: [],
+      search: "",
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 20, // 每页的数据条数
     };
   },
   methods: {
-    handleChange(val) {
-      console.log(val);
+    //加载问题列表
+    loadData() {
+      this.axios({
+        url: "api/admin-and-problem-service/getAllProblem",
+        method: "get",
+        params: {
+        },
+      })
+        .then((response) => {
+          this.tableData = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
+
+    //每页条数改变时触发 选择一页显示多少行
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.currentPage = 1;
+      this.pageSize = val;
+    },
+    //当前页改变时触发 跳转其他页
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.currentPage = val;
+    },
+  },
+  mounted() {
+    this.loadData();
   },
 };
 </script>
-<style scoped>
-.reply{
-    color: green;
-}
-</style>
