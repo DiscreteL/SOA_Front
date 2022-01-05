@@ -10,7 +10,7 @@ module.exports = {
         port: 8080, // 端口号
         proxy: { //配置多个跨域
             '/api': {
-                target: "http://121.4.85.6:9000",
+                target: "http://139.224.164.68:9000",
                 changeOrigin: true, //是否开启跨域
                 ws: true, //websocket支持
                 pathRewrite: {
