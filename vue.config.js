@@ -11,6 +11,7 @@ module.exports = {
         proxy: { //配置多个跨域
             '/api': {
                 target: "http://121.4.85.6:9000",
+
                 changeOrigin: true, //是否开启跨域
                 ws: true, //websocket支持
                 pathRewrite: {
