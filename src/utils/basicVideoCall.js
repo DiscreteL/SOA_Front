@@ -14,13 +14,13 @@ let options = {
     channel: "test",
     // Set the user ID.  改成用户ID
     // uid: 123456,
-    uid: 19
+    uid: 21,
 };
 
 // 从 服务器获取 Token  地址要改
 function fetchToken(uid, channelName) {
     return new Promise(function(resolve) {
-        axios.get("http://192.168.43.147:9780/webrtc/getToken/" + channelName + "/" + uid
+        axios.get("http://47.101.37.108:9780/webrtc/getToken/" + channelName + "/" + uid
                 // 'webrtc-service/' + 'webrtc/getToken/'
                 // , {
                 //     headers: {
@@ -40,6 +40,8 @@ function fetchToken(uid, channelName) {
 }
 
 export async function startBasicCall() {
+
+    console.log("11111111111");
     // Create an AgoraRTCClient object.
     rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 

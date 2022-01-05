@@ -10,7 +10,7 @@ module.exports = {
         port: 8080, // 端口号
         proxy: { //配置多个跨域
             '/api': {
-                target: "http://192.168.43.147:9000",
+                target: "http://121.4.85.6:9000",
                 changeOrigin: true, //是否开启跨域
                 ws: true, //websocket支持
                 pathRewrite: {
@@ -18,7 +18,7 @@ module.exports = {
                 }
             },
             '/admin-and-problem-service': {
-                target: "http://192.168.43.147:9590",
+                target: "http://139.224.164.68:9590",
                 changeOrigin: true, //是否开启跨域
                 ws: true, //websocket支持
                 pathRewrite: {
@@ -26,7 +26,7 @@ module.exports = {
                 }
             },
             '/doctor-service': {
-                target: "http://192.168.43.147:8788",
+                target: "http://139.224.164.68:8788",
                 changeOrigin: true, //是否开启跨域
                 ws: true, //websocket支持
                 pathRewrite: {
@@ -35,10 +35,8 @@ module.exports = {
             },
             '/patient-service': {
                 target: "http://192.168.43.147:8891",
-                changeOrigin: true, //是否开启跨域
-                ws: true, //websocket支持
+                target: "http://121.4.85.6:8891",
                 pathRewrite: {
-                    '^/patient-service': ''
                 }
             },
         }

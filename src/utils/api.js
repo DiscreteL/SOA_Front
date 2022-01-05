@@ -13,10 +13,10 @@ export default {
     //GqvbYer04485869e6b5acbed4ed10dfd79468f6d84577b1
 
     diseaseList(data) {
-        //return instance.get("https://api.apishop.net/common/disease/queryDiseaseList?apiKey=GqvbYer04485869e6b5acbed4ed10dfd79468f6d84577b1&page=1&pageSize=50", data);
+        // return instance.get("https://api.apishop.net/common/disease/queryDiseaseList?apiKey=GqvbYer04485869e6b5acbed4ed10dfd79468f6d84577b1&page=1&pageSize=100", data);
     },
     diseaseInfo(data) {
-        //return instance.get("https://api.apishop.net/common/disease/queryDiseaseInfo?apiKey=GqvbYer04485869e6b5acbed4ed10dfd79468f6d84577b1&diseaseID=" + data);
+        // return instance.get("https://api.apishop.net/common/disease/queryDiseaseInfo?apiKey=GqvbYer04485869e6b5acbed4ed10dfd79468f6d84577b1&diseaseID=" + data);
     }
 
 
