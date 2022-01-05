@@ -165,7 +165,7 @@ export default {
             }
           
           this.preButtonDiabled=true;//设置病历刷新按钮禁用
-          this.includeTabDisabled=false;//设置处方tab单元可用
+          this.includeTabDisabled=false;//设置处方tab单元可用 
       }).catch(err=>{
         console.log(err);
       })
