@@ -16,9 +16,6 @@
       <el-form-item label="患者心率：">
         <span>{{ patient.heartRate }}</span>
       </el-form-item>
-      <el-form-item label="患者血压：">
-        <span>{{ patient.bloodPre }}</span>
-      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -47,16 +44,8 @@ export default {
   },
   methods: {
     getPatientInfo() {
-      // this.axios({
-      //   url:
-      //     "api/patient-service/getPatient/" +
-      //    ' 123',
-      //   method: "get",
-      //   params: {
-      //     ID: '123',
-      //   },
-      // })
-      this.axios({
+      console.log('this pages'+this.$store.state.inquiry.patientId)
+        this.axios({
         url:
           "api/patient-service/getPatient/" +
           this.$store.state.inquiry.patientId,

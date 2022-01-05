@@ -146,9 +146,10 @@ export default {
     // this.load(); //加载用于选择/筛选的疾病信息，药品信息，科室信息
   },
   methods: {
+    
     postPre() {
       this.axios
-        .post("/doctor-service/newRecord", {
+        .post("http://100.78.155.102:8900/newRecord", {
           recordID:this.$store.state.inquiry.doctorId + "-" + this.$store.state.inquiry.patientId + "-" + this.diseaseDecidedForm.time,
           time:this.diseaseDecidedForm.time,
           doctorID:window.sessionStorage.getItem("userID"),

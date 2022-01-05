@@ -167,8 +167,7 @@ export default {
       // console.log("date2" + date2);
       if (date1 < date2) {
         // console.log(window.sessionStorage.getItem('userID'))
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!这里等传patientid！！！！！！！！！！！！！！！！！！！
-        this.$store.commit("editPatientId",'123');
+        this.$store.commit("editPatientId",data.id);
         this.$store.commit(
           "editDoctorId",
           window.sessionStorage.getItem("userID")

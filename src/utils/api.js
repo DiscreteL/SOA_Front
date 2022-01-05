@@ -17,6 +17,7 @@ export default {
     },
     diseaseInfo(data) {
         // return instance.get("https://api.apishop.net/common/disease/queryDiseaseInfo?apiKey=GqvbYer04485869e6b5acbed4ed10dfd79468f6d84577b1&diseaseID=" + data);
+
     }
 
 
