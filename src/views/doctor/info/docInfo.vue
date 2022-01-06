@@ -122,7 +122,7 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "api/doctor-service/getInfo/" + this.ID,
+        url: "doctor-service/getInfo/" + this.ID,
         method: "get",
         params: {
           ID: this.ID,

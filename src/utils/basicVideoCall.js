@@ -1,26 +1,33 @@
 import AgoraRTC from "agora-rtc-sdk-ng"
 import axios from "axios"
+import store from "../store/index"
+import Vue from 'vue'
+import Vuex from 'vuex'
+Vue.use(Vuex)
 
 let rtc = {
-    localAudioTrack: null,
-    localVideoTrack: null,
-    client: null
+    localAudioTrack: null,
+    localVideoTrack: null,
+    client: null
 };
 
+
+
 let options = {
-    // Pass your App ID here.
-    appId: "1dd8d304d2ca43929025aed73ede6976",
-    // Set the channel name.  改成医生或者患者ID
-    channel: this.$store.state.inquiry.patientName,
-    // Set the user ID.  改成用户ID
-    // uid: 123456,
-    uid: window.sessionStorage.getItem("id"),
+    // Pass your App ID here.
+    appId: "1dd8d304d2ca43929025aed73ede6976",
+    // Set the channel name.  改成医生或者患者ID
+    channel:window.sessionStorage.getItem("patientID"),
+    // channel:'test',
+    // Set the user ID.  改成用户ID
+    // uid: 123456,
+    uid: window.sessionStorage.getItem("userID"),
 };
 
 // 从 服务器获取 Token  地址要改
 function fetchToken(uid, channelName) {
     return new Promise(function(resolve) {
-        axios.get("http://47.101.37.108:9780/webrtc/getToken/" + channelName + "/" + uid
+        axios.get("http://100.78.144.140:9780/webrtc/getToken/" + channelName + "/" + uid
                 // 'webrtc-service/' + 'webrtc/getToken/'
                 // , {
                 //     headers: {
@@ -42,6 +49,7 @@ function fetchToken(uid, channelName) {
 export async function startBasicCall() {
 
     console.log("11111111111");
+    console.log(window.sessionStorage.getItem("patientID"));
     // Create an AgoraRTCClient object.
     rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 

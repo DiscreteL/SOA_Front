@@ -172,17 +172,24 @@ export default {
         this.axios
           .get("api/doctor-service/completeRequest/" + data.reserveNum)
           .then(function (res) {
-            console.log("gettableData.res.data:");
+            console.log("啊啊gettableData.res.data:");
             console.log(res.data);
+
+               console.log(data.patientID);
+              window.sessionStorage.setItem("patientID", data.patientID);
+        console.log("window.sessionStorage.getItem('patientID')");
+        console.log(window.sessionStorage.getItem("patientID"));
+        this.$router.push("/patientchat");
           })
           .catch(function (error) {
             console.log("Failed!" + error);
           });
-        console.log("this.$store.state.inquiry.patientId");
-        console.log(this.$store.state.inquiry.patientId);
-        console.log("this.$store.state.inquiry.doctorId");
-        console.log(this.$store.state.inquiry.doctorId);
-        this.$router.push("/patientchat");
+     
+        // console.log("this.$store.state.inquiry.patientId");
+        // console.log(this.$store.state.inquiry.patientId);
+        // console.log("this.$store.state.inquiry.doctorId");
+        // console.log(this.$store.state.inquiry.doctorId);
+      
       } else
         this.$confirm("时间未到，聊天室还未开启！", "提示", {
           confirmButtonText: "确定",

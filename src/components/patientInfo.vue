@@ -47,7 +47,7 @@ export default {
       console.log('this pages'+this.$store.state.inquiry.patientId)
         this.axios({
         url:
-          "api/patient-service/getPatient/" +
+          "patient-service/getPatient/" +
           this.$store.state.inquiry.patientId,
         method: "get",
         params: {

@@ -109,7 +109,7 @@ export default {
       console.log("sessionstorage.id:" + this.store.id);
       let _this = this;
       this.axios
-        .get("api/patient-service/getAllTweetCollection/" + this.store.id)
+        .get("patient-service/getAllTweetCollection/" + this.store.id)
         .then(function (res) {
           console.log("gettabledata.res.data:");
           console.log(res.data);
