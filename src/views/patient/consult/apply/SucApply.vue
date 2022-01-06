@@ -164,11 +164,11 @@ export default {
       // console.log("date2" + date2);
       if (date1 < date2) {
         // console.log(window.sessionStorage.getItem('userID'))
-        this.$store.commit(
-          "editPatientId",
-          window.sessionStorage.getItem("userID")
-        );
-        this.$store.commit("editDoctorId", data.doctorID);
+        // this.$store.commit(
+        //   "editPatientId",
+        //   window.sessionStorage.getItem("userID")
+        // );
+        // this.$store.commit("editDoctorId", data.doctorID);
         //记得改回来！！！！！！！！！
         // this.axios
         //   .get("doctor-service/completeRequest/" + data.reserveNum)
@@ -179,14 +179,14 @@ export default {
         //   .catch(function (error) {
         //     console.log("Failed!" + error);
         //   });
-        console.log(data);
+        console.log("data:"+data)
+        console.log("data.doctorID:"+data.doctorID);
         window.sessionStorage.setItem("doctorID", data.doctorID);
         window.sessionStorage.setItem("patientID", window.sessionStorage.getItem("userID"));
+        window.sessionStorage.setItem("doctorName",data.name);
+        window.sessionStorage.setItem("patientName",window.sessionStorage.getItem("userName"));
+        console.log("patientName:"+window.sessionStorage.getItem('patientName'))
         this.$router.push("/patientchat");
-        // console.log("this.$store.state.inquiry.patientId");
-        // console.log(this.$store.state.inquiry.patientId);
-        // console.log("this.$store.state.inquiry.doctorId");
-        // console.log(this.$store.state.inquiry.doctorId);
       } else
         this.$confirm("时间未到，聊天室还未开启！", "提示", {
           confirmButtonText: "确定",

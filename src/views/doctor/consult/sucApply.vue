@@ -168,20 +168,22 @@ export default {
       // console.log("date2" + date2);
       if (date1 < date2) {
         // console.log(window.sessionStorage.getItem('userID'))
-        this.$store.commit("editPatientId", data.id);
-        this.$store.commit(
-          "editDoctorId",
-          window.sessionStorage.getItem("userID")
-        );
+        // this.$store.commit("editPatientId", data.id);
+        // this.$store.commit(
+        //   "editDoctorId",
+        //   window.sessionStorage.getItem("userID")
+        // );
         // console.log("this.$store.state.inquiry.patientId");
         // console.log(this.$store.state.inquiry.patientId);
         // console.log("this.$store.state.inquiry.doctorId");
         // console.log(this.$store.state.inquiry.doctorId);
 
-        console.log("data.patientID");
-        console.log(data.id);
+        console.log("data.patientID:"+data.id);
+        console.log("data.patientName:"+data.name);
         window.sessionStorage.setItem("patientID", data.id);
         window.sessionStorage.setItem("doctorID", window.sessionStorage.getItem("userID"));
+        window.sessionStorage.setItem("doctorName",window.sessionStorage.getItem("userName"));
+        window.sessionStorage.setItem("patientName",data.name);
         this.$router.push("/doctorchat");
       } else
         this.$confirm("时间未到，聊天室还未开启！", "提示", {

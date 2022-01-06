@@ -194,6 +194,10 @@ export default {
     },
   },
   methods: {
+    time11() {
+      let time1=new Date().getTime();
+      console.log("time1:"+time1);
+    },
     getInfo() {
       this.store.id = window.sessionStorage.getItem("userID");
       console.log("sessionstorage.id:" + this.store.id);
@@ -209,6 +213,10 @@ export default {
           console.log("getInfo.res.data:");
           console.log(res.data);
           _this.userInfo = res.data;
+          window.sessionStorage.setItem("userName", res.data.name);
+          console.log(
+            "userInfo.name:" + window.sessionStorage.getItem("userName")
+          );
         })
         .catch(function (error) {
           console.log("Get Nothing!" + error);
@@ -262,11 +270,11 @@ export default {
           console.log(valid, wrongstring);
           console.log("error submit!!");
           this.$message({
-                  showClose: true,
-                  message: `请输入正确的信息！`,
-                  type: "warning",
-                  duration: 3000,
-                });
+            showClose: true,
+            message: `请输入正确的信息！`,
+            type: "warning",
+            duration: 3000,
+          });
           // this.dialogFormVisible = false;
           return false;
         }
@@ -275,6 +283,8 @@ export default {
   },
   created() {
     this.getInfo();
+    this.time11();
+
   },
 };
 </script>

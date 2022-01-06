@@ -30,7 +30,12 @@
       </template>
     </el-table-column>
 
-    <el-table-column label="预约日期" prop="time" :formatter="dateFormat1" sortable>
+    <el-table-column
+      label="预约日期"
+      prop="time"
+      :formatter="dateFormat1"
+      sortable
+    >
     </el-table-column>
 
     <el-table-column label="预约时间" prop="time" :formatter="dateFormat2">
@@ -83,8 +88,7 @@ import { formatDate } from "@/utils/date.js";
 export default {
   data() {
     return {
-      tableData: [
-      ],
+      tableData: [],
       search: "",
       dialogTableVisible: false,
       store: {
@@ -146,7 +150,19 @@ export default {
         .then(function (res) {
           console.log("gettableData.res.data:");
           console.log(res.data);
-          _this.tableData = res.data;
+          for (let i = 0; i < res.data.length; i++) {
+            if (res.data[i].status !== 4)
+              _this.tableData.push({
+                doctorID: res.data[i].doctorID,
+                initDescription: res.data[i].initDescription,
+                name: res.data[i].name,
+                patientID: res.data[i].patientID,
+                rejectionReason: res.data[i].rejectionReason,
+                reserveNum: res.data[i].reserveNum,
+                status: res.data[i].status,
+                time: res.data[i].time,
+              });
+          }
         })
         .catch(function (error) {
           console.log("Get Nothing!" + error);

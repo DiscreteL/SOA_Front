@@ -4,7 +4,6 @@
       class="margin-top"
       title="基本信息"
       :column="3"
-      :size="size"
     >
       <el-descriptions-item label="用户ID">{{ ID }}</el-descriptions-item>
 
@@ -35,7 +34,6 @@
       class="margin-top"
       title="职业信息"
       :column="3"
-      :size="size"
     >
       <template slot="extra">
         <el-button type="primary" size="small" @click="dialog1Visible = true"
@@ -94,7 +92,6 @@
       class="margin-top"
       title="联系方式"
       :column="3"
-      :size="size"
     >
       <el-descriptions-item label="邮箱">{{
         userInfo.mail
@@ -130,6 +127,8 @@ export default {
       })
         .then((response) => {
           this.userInfo = response.data;
+          window.sessionStorage.setItem("userName",response.data.name);
+          console.log("userInfo.name:"+window.sessionStorage.getItem("userName"))
         })
         .catch((error) => {
           console.log(error);
