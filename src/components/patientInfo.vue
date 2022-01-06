@@ -48,10 +48,11 @@ export default {
         this.axios({
         url:
           "patient-service/getPatient/" +
-          this.$store.state.inquiry.patientId,
+         window.sessionStorage.getItem("patientID"),
         method: "get",
         params: {
-          ID: this.$store.state.inquiry.patientId,
+          // ID: this.$store.state.inquiry.patientId,
+          ID:window.sessionStorage.getItem("patientID")
         },
       })
         .then((res) => {

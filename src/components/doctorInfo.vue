@@ -59,10 +59,10 @@ export default {
   methods:{
     getDocInfo(){
       this.axios({
-        url: "api/doctor-service/getInfo/" + this.$store.state.inquiry.doctorId,
+        url: "doctor-service/getInfo/" + window.sessionStorage.getItem("doctorID"),
         method: "get",
         params: {
-          ID: this.$store.state.inquiry.doctorId,
+          ID: window.sessionStorage.getItem("doctorID"),
         },
       })
       .then(res=>{

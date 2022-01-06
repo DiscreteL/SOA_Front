@@ -140,7 +140,7 @@ export default {
       let _this = this;
       this.axios
         .get(
-          "api/patient-service/patientGetAcceptedRequest/" + this.store.id
+          "patient-service/patientGetAcceptedRequest/" + this.store.id
           // headers: {
           //   token: window.sessionStorage.getItem("token"),
           // },
@@ -169,22 +169,24 @@ export default {
           window.sessionStorage.getItem("userID")
         );
         this.$store.commit("editDoctorId", data.doctorID);
-        this.axios
-          .get("api/doctor-service/completeRequest/" + data.reserveNum)
-          .then(function (res) {
-            console.log("gettableData.res.data:");
-            console.log(res.data);
-            
-          })
-          .catch(function (error) {
-            console.log("Failed!" + error);
-          });
-        console.log(data.patientID);
+        //记得改回来！！！！！！！！！
+        // this.axios
+        //   .get("doctor-service/completeRequest/" + data.reserveNum)
+        //   .then(function (res) {
+        //     console.log("gettableData.res.data:");
+        //     console.log(res.data);
+        //   })
+        //   .catch(function (error) {
+        //     console.log("Failed!" + error);
+        //   });
+        console.log(data);
+        window.sessionStorage.setItem("doctorID", data.doctorID);
+        window.sessionStorage.setItem("patientID", window.sessionStorage.getItem("userID"));
+        this.$router.push("/patientchat");
         // console.log("this.$store.state.inquiry.patientId");
         // console.log(this.$store.state.inquiry.patientId);
         // console.log("this.$store.state.inquiry.doctorId");
         // console.log(this.$store.state.inquiry.doctorId);
-      
       } else
         this.$confirm("时间未到，聊天室还未开启！", "提示", {
           confirmButtonText: "确定",

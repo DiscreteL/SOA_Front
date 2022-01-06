@@ -20,7 +20,7 @@
             <span>{{ props.row.reserveNum }}</span>
           </el-form-item>
           <el-form-item label="预约时间">
-            <span>{{ props.row.time | formatDate}}</span>
+            <span>{{ props.row.time | formatDate }}</span>
           </el-form-item>
           <el-form-item label="患者姓名">
             <span>{{ props.row.name }}</span>
@@ -67,9 +67,10 @@
         />
       </template>
       <template slot-scope="scope">
-      <el-button size="mini" type="primary" @click="goConsult(scope.row)"
-        >前往问诊界面</el-button
-      ></template>
+        <el-button size="mini" type="primary" @click="goConsult(scope.row)"
+          >前往问诊界面</el-button
+        ></template
+      >
     </el-table-column>
   </el-table>
 </template>
@@ -167,15 +168,20 @@ export default {
       // console.log("date2" + date2);
       if (date1 < date2) {
         // console.log(window.sessionStorage.getItem('userID'))
-        this.$store.commit("editPatientId",data.id);
+        this.$store.commit("editPatientId", data.id);
         this.$store.commit(
           "editDoctorId",
           window.sessionStorage.getItem("userID")
         );
-        console.log("this.$store.state.inquiry.patientId");
-        console.log(this.$store.state.inquiry.patientId);
-        console.log("this.$store.state.inquiry.doctorId");
-        console.log(this.$store.state.inquiry.doctorId);
+        // console.log("this.$store.state.inquiry.patientId");
+        // console.log(this.$store.state.inquiry.patientId);
+        // console.log("this.$store.state.inquiry.doctorId");
+        // console.log(this.$store.state.inquiry.doctorId);
+
+        console.log("data.patientID");
+        console.log(data.id);
+        window.sessionStorage.setItem("patientID", data.id);
+        window.sessionStorage.setItem("doctorID", window.sessionStorage.getItem("userID"));
         this.$router.push("/doctorchat");
       } else
         this.$confirm("时间未到，聊天室还未开启！", "提示", {
