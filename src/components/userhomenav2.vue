@@ -57,9 +57,9 @@
               </el-form-item>
             </el-form>
           </el-dialog>
-          <el-button type="info" @click="returnhome" style="margin-left: 20px"
+          <!-- <el-button type="info" @click="returnhome" style="margin-left: 20px"
             >返回首页</el-button
-          >
+          > -->
         </div>
       </div>
     </div>
