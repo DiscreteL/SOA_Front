@@ -124,7 +124,7 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "api/doctor-service/getDoctorTweet/" + this.ID,
+        url: "doctor-service/getDoctorTweet/" + this.ID,
         method: "get",
         params: {
           id: this.ID,
@@ -165,7 +165,7 @@ export default {
       this.tweetInfo = undefined;
       this.tweetInfo = new Array();
       this.axios({
-        url: "api/doctor-service/getTweet/" + row.id,
+        url: "doctor-service/getTweet/" + row.id,
         method: "get",
         params: {
           id: row.id,

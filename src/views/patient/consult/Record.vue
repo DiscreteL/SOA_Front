@@ -100,7 +100,7 @@ export default {
       let _this = this;
       this.axios
         .get(
-          "api/patient-service/patientGetAllRecord/" + this.store.id
+          "patient-service/patientGetAllRecord/" + this.store.id
           // headers: {
           //   token: window.sessionStorage.getItem("token"),
           // },

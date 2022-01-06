@@ -7,7 +7,7 @@
         "
         style="width: 100%"
       >
-        <el-table-column prop="reserveNum" label="预约编号" width="100">
+        <el-table-column prop="reserveNum" label="预约编号" width="200">
         </el-table-column>
         <el-table-column prop="patientID" label="患者ID" width="100">
         </el-table-column>
@@ -112,14 +112,14 @@ export default {
     //加载申请信息列表
     loadData() {
       this.axios({
-        url: "api/doctor-service/doctorGetAllRequest/" + this.ID,
+        url: "doctor-service/doctorGetAllRequest/" + this.ID,
         method: "get",
         params: {
           id: this.ID,
         },
       }).then((response) => {
         for (let i = 0; i < response.data.length; i++) {
-          if(response.data[i].status!==0)
+          if(response.data[i].status===0)
           this.tableData.push({
             reserveNum: response.data[i].reserveNum,
             patientID: response.data[i].patientID,
@@ -135,7 +135,7 @@ export default {
       this.patientInfo = undefined;
       this.patientInfo = new Array();
       this.axios({
-        url: "/api/doctor-service/getRequest/" + row.reserveNum,
+        url: "doctor-service/getRequest/" + row.reserveNum,
         method: "get",
         params: {
           id: row.reserveNum,

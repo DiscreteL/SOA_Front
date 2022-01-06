@@ -57,9 +57,9 @@
               </el-form-item>
             </el-form>
           </el-dialog>
-          <el-button type="info" @click="returnhome" style="margin-left: 20px"
+          <!-- <el-button type="info" @click="returnhome" style="margin-left: 20px"
             >返回首页</el-button
-          >
+          > -->
         </div>
       </div>
     </div>
@@ -108,7 +108,7 @@ export default {
     },
     loadData() {
       this.axios({
-        url: "api/doctor-service/getInfo/" + this.ID,
+        url: "doctor-service/getInfo/" + this.ID,
         method: "get",
         params: {
           ID: this.ID,

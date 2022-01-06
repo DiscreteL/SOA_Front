@@ -174,15 +174,17 @@ export default {
           .then(function (res) {
             console.log("gettableData.res.data:");
             console.log(res.data);
+            
           })
           .catch(function (error) {
             console.log("Failed!" + error);
           });
-        console.log("this.$store.state.inquiry.patientId");
-        console.log(this.$store.state.inquiry.patientId);
-        console.log("this.$store.state.inquiry.doctorId");
-        console.log(this.$store.state.inquiry.doctorId);
-        this.$router.push("/patientchat");
+        console.log(data.patientID);
+        // console.log("this.$store.state.inquiry.patientId");
+        // console.log(this.$store.state.inquiry.patientId);
+        // console.log("this.$store.state.inquiry.doctorId");
+        // console.log(this.$store.state.inquiry.doctorId);
+      
       } else
         this.$confirm("时间未到，聊天室还未开启！", "提示", {
           confirmButtonText: "确定",

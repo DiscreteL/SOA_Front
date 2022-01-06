@@ -33,7 +33,7 @@ export default {
       console.log("sessionstorage.id:" + this.store.id);
       // let _this = this;
       this.axios
-        .get("api/patient-service/getAllFollowing/" + this.store.id)
+        .get("patient-service/getAllFollowing/" + this.store.id)
         .then((res) => {
           console.log("getfollowData.res.data:");
           console.log(res.data);
