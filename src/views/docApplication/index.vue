@@ -59,15 +59,12 @@
                   label="执业医师资格证书编号"
                   prop="certificationNum"
                 ></el-table-column>
-                <el-table-column label="证明文件" prop="certiProof">
+                <el-table-column label="证明文件" prop="url">
                   <template slot-scope="scope">
-                    <el-tooltip content="点击下载" placement="top">
-                      <a
-                        style="text-decoration: underline; cursor: pointer"
-                        @click="downloadContent(scope.row)"
-                        >查看上传文件</a
-                      >
-                    </el-tooltip>
+                    <!-- 点击进行响应弹出通告具体界面-->
+                    <span @click="getDetail(scope.row)" styLe="cursor: pointer">
+                      <a class="link">{{ scope.row.url }}</a>
+                    </span>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -146,7 +143,7 @@ export default {
     //加载医生申请信息列表
     loadData() {
       this.axios({
-        url: "api/admin-and-problem-service/getDoctorList",
+        url: "admin-and-problem-service/getDoctorList",
         method: "get",
         params: {},
       }).then((response) => {
@@ -173,7 +170,7 @@ export default {
       this.docInfo = undefined;
       this.docInfo = new Array();
       this.axios({
-        url: "api/admin-and-problem-service/getInfo/" + row.id,
+        url: "admin-and-problem-service/getInfo/" + row.id,
         method: "get",
       })
         .then((response) => {
@@ -188,7 +185,7 @@ export default {
             department: response.data.department,
             workLength: response.data.workLength,
             certificationNum: response.data.certificationNum,
-            certiProof: response.data.certiProof,
+            url: response.data.certiProof,
             docIntro: response.data.docIntro,
             // "audit":response.data.audit===0?"未审核":"已审核"
           });
@@ -253,6 +250,10 @@ export default {
     toOperate(row) {
       this.dialogFormVisible = true;
       this.opDoctorID = row.id;
+    },
+
+    getDetail(mes) {
+      window.open(mes.url)
     },
   },
   mounted() {
