@@ -288,7 +288,7 @@ export default {
           } else {
             this.axios
               .get(
-                "api/admin-and-problem-service/login/" +
+                "admin-and-problem-service/login/" +
                   this.loginForm1.email +
                   "/" +
                   this.loginForm1.password
@@ -352,7 +352,7 @@ export default {
           console.log("经过检验格式正确"); //已执行
           if (this.loginForm2.usertype === "我是患者") {
             this.axios
-              .get("api/patient-service/getCode/" + this.loginForm2.email)
+              .get("patient-service/getCode/" + this.loginForm2.email)
               .then((res) => {
                 console.log(res);
                 if (res.data === true) {
@@ -374,7 +374,7 @@ export default {
               });
           } else {
             this.axios
-              .get("api/doctor-service/getCode/" + this.loginForm2.email)
+              .get("doctor-service/getCode/" + this.loginForm2.email)
               .then((res) => {
                 console.log(res);
                 if (res.data === true) {
@@ -422,7 +422,7 @@ export default {
           if (this.loginForm2.usertype === "我是患者") {
             this.axios
               .get(
-                "api/patient-service/loginByMail/" +
+                "patient-service/loginByMail/" +
                   this.loginForm2.email +
                   "/" +
                   this.loginForm2.code
@@ -463,7 +463,7 @@ export default {
           } else if (this.loginForm2.usertype === "我是医生") {
             this.axios
               .get(
-                "api/doctor-service/loginByMail/" +
+                "doctor-service/loginByMail/" +
                   this.loginForm2.email +
                   "/" +
                   this.loginForm2.code
