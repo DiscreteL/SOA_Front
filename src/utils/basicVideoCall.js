@@ -11,10 +11,10 @@ let options = {
     // Pass your App ID here.
     appId: "1dd8d304d2ca43929025aed73ede6976",
     // Set the channel name.  改成医生或者患者ID
-    channel: "test",
+    channel: this.$store.state.inquiry.patientName,
     // Set the user ID.  改成用户ID
     // uid: 123456,
-    uid: 21,
+    uid: window.sessionStorage.getItem("id"),
 };
 
 // 从 服务器获取 Token  地址要改

@@ -69,19 +69,21 @@ export default {
           //从后端请求到医生信息 也是筛选/搜索时直接处理的数据
           let count = 1;
           for (let i of res.data) {
-            this.docList.push({
-              //这里不直接复制，而是将department属性改名为index 以便检索
-              id: i.id,
-              name: i.name,
-              title: i.title,
-              index: i.department,
-              sex: i.gender,
-              workingAge: 2021 - i.workLength,
-              hos: i.hospital,
-              pic: count, //图片直接放url不能请求到 需要重写 这里记录了一个编号 在docList会用到
-              intro: i.docIntro,
-            });
-            count++;
+            if (i.isCertified != "0000") {
+              this.docList.push({
+                //这里不直接复制，而是将department属性改名为index 以便检索
+                id: i.id,
+                name: i.name,
+                title: i.title,
+                index: i.department,
+                sex: i.gender,
+                workingAge: 2021 - i.workLength,
+                hos: i.hospital,
+                pic: count, //图片直接放url不能请求到 需要重写 这里记录了一个编号 在docList会用到
+                intro: i.docIntro,
+              });
+              count++;
+            }
           }
           this.docData = this.docList; //这里是展示的数据
           this.getOptions();
@@ -123,8 +125,8 @@ export default {
       this.axios
         .post("patient-service/patientSubmitRequest", {
           // patientID: this.$store.state.userId,
-          patientID:sessionStorage.getItem('userID'),
-          reserveNum: mes.date1+mes.docId,
+          patientID: sessionStorage.getItem("userID"),
+          reserveNum: mes.date1 + mes.docId,
           doctorID: mes.docId,
           time: mes.date1,
           status: 0, //待确认的意思

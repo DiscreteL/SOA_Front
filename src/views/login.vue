@@ -202,7 +202,7 @@ export default {
           if (this.loginForm1.usertype === "我是患者") {
             this.axios
               .get(
-                "api/patient-service/loginByAccount/" +
+                "patient-service/loginByAccount/" +
                   this.loginForm1.email +
                   "/" +
                   this.loginForm1.password
@@ -245,7 +245,7 @@ export default {
           } else if (this.loginForm1.usertype === "我是医生") {
             this.axios
               .get(
-                "api/doctor-service/loginByAccount/" +
+                "doctor-service/loginByAccount/" +
                   this.loginForm1.email +
                   "/" +
                   this.loginForm1.password
