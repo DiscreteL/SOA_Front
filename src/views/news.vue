@@ -128,7 +128,8 @@ export default {
     },
     getDataList1() {
       this.axios
-        .get("admin-and-problem-service/getAllTweet")
+       .get("admin-and-problem-service/getAllTweet")
+        // .get("http://139.224.164.68:7777/getAllTweet")
         .then((res) => {
           console.log(res);
           for (let i of res.data) {
@@ -172,6 +173,7 @@ export default {
     getDataList2() {
       this.axios
         .get("admin-and-problem-service/getAllVideo")
+        // .get("http://139.224.164.68:7777/getAllVideo")
         .then((res) => {
           console.log(res);
           for (let i of res.data) {
