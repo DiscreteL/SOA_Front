@@ -29,7 +29,7 @@ let options = { // Pass your App ID here.
 function fetchToken(uid, channelName) {
     console.log(window.sessionStorage.getItem("userID"))
     return new Promise(function(resolve) {
-        axios.get("http://localhost:9780/webrtc/getToken/" + channelName + "/" + uid
+        axios.get("http://100.78.144.140:9780/webrtc/getToken/" + channelName + "/" + uid
                 // 'webrtc-service/' + 'webrtc/getToken/'
                 // , {
                 //     headers: {

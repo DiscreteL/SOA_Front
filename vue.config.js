@@ -19,7 +19,7 @@ module.exports = {
                 }
             },
             '/admin-and-problem-service': {
-                // target: "http://121.4.85.6:9590",
+                // target: "http://139.224.164.68:9590",
                 target: "http://100.78.144.140:9590",
                 changeOrigin: true, //是否开启跨域
                 ws: true, //websocket支持
@@ -37,7 +37,7 @@ module.exports = {
                 }
             },
             '/patient-service': {
-                // target: "http://47.103.65.231:8891",
+                // target: "http://139.224.164.68:8891",
                 target: "http://100.78.144.140:8891",
                 changeOrigin: true, //是否开启跨域
                 ws: true, //websocket支持

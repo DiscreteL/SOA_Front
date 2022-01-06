@@ -8,9 +8,9 @@
       <!-- <el-tab-pane label="处方填写" name="second" :disabled="this.$store.state.inquiry.includeDisabled">
         <prescription_form></prescription_form>
       </el-tab-pane> -->
-      <el-tab-pane label="处方填写" name="second">
+      <!-- <el-tab-pane label="处方填写" name="second">
         <prescription_form></prescription_form>
-      </el-tab-pane>
+      </el-tab-pane> -->
       <el-tab-pane label="患者信息" name="third">
         <patient_information></patient_information>
       </el-tab-pane>
@@ -20,7 +20,6 @@
 
 <script>
 import record_form from "./recordForm";
-import prescription_form from "./prescrForm";
 import patient_information from "./patientInfo";
 export default {
   name: "tabs",
@@ -31,7 +30,6 @@ export default {
   },
   components: {
     record_form,
-    prescription_form,
     patient_information,
   },
   methods: {
