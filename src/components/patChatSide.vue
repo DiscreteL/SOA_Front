@@ -118,7 +118,7 @@ export default {
         // desc: '等待医生填写'//主诉
       },
       store:{
-        id:this.$store.state.inquiry.patientId,
+        id:window.sessionStorage.getItem("patientID"),
       }
     };
   },
