@@ -12,7 +12,7 @@
           prop="time"
           label="反馈日期"
           sortable
-          width="150"
+          width="200"
           column-key="time"
         >
         </el-table-column>
@@ -25,7 +25,7 @@
         <el-table-column
           prop="reply"
           label="反馈回复"
-          width="300"
+          width="500"
         >
         </el-table-column>
       </el-table>
@@ -60,7 +60,7 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "api/admin-and-problem-service/getPatientFeedback/" + this.ID,
+        url: "admin-and-problem-service/getPatientFeedback/" + this.ID,
         method: "get",
         params: {
           id:this.ID
