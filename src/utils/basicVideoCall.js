@@ -11,19 +11,17 @@ let rtc = {  
       client: null
 };
 
-
-
 let options = { // Pass your App ID here.
 
     appId: "1dd8d304d2ca43929025aed73ede6976",
     // Set the channel name.  改成医生或者患者ID
-    channel: window.sessionStorage.getItem("patientID"),
-    // channel: 'test',
+    // channel: window.sessionStorage.getItem("patientID"),
+    // 啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊！！！！！！！！！！！！！！！！
+    channel: 'test',
     // Set the user ID.  改成用户ID
     // uid: 123456,
     uid: window.sessionStorage.getItem("userID"),
 };
-
 
 // 从 服务器获取 Token  地址要改
 function fetchToken(uid, channelName) {
@@ -69,12 +67,12 @@ export async function startBasicCall() {
             const remotePlayerContainer = document.createElement("div");
             // Specify the ID of the DIV container. You can use the uid of the remote user.
             remotePlayerContainer.id = user.uid.toString();
-            remotePlayerContainer.textContent = "对方画面";
-            remotePlayerContainer.style.width = "560px";
-            remotePlayerContainer.style.height = "400px";
+            // remotePlayerContainer.textContent = "对方画面";
+            remotePlayerContainer.style.width = "400px";
+            remotePlayerContainer.style.height = "560px";
             remotePlayerContainer.style.position = "absolute";
-            remotePlayerContainer.style.top = "28%";
-            remotePlayerContainer.style.left = "1%";
+            remotePlayerContainer.style.top = "20%";
+            remotePlayerContainer.style.left = "6%";
             remotePlayerContainer.style.font = "1%";
             document.body.append(remotePlayerContainer);
 
@@ -105,11 +103,11 @@ export async function startBasicCall() {
     });
 
     window.onload = function() {
-
         document.getElementById("join").onclick = async function() {
             // Join an RTC channel.
-            let token = await fetchToken(options.uid, options.channel);
-            // let token = "0061dd8d304d2ca43929025aed73ede6976IABB545VtwO8kd/alywGeh45yRX5kPgco1T2vgy+hQEQuQx+f9gcOvXLIgBdmbqwrQ3IYQQAAQA9ysZhAgA9ysZhAwA9ysZhBAA9ysZh";
+            // let token = await fetchToken(options.uid, options.channel);
+            // ！@啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊！！！！！！！！！！！！！！！！！！
+            let token = "0061dd8d304d2ca43929025aed73ede6976IAA0tijqGaaV0OGesnRn3pWcOrbgqE2mNM5z0nIoKvWN1Qx+f9gAAAAAEABD/MfDbuxvYgEAAQBw7G9i";
             await rtc.client.join(options.appId, options.channel, token, options.uid);
             // Create a local audio track from the audio sampled by a microphone.
             rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
@@ -121,12 +119,12 @@ export async function startBasicCall() {
             const localPlayerContainer = document.createElement("div");
             // Specify the ID of the DIV container. You can use the uid of the local user.
             localPlayerContainer.id = options.uid;
-            localPlayerContainer.textContent = "您的画面";
-            localPlayerContainer.style.width = "280px";
-            localPlayerContainer.style.height = "210px";
+            // localPlayerContainer.textContent = "您的画面";
+            localPlayerContainer.style.width = "400px";
+            localPlayerContainer.style.height = "560px";
             localPlayerContainer.style.position = "absolute";
-            localPlayerContainer.style.top = "8%";
-            localPlayerContainer.style.left = "46%";
+            localPlayerContainer.style.top = "20%";
+            localPlayerContainer.style.left = "36%";
             // localPlayerContainer.style.
             document.body.append(localPlayerContainer);
 
