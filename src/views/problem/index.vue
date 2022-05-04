@@ -72,7 +72,7 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "api/admin-and-problem-service/getAllProblem",
+        url: "./pmservice/getAllProblem",
         method: "get",
         params: {
         },

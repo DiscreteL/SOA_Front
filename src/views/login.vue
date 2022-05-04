@@ -201,11 +201,12 @@ export default {
         if (valid) {
           if (this.loginForm1.usertype === "我是患者") {
             this.axios
-              .get(
-                "patient-service/loginByAccount/" +
-                  this.loginForm1.email +
-                  "/" +
-                  this.loginForm1.password
+              .post(
+                "./amservice/loginByAccount/",{
+                    id:this.loginForm1.email,
+                    password: this.loginForm1.password,
+                    identity:0,
+                  }
               )
               .then((res) => {
                 console.log(res);
@@ -244,11 +245,12 @@ export default {
               });
           } else if (this.loginForm1.usertype === "我是医生") {
             this.axios
-              .get(
-                "doctor-service/loginByAccount/" +
-                  this.loginForm1.email +
-                  "/" +
-                  this.loginForm1.password
+              .post(
+                "./amservice/loginByAccount/",{
+                    id:this.loginForm1.email,
+                    password:this.loginForm1.password,
+                    identity:1,
+                  }
               )
               .then((res) => {
                 console.log(res);
@@ -287,11 +289,12 @@ export default {
               });
           } else {
             this.axios
-              .get(
-                "admin-and-problem-service/login/" +
-                  this.loginForm1.email +
-                  "/" +
-                  this.loginForm1.password
+              .post(
+                "./amservice/loginByAccount/" ,{
+                    id:this.loginForm1.email,
+                    password:this.loginForm1.password,
+                    identity:2,
+                  }
               )
               .then((res) => {
                 console.log(res);

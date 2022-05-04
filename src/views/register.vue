@@ -729,7 +729,7 @@ export default {
         // 获取loginform的实例（el-form），找到validate方法，根据验证规则rules校验是否valid
         if (valid) {
           this.loading = true;
-         this.axios.post("/patient-service/register",{
+         this.axios.post("./amservice/registerByPatient",{
             name: this.loginForm1.username,
             password: this.loginForm1.password,
             email: this.loginForm1.email,
@@ -776,11 +776,11 @@ export default {
       this.$refs[loginForm2].validate((valid, wrongstring) => {
         // 获取loginform2的实例（el-form），找到validate方法，根据验证规则rules校验是否valid
         if (valid) {
-          this.axios.post("doctor-service/register",{
+          this.axios.post("./amservice/registerByDoctor",{
             name: this.loginForm2.username,
-            mail:this.loginForm2.email,
+            email:this.loginForm2.email,
             password: this.loginForm2.password,
-            idnum: this.loginForm2.identification,
+            idNum: this.loginForm2.identification,
             gender: this.loginForm2.sex,
             workLength: this.loginForm2.workingAge,
             title: this.loginForm2.title,

@@ -10,7 +10,7 @@ module.exports = {
         port: 8080, // 端口号
         proxy: { //配置多个跨域
             '/api': {
-                target: "http://139.224.164.68:9000",
+                target: "http://localhost:8888",
                 // target: "http://100.78.144.140:9000",
                 changeOrigin: true, //是否开启跨域
                 ws: true, //websocket支持
@@ -18,32 +18,35 @@ module.exports = {
                     '^/api': ''
                 }
             },
-            '/admin-and-problem-service': {
-                target: "http://139.224.164.68:9590",
+            '/pmservice': {
+                target: "http://192.168.189.1:9003",
                 // target: "http://100.78.144.140:9590",
                 changeOrigin: true, //是否开启跨域
                 ws: true, //websocket支持
-                pathRewrite: {
-                    '^/admin-and-problem-service': ''
-                }
             },
-            '/doctor-service': {
-                target: "http://139.224.164.68:8788",
+            '/amservice': {
+                target: "http://192.168.189.1:9010",
                 // target: "http://100.78.144.140:8788",
                 changeOrigin: true, //是否开启跨域
                 ws: true, //websocket支持
-                pathRewrite: {
-                    '^/doctor-service': ''
-                }
             },
-            '/patient-service': {
-                target: "http://139.224.164.68:8891",
+            '/oiservice': {
+                target: "http://192.168.189.1:9002",
                 // target: "http://100.78.144.140:8891",
                 changeOrigin: true, //是否开启跨域
                 ws: true, //websocket支持
-                pathRewrite: {
-                    '^/patient-service': ''
-                }
+            },
+            '/pimservice': {
+                target: "http://192.168.189.1:9000",
+                // target: "http://100.78.144.140:8891",
+                changeOrigin: true, //是否开启跨域
+                ws: true, //websocket支持
+            },
+            '/vtmservice': {
+                target: "http://192.168.189.1:9004",
+                // target: "http://100.78.144.140:8891",
+                changeOrigin: true, //是否开启跨域
+                ws: true, //websocket支持
             },
         }
     }
