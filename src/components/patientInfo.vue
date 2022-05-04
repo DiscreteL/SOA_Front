@@ -47,7 +47,7 @@ export default {
       console.log('this pages'+this.$store.state.inquiry.patientId)
         this.axios({
         url:
-          "patient-service/getPatient/" +
+          "./pimservice/getPatientInfor/" +
          window.sessionStorage.getItem("patientID"),
         method: "get",
         params: {

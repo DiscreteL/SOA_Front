@@ -113,15 +113,13 @@ export default {
     handleChange() {
       this.$forceUpdate();
     },
-    //  格式化日期
+     //  格式化日期
     dateFormat1(row, column) {
       let time = row[column.property];
       if (time == undefined) {
         return "";
       }
-      time = Number(time);
-      var date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd");
+      return time.substring(0,10);
     },
     //  格式化日期
     dateFormat2(row, column) {
@@ -129,25 +127,26 @@ export default {
       if (time == undefined) {
         return "";
       }
-      time = Number(time);
-      var date = new Date(time);
-      return formatDate(date, "hh:mm:ss");
+      return time.substring(11,19);
     },
     gettableData() {
       this.store.id = window.sessionStorage.getItem("userID");
       console.log("sessionstorage.id:" + this.store.id);
       let _this = this;
       this.axios
-        .get(
-          "api/patient-service/patientGetToBeAcceptRequest/" + this.store.id
-          // headers: {
-          //   token: window.sessionStorage.getItem("token"),
-          // },
-        )
+        .get("./oiservice/getPatientRequests/" + this.store.id)
         .then(function (res) {
-          console.log("gettableData.res.data:");
-          console.log(res.data);
-          _this.tableData = res.data;
+          for (let i of res.data){
+            if(i.bookingRequest.status==0)
+            _this.tableData.push({
+              time:i.bookingRequest.time,
+              name:i.doctor.name,
+              status:i.bookingRequest.status,
+              initDiscription:i.bookingRequest.initDescription,
+              rejectionReason:i.bookingRequest.rejectionReason,
+            })
+          }
+          //0待接收 1接受 2拒绝 3已完成
         })
         .catch(function (error) {
           console.log("Get Nothing!" + error);

@@ -116,15 +116,13 @@ export default {
     handleChange() {
       this.$forceUpdate();
     },
-    //  格式化日期
+     //  格式化日期
     dateFormat1(row, column) {
       let time = row[column.property];
       if (time == undefined) {
         return "";
       }
-      time = Number(time);
-      var date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd");
+      return time.substring(0,10);
     },
     //  格式化日期
     dateFormat2(row, column) {
@@ -132,37 +130,26 @@ export default {
       if (time == undefined) {
         return "";
       }
-      time = Number(time);
-      var date = new Date(time);
-      return formatDate(date, "hh:mm:ss");
+      return time.substring(11,19);
     },
     gettableData() {
       this.store.id = window.sessionStorage.getItem("userID");
       console.log("sessionstorage.id:" + this.store.id);
       let _this = this;
-      this.axios
-        .get(
-          "patient-service/patientGetAllRequest/" + this.store.id
-          // headers: {
-          //   token: window.sessionStorage.getItem("token"),
-          // },
-        )
+       this.axios
+        .get("./oiservice/getPatientRequests/" + this.store.id)
         .then(function (res) {
-          console.log("gettableData.res.data:");
-          console.log(res.data);
-          for (let i = 0; i < res.data.length; i++) {
-            if (res.data[i].status !== 4)
-              _this.tableData.push({
-                doctorID: res.data[i].doctorID,
-                initDescription: res.data[i].initDescription,
-                name: res.data[i].name,
-                patientID: res.data[i].patientID,
-                rejectionReason: res.data[i].rejectionReason,
-                reserveNum: res.data[i].reserveNum,
-                status: res.data[i].status,
-                time: res.data[i].time,
-              });
+          for (let i of res.data){
+            if(i.bookingRequest.status!==4)
+            _this.tableData.push({
+              time:i.bookingRequest.time,
+              name:i.doctor.name,
+              status:i.bookingRequest.status,
+              initDiscription:i.bookingRequest.initDescription,
+              rejectionReason:i.bookingRequest.rejectionReason,
+            })
           }
+          //0待接收 1接受 2拒绝 3已完成
         })
         .catch(function (error) {
           console.log("Get Nothing!" + error);

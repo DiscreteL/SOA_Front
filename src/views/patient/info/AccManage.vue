@@ -11,6 +11,20 @@
         >
         <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
           <el-form :model="userInfo" ref="userInfo" :rules="userInfoRules">
+             <el-form-item
+              prop="oldpassword"
+              label="原密码"
+              :label-width="formLabelWidth"
+            >
+              <el-input
+                v-model="userInfo.oldpassword"
+                prefix-icon="el-icon-notebook-2"
+                autocomplete="off"
+                placeholder="请输入原密码"
+                type="password"
+                show-password
+              ></el-input>
+            </el-form-item>
             <el-form-item
               prop="password"
               label="新密码"
@@ -72,6 +86,7 @@ export default {
       // 返回个人信息
       // userID: window.sessionStorage.getItem("id"),
       userInfo: {
+        oldpassword:"",
         password: "",
         rePassword: "",
       },
@@ -119,6 +134,7 @@ export default {
           },
           { validator: validatePass1, trigger: "blur" },
         ],
+        oldpassword:[ { required: true, message: "请输入原密码", trigger: "blur" },]
       },
     };
   },
@@ -137,9 +153,11 @@ export default {
           console.log(this.userInfo.password)
           console.log(this.store.id)
           this.axios
-            .post("/patient-service/updatePassword", {
-              id: this.store.id,
-              password: this.userInfo.password,
+            .post("./amservice/changePassword", {
+              account: this.store.id,
+              oldPassword:this.userInfo.oldpassword,
+              newPassword: this.userInfo.password,
+              identity:0,
             })
             .then((res) => {
               console.log("updatePsd.res:");

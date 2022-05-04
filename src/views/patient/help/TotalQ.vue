@@ -60,7 +60,7 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "admin-and-problem-service/getPatientFeedback/" + this.ID,
+        url: "./pmservice/getPatientFeedback/" + this.ID,
         method: "get",
         params: {
           id:this.ID
@@ -71,7 +71,7 @@ export default {
           this.tableData.push({
             reply: response.data[i].reply,
             content: response.data[i].content,
-            time: response.data[i].time
+            time: response.data[i].time.substring(0,10)
           });
         }
         })

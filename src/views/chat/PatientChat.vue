@@ -76,8 +76,6 @@
 </template>
 <script>
 import tabs from "@/components/patChatSide.vue";
-// import inquiry_title from "@/components/inquiry_title";
-// import inquiry_navigation_patient from "@/components/inquiry_navigation_patient";
 import testvideo from "./video.vue";
 export default {
   name: "InquiryPatient",
@@ -113,9 +111,9 @@ export default {
   methods: {
     postRate() {
       //上传评价表
-      this.axios.post("/patient-service/addEvaluation",{
-        pati_id: this.$store.state.inquiry.patientId,
-        doctor_id: this.$store.state.inquiry.doctorId,
+      this.axios.post("./oiservice/addEvaluation",{
+        patientID: this.$store.state.inquiry.patientId,
+        doctorID: this.$store.state.inquiry.doctorId,
         score: (this.formAssess.value1+this.formAssess.value2+this.formAssess.value3)/3,
       })
         .then((res) => {

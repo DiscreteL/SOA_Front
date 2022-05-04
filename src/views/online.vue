@@ -63,9 +63,9 @@ export default {
   methods: {
     getDataList() {
       this.axios
-        .get("doctor-service/getDoctorList")
+        .get("./pimservice/getDoctorList")
         .then((res) => {
-          console.log(res);
+          console.log(res.data);
           //从后端请求到医生信息 也是筛选/搜索时直接处理的数据
           let count = 1;
           for (let i of res.data) {
@@ -123,7 +123,7 @@ export default {
       //向表单信息添加新信息
       mes.docId = this.$refs.listItem.lastCardInfo._id;
       this.axios
-        .post("patient-service/patientSubmitRequest", {
+        .post("./oiservice/patientSubmitRequest", {
           // patientID: this.$store.state.userId,
           patientID: sessionStorage.getItem("userID"),
           reserveNum: mes.date1 + mes.docId,

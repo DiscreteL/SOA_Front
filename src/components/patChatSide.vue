@@ -79,7 +79,7 @@ export default {
         year;
       console.log("preId:" + preId);
       this.axios
-        .get("/patient-service/getDiagContent/" + preId)
+        .get("./oiservice/getDiagContent/" + preId)
         .then((res) => {
           if (res.length != 0) {
             //当成功获取到病历信息时
@@ -97,7 +97,7 @@ export default {
       //获取处方信息
       this.axios
         .get(
-          "/patient-service/getMedicine/" +preId
+          "./oiservice/getMedicine/" +preId
         )
         .then((res) => {
           if (res.length != 0) {

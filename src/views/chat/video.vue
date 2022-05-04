@@ -5,8 +5,6 @@
       <div class="but">
         <el-button type="primary" plain id="join" icon="el-icon-video-camera">开启视频</el-button>
         <el-button type="primary" plain id="leave" icon="el-icon-close">关闭视频</el-button>
-        <!-- <el-button type="primary" plain id="join">开始</el-button> -->
-        <!-- <el-button type="primary" plain id="leave">离开</el-button> -->
       </div>
       <div v-show="show">
         <img
@@ -27,10 +25,6 @@
 
 <script>
 import { startBasicCall } from "../../utils/basicVideoCall.js";
-// import { testFun } from "../../service/userService.js";
-// import request from "@/utils/request";
-// import axios from "axios"
-// axios.defaults.headers.post['Content-Type'] = 'application/json,;charset=utf-8';
 
 export default {
   name: "testvideo",

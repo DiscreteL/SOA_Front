@@ -128,7 +128,7 @@ export default {
     },
     getDataList1() {
       this.axios
-       .get("admin-and-problem-service/getAllTweet")
+       .get("./vtmservice/getAllTweet")
         // .get("http://139.224.164.68:7777/getAllTweet")
         .then((res) => {
           console.log(res);
@@ -172,7 +172,7 @@ export default {
 
     getDataList2() {
       this.axios
-        .get("admin-and-problem-service/getAllVideo")
+        .get("./vtmservice/getAllVideo")
         // .get("http://139.224.164.68:7777/getAllVideo")
         .then((res) => {
           console.log(res);
@@ -265,7 +265,7 @@ export default {
     addFollowing(id) {
       if ((this.dataType == 0)) { //文章
         this.axios
-          .post("/patient-service/addTweetCollection", {
+          .post("./pimservice/addTweetCollection", {
             tweetID: id,
             patientID: sessionStorage.getItem("userID"),
           })
@@ -299,7 +299,7 @@ export default {
       }
       else { //视频
          this.axios
-          .post("/patient-service/addVideoCollection", {
+          .post("./pimservice/addVideoCollection", {
             videoID: id,
             patientID: sessionStorage.getItem("userID"),
           })

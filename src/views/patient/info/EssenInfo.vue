@@ -204,10 +204,7 @@ export default {
       let _this = this;
       this.axios
         .get(
-          "patient-service/getPatient/" + this.store.id
-          // headers: {
-          //   token: window.sessionStorage.getItem("token"),
-          // },
+          "./pimservice/getPatientInfor/" + this.store.id
         )
         .then(function (res) {
           console.log("getInfo.res.data:");
@@ -226,7 +223,7 @@ export default {
       this.$refs[userInfo].validate((valid, wrongstring) => {
         if (valid) {
           this.axios
-            .post("/patient-service/updatePatientInfor", {
+            .post("./pimservice/updatePatientInfor", {
               id: this.store.id,
               name: this.userInfo.name,
               idNum: this.userInfo.idNum,

@@ -109,7 +109,7 @@ export default {
       console.log("sessionstorage.id:" + this.store.id);
       let _this = this;
       this.axios
-        .get("patient-service/getAllTweetCollection/" + this.store.id)
+        .get("./pimservice/getAllTweetCollection/" + this.store.id)
         .then(function (res) {
           console.log("gettabledata.res.data:");
           console.log(res.data);
@@ -133,7 +133,7 @@ export default {
       this.store.id = window.sessionStorage.getItem("userID");
       this.axios
         .delete(
-          "patient-service/deleteTweetCollection/" + data.id + "/" + this.store.id
+          "./pimservice/deleteTweetCollection/" + data.id + "/" + this.store.id
         )
         .then((res) => {
           console.log("res.data:");

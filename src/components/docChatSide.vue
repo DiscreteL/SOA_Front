@@ -5,12 +5,7 @@
       <el-tab-pane label="病历填写" name="first">
         <record_form></record_form>
       </el-tab-pane>
-      <!-- <el-tab-pane label="处方填写" name="second" :disabled="this.$store.state.inquiry.includeDisabled">
-        <prescription_form></prescription_form>
-      </el-tab-pane> -->
-      <!-- <el-tab-pane label="处方填写" name="second">
-        <prescription_form></prescription_form>
-      </el-tab-pane> -->
+
       <el-tab-pane label="患者信息" name="third">
         <patient_information></patient_information>
       </el-tab-pane>

@@ -162,7 +162,7 @@ export default {
         "this.diseaseDecidedForm.medicine:" + this.diseaseDecidedForm.medicine
       );
       this.axios
-        .post("doctor-service/newRecord", {
+        .post("./oiservice/createRecord", {
           recordID:
             window.sessionStorage.getItem("doctorID") +
             window.sessionStorage.getItem("patientID") +

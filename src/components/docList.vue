@@ -76,7 +76,7 @@
 .box-card {
   width: 200px;
   text-align: center;
-  margin-right: 150px;
+  margin-right: 350px;
 }
 
 .bottom {

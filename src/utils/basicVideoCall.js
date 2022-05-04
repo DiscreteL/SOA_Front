@@ -27,14 +27,7 @@ let options = { // Pass your App ID here.
 function fetchToken(uid, channelName) {
     console.log(window.sessionStorage.getItem("userID"))
     return new Promise(function(resolve) {
-        axios.get("http://100.78.144.140:9780/webrtc/getToken/" + channelName + "/" + uid
-                // 'webrtc-service/' + 'webrtc/getToken/'
-                // , {
-                //     headers: {
-                //         'Content-Type': 'application/json; charset=UTF-8'
-                //     }
-                // }
-            )
+        axios.get("http://192.168.189.1:9002/webrtc/getToken/" + channelName + "/" + uid)
             .then(function(response) {
                 const token = response.data;
                 console.log(token);
@@ -79,9 +72,6 @@ export async function startBasicCall() {
             // Play the remote video track.
             // Pass the DIV container and the SDK dynamically creates a player in the container for playing the remote video track.
             remoteVideoTrack.play(remotePlayerContainer);
-
-            // Or just pass the ID of the DIV container.
-            // remoteVideoTrack.play(playerContainer.id);
         }
 
         // If the remote user publishes an audio track.
@@ -105,9 +95,9 @@ export async function startBasicCall() {
     window.onload = function() {
         document.getElementById("join").onclick = async function() {
             // Join an RTC channel.
-            // let token = await fetchToken(options.uid, options.channel);
+            let token = await fetchToken(options.uid, options.channel);
             // ！@啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊！！！！！！！！！！！！！！！！！！
-            let token = "0061dd8d304d2ca43929025aed73ede6976IAA0tijqGaaV0OGesnRn3pWcOrbgqE2mNM5z0nIoKvWN1Qx+f9gAAAAAEABD/MfDbuxvYgEAAQBw7G9i";
+            // let token = "0061dd8d304d2ca43929025aed73ede6976IAA0tijqGaaV0OGesnRn3pWcOrbgqE2mNM5z0nIoKvWN1Qx+f9gAAAAAEABD/MfDbuxvYgEAAQBw7G9i";
             await rtc.client.join(options.appId, options.channel, token, options.uid);
             // Create a local audio track from the audio sampled by a microphone.
             rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
@@ -119,7 +109,6 @@ export async function startBasicCall() {
             const localPlayerContainer = document.createElement("div");
             // Specify the ID of the DIV container. You can use the uid of the local user.
             localPlayerContainer.id = options.uid;
-            // localPlayerContainer.textContent = "您的画面";
             localPlayerContainer.style.width = "400px";
             localPlayerContainer.style.height = "560px";
             localPlayerContainer.style.position = "absolute";

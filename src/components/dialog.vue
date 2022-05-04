@@ -55,7 +55,7 @@ export default {
     },
     addFollowing(){
       // console.log(this.dataList.ID)
-      this.axios.post("/patient-service/addFollowing",{
+      this.axios.post("./pimservice/addFollowing",{
         doctorID:this.dataList.ID,
         patientID: sessionStorage.getItem('userID'),
       })

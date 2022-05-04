@@ -33,7 +33,7 @@ export default {
       console.log("sessionstorage.id:" + this.store.id);
       // let _this = this;
       this.axios
-        .get("patient-service/getAllFollowing/" + this.store.id)
+        .get("./pimservice/getAllFollowing/" + this.store.id)
         .then((res) => {
           console.log("getfollowData.res.data:");
           console.log(res.data);
@@ -88,7 +88,7 @@ export default {
       console.log(mes.docId);
       this.axios
         .delete(
-          "patient-service/deleteFollowing/" + this.store.id + "/" + mes.docId
+          "./pimservice/deleteFollowing/" + this.store.id + "/" + mes.docId
         )
         .then((res) => {
           console.log("res.data:");

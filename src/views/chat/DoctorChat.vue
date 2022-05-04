@@ -116,11 +116,4 @@ export default {
   border: 0;
   overflow: hidden;
 }
-/* .tab_pos {
-  position: relative;
-  margin: auto;
-  top: 15px;
-  left: 20px;
-  overflow: hidden;
-} */
 </style>
