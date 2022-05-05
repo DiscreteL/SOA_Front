@@ -104,7 +104,7 @@ export default {
 
       deleteProblem(data) {
       this.axios({
-        url: "/admin-and-problem-service/deleteProblem/"+data.problemContent,
+        url: "./pmservice/deleteProblem/"+data.problemContent,
         method: "delete"
       })
         .then(() => {

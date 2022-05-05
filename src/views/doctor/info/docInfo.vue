@@ -14,7 +14,7 @@
         {{ userInfo.gender }}</el-descriptions-item
       >
       <el-descriptions-item label="身份证号">{{
-        userInfo.idnum
+        userInfo.idNum
       }}</el-descriptions-item>
       <el-descriptions-item label="资格认证状态">
         <el-tag
@@ -94,7 +94,7 @@
       :column="3"
     >
       <el-descriptions-item label="邮箱">{{
-        userInfo.mail
+        userInfo.email
       }}</el-descriptions-item>
       >
     </el-descriptions>
@@ -119,7 +119,7 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "doctor-service/getInfo/" + this.ID,
+        url: "./pimservice/getDoctorInfor/" + this.ID,
         method: "get",
         params: {
           ID: this.ID,
@@ -142,8 +142,8 @@ export default {
         this.$message.error("请输入您的个人简介");
       } else {
         this.axios
-          .post("/doctor-service/changeInfo", {
-            id: this.ID,
+          .post("./pimservice/updateDoctorInfor", {
+            idNum: this.userInfo.idNum,
             name: this.userInfo.name,
             gender: this.userInfo.gender,
             hospital: this.userInfo.hospital,
@@ -158,7 +158,8 @@ export default {
             rating: this.userInfo.rating,
             password:this.userInfo.password,
             docIntro: this.form1.docIntro,
-            mail: this.form1.mail,
+            email: this.form1.mail,
+            id:this.ID
           })
           .then((response) => {
             //后端更新成功

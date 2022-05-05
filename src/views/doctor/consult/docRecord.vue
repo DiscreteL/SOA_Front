@@ -76,7 +76,7 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "doctor-service/doctorGetAllRecord/" + this.ID,
+        url: "./oiservice/doctorGetAllRecord/" + this.ID,
         method: "get",
         params: {
           doctorID: this.ID,

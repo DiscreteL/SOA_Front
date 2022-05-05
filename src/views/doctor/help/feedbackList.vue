@@ -60,7 +60,7 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "admin-and-problem-service/getDoctorFeedback/" + this.ID,
+        url: "./pmservice/getDoctorFeedback/" + this.ID,
         method: "get",
         params: {
           id:this.ID

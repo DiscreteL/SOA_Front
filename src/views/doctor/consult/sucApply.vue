@@ -114,15 +114,30 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "/doctor-service/doctorGetAcceptedRequest/" + this.ID,
+        url: "./oiservice/getDoctorRequests/" + this.ID,
         method: "get",
         params: {
           id: this.ID,
         },
       })
         .then((response) => {
-          console.log(response.data);
-          this.tableData = response.data;
+          // console.log(response.data);
+          // this.tableData = response.data;
+          for (let i = 0; i < response.data.length; i++) {
+          if(response.data[i].bookingRequest.status===1)
+          this.tableData.push({
+            reserveNum: response.data[i].bookingRequest.reserveNum,
+            patientID: response.data[i].bookingRequest.patientID,
+            time: response.data[i].bookingRequest.time,
+            initDescription: response.data[i].bookingRequest.initDescription,
+            name: response.data[i].patient.name,
+            gender: response.data[i].patient.gender,
+            bornDate: response.data[i].patient.bornDate,
+            heartRate: response.data[i].patient.heartRate,
+            weight: response.data[i].patient.weight,
+            height: response.data[i].patient.height,
+          });
+          }
         })
         .catch((error) => {
           console.log(error);

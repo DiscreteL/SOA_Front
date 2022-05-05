@@ -87,7 +87,7 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "api/admin-and-problem-service/getAllDoctorFeedback",
+        url: "./pmservice/getAllDoctorFeedback",
         method: "get",
         params: {},
       })
@@ -107,7 +107,7 @@ export default {
         });
 
       this.axios({
-        url: "api/admin-and-problem-service/getAllPatientFeedback",
+        url: "./pmservice/getAllPatientFeedback",
         method: "get",
         params: {},
       })
@@ -166,7 +166,7 @@ export default {
     handle(row) {
       if (this.identityC == 1) {
         this.axios({
-          url: "/admin-and-problem-service/replyDoctorFeedback",
+          url: "./pmservice/replyDoctorFeedback",
           method: "post",
           data: {
             time: this.timeC,
@@ -211,7 +211,7 @@ export default {
           });
       } else if (this.identityC == 2) {
         this.axios({
-          url: "/admin-and-problem-service/replyPatientFeedback",
+          url: "./pmservice/replyPatientFeedback",
           method: "post",
           data: {
             time: timeC,

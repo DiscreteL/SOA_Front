@@ -100,7 +100,7 @@ export default {
     },
     async submitFile() {
       await this.axios({
-        url: "http://192.168.43.147:9790/upload",
+        url: "http://100.65.7.16:8789/upload",
         method: "post",
         data: this.newFile,
         headers: {
@@ -110,7 +110,7 @@ export default {
         .then((response) => {
           const articleUrl = response.data; //  3. 拿到刚刚的数据，并将其传给后台
           this.axios
-            .post("/doctor-service/publishTweet", {
+            .post("./vtmservice/publishTweet", {
               doctorID: this.ID,
               title: this.articleInfo.title,
               label: this.articleInfo.label,

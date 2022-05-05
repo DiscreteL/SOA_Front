@@ -62,7 +62,7 @@ export default {
     //加载问题列表
     loadData() {
       this.axios({
-        url: "admin-and-problem-service/getAllProblem",
+        url: "./pmservice/getAllProblem",
         method: "get",
         params: {
         },

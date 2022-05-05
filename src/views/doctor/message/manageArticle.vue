@@ -124,7 +124,7 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "doctor-service/getDoctorTweet/" + this.ID,
+        url: "./vtmservice/getDoctorAllTweet/" + this.ID,
         method: "get",
         params: {
           id: this.ID,
@@ -165,7 +165,7 @@ export default {
       this.tweetInfo = undefined;
       this.tweetInfo = new Array();
       this.axios({
-        url: "doctor-service/getTweet/" + row.id,
+        url: "./vtmservice/getTweet/" + row.id,
         method: "get",
         params: {
           id: row.id,
@@ -210,7 +210,7 @@ export default {
 
     deleteTweet(data) {
       this.axios({
-        url: "/doctor-service/deleteTweet/" + data.id,
+        url: "./vtmservice/deleteTweet/" + data.id,
         method: "delete",
       })
         .then(() => {

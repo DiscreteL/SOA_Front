@@ -112,19 +112,19 @@ export default {
     //加载申请信息列表
     loadData() {
       this.axios({
-        url: "doctor-service/doctorGetAllRequest/" + this.ID,
+        url: "./oiservice/getDoctorRequests/" + this.ID,
         method: "get",
         params: {
           id: this.ID,
         },
       }).then((response) => {
         for (let i = 0; i < response.data.length; i++) {
-          if(response.data[i].status===0)
+          if(response.data[i].bookingRequest.status===0)
           this.tableData.push({
-            reserveNum: response.data[i].reserveNum,
-            patientID: response.data[i].patientID,
-            time: response.data[i].time,
-            InitDescription: response.data[i].initDescription,
+            reserveNum: response.data[i].bookingRequest.reserveNum,
+            patientID: response.data[i].bookingRequest.patientID,
+            time: response.data[i].bookingRequest.time,
+            initDescription: response.data[i].bookingRequest.initDescription,
           });
         }
       });
@@ -135,7 +135,7 @@ export default {
       this.patientInfo = undefined;
       this.patientInfo = new Array();
       this.axios({
-        url: "doctor-service/getRequest/" + row.reserveNum,
+        url: "./oiservice/getRequest/" + row.reserveNum,
         method: "get",
         params: {
           id: row.reserveNum,
@@ -185,7 +185,7 @@ export default {
       this.formData = new FormData();
       this.formData.append("id", row.reserveNum);
       this.axios({
-        url: "/doctor-service/doctorAcceptRequest",
+        url: "./oiservice/doctorAcceptRequest",
         method: "post",
         data: this.formData,
       })
@@ -221,7 +221,7 @@ export default {
         .then(({ value }) => {
           this.formData.append("content", value);
           this.axios({
-            url: "/doctor-service/doctorRefuseRequest",
+            url: "./oiservice/doctorRefuseRequest",
             method: "post",
             data: this.formData,
           })

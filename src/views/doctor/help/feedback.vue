@@ -22,7 +22,7 @@ export default {
   methods: {
     onSubmit() {
       this.axios
-        .post("/admin-and-problem-service/postDoctorFeedback", {
+        .post("./pmservice/postDoctorFeedback", {
           doctorID:this.ID,
           time:'',
           reply:'',

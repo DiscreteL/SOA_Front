@@ -47,7 +47,7 @@
               >查看详情</el-button
             >
             <el-dialog title="视频详情" :visible.sync="dialogTableVisible">
-              <el-table :data="tweetInfo">
+              <el-table :data="videoInfo">
                 <el-table-column
                   label="视频标题"
                   prop="title"
@@ -124,7 +124,7 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "api/doctor-service/getDoctorVideo/" + this.ID,
+        url: "./vtmservice/getDoctorAllVideo/" + this.ID,
         method: "get",
         params: {
           id: this.ID,
@@ -165,7 +165,7 @@ export default {
       this.videoInfo = undefined;
       this.videoInfo = new Array();
       this.axios({
-        url: "api/doctor-service/getVideo/" + row.id,
+        url: "./vtmservice/getVideo/" + row.id,
         method: "get",
         params: {
           id: row.id,
@@ -210,7 +210,7 @@ export default {
 
     deleteTweet(data) {
       this.axios({
-        url: "/doctor-service/deleteVideo/" + data.id,
+        url: "./vtmservice/deleteVideo/" + data.id,
         method: "delete",
       })
         .then(() => {

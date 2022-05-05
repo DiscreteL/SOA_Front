@@ -11,8 +11,18 @@
       "
     >
       <el-main>
-        <el-button @click="toTweet">切换到文章</el-button>
-        <el-button @click="toVideo">切换到视频</el-button>
+        <el-button @click="toTweet">文章列表</el-button>
+        <el-button @click="toVideo">视频列表</el-button>
+
+        <el-tooltip :content="'关闭则默认按时间排序'" placement="top">
+            <el-switch
+              v-model="recommendation"
+              active-text="开启个性化推荐"
+              style="margin-left: 20px"
+              @change="changeState()"
+            ></el-switch
+          >
+        </el-tooltip>
         <!--下面的slice很关键,实现了分页-->
         <el-table
           ref="multipleTable"
@@ -55,11 +65,14 @@
             label="关注"
             width="140px"
           >
-           <template slot-scope="scope">
-            <el-button type="primary" @click="addFollowing(scope.row.id)" plain
-              >收 藏</el-button
-            >
-             </template>
+            <template slot-scope="scope">
+              <el-button
+                type="primary"
+                @click="addFollowing(scope.row.id)"
+                plain
+                >收 藏</el-button
+              >
+            </template>
           </el-table-column>
         </el-table>
         <Idialog
@@ -107,8 +120,7 @@ export default {
   data() {
     return {
       isDialogVisible: false,
-      docList: [
-      ],
+      docList: [],
       diaData: {},
       docData: [],
       currentPage: 1, //当前页数 ，默认为1
@@ -117,101 +129,202 @@ export default {
       currentPageData: {}, //当前页显示内容
       dataType: 0, //0是文章，1是视频
       // tableData: Array(20).fill(item),
+      recommendation: true, //1为默认值，开启个性化推荐
+      label: 0,
     };
   },
   created() {
     this.getDataList1();
   },
   methods: {
+    changeState() {
+      if (this.dataType == 0) {
+        this.toTweet()
+      }
+      else {
+        this.toVideo()
+      }
+      console.log(this.recommendation);
+    },
     add0(m) {
       return m < 10 ? "0" + m : m;
     },
     getDataList1() {
-      this.axios
-       .get("./vtmservice/getAllTweet")
-        // .get("http://139.224.164.68:7777/getAllTweet")
-        .then((res) => {
-          console.log(res);
-          for (let i of res.data) {
-            var time = new Date(i.time);
-            var y = time.getFullYear();
-            var m = time.getMonth() + 1;
-            var d = time.getDate();
-            var h = time.getHours();
-            var mm = time.getMinutes();
-            var s = time.getSeconds();
-            this.docList.push({
-              name: i.title,
-              url: i.url,
-              label: i.label,
-              id:i.id,
-              time:
-                y +
-                "-" +
-                this.add0(m) +
-                "-" +
-                this.add0(d) +
-                " " +
-                this.add0(h) +
-                ":" +
-                this.add0(mm) +
-                ":" +
-                this.add0(s),
-            });
-          }
-          console.log(res);
-          //console.log(typeof(res.result.pic));
-          console.log("ok");
-          this.docData = this.docList;
-          //console.log(this.docList)
+      if (this.recommendation) {
+        //console.log(this.recommendation);
+        this.axios({
+          url: "./vtmservice/getTweetByLabel/" + this.label,
+          method: "get",
+          params: {
+            label: this.label,
+          },
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((res) => {
+            console.log(res);
+            for (let i of res.data) {
+              var time = new Date(i.time);
+              var y = time.getFullYear();
+              var m = time.getMonth() + 1;
+              var d = time.getDate();
+              var h = time.getHours();
+              var mm = time.getMinutes();
+              var s = time.getSeconds();
+              this.docList.push({
+                name: i.title,
+                url: i.url,
+                label: i.label,
+                id: i.id,
+                time:
+                  y +
+                  "-" +
+                  this.add0(m) +
+                  "-" +
+                  this.add0(d) +
+                  " " +
+                  this.add0(h) +
+                  ":" +
+                  this.add0(mm) +
+                  ":" +
+                  this.add0(s),
+              });
+            }
+            this.docData = this.docList;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        //console.log(this.recommendation);
+        this.axios
+          .get("./vtmservice/getAllTweet")
+          // .get("http://139.224.164.68:7777/getAllTweet")
+          .then((res) => {
+            console.log(res);
+            for (let i of res.data) {
+              var time = new Date(i.time);
+              var y = time.getFullYear();
+              var m = time.getMonth() + 1;
+              var d = time.getDate();
+              var h = time.getHours();
+              var mm = time.getMinutes();
+              var s = time.getSeconds();
+              this.docList.push({
+                name: i.title,
+                url: i.url,
+                label: i.label,
+                id: i.id,
+                time:
+                  y +
+                  "-" +
+                  this.add0(m) +
+                  "-" +
+                  this.add0(d) +
+                  " " +
+                  this.add0(h) +
+                  ":" +
+                  this.add0(mm) +
+                  ":" +
+                  this.add0(s),
+              });
+            }
+            console.log(res);
+            //console.log(typeof(res.result.pic));
+            console.log("ok");
+            this.docData = this.docList;
+            //console.log(this.docList)
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
 
     getDataList2() {
-      this.axios
-        .get("./vtmservice/getAllVideo")
-        // .get("http://139.224.164.68:7777/getAllVideo")
-        .then((res) => {
-          console.log(res);
-          for (let i of res.data) {
-            var time = new Date(i.time);
-            var y = time.getFullYear();
-            var m = time.getMonth() + 1;
-            var d = time.getDate();
-            var h = time.getHours();
-            var mm = time.getMinutes();
-            var s = time.getSeconds();
-            this.docList.push({
-              name: i.title,
-              url: i.url,
-              label: i.label,
-              id:i.id,
-              time:
-                y +
-                "-" +
-                this.add0(m) +
-                "-" +
-                this.add0(d) +
-                " " +
-                this.add0(h) +
-                ":" +
-                this.add0(mm) +
-                ":" +
-                this.add0(s),
-            });
-          }
-          console.log(res);
-          //console.log(typeof(res.result.pic));
-          console.log("ok");
-          this.docData = this.docList;
-          //console.log(this.docList)
+      if (this.recommendation) {
+        this.axios({
+          url: "./vtmservice/getVideoByLabel/" + this.label,
+          method: "get",
+          params: {
+            label: this.label,
+          },
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((res) => {
+            console.log(res);
+            for (let i of res.data) {
+              var time = new Date(i.time);
+              var y = time.getFullYear();
+              var m = time.getMonth() + 1;
+              var d = time.getDate();
+              var h = time.getHours();
+              var mm = time.getMinutes();
+              var s = time.getSeconds();
+              this.docList.push({
+                name: i.title,
+                url: i.url,
+                label: i.label,
+                id: i.id,
+                time:
+                  y +
+                  "-" +
+                  this.add0(m) +
+                  "-" +
+                  this.add0(d) +
+                  " " +
+                  this.add0(h) +
+                  ":" +
+                  this.add0(mm) +
+                  ":" +
+                  this.add0(s),
+              });
+            }
+            this.docData = this.docList;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        this.axios
+          .get("./vtmservice/getAllVideo")
+          // .get("http://139.224.164.68:7777/getAllVideo")
+          .then((res) => {
+            console.log(res);
+            for (let i of res.data) {
+              var time = new Date(i.time);
+              var y = time.getFullYear();
+              var m = time.getMonth() + 1;
+              var d = time.getDate();
+              var h = time.getHours();
+              var mm = time.getMinutes();
+              var s = time.getSeconds();
+              this.docList.push({
+                name: i.title,
+                url: i.url,
+                label: i.label,
+                id: i.id,
+                time:
+                  y +
+                  "-" +
+                  this.add0(m) +
+                  "-" +
+                  this.add0(d) +
+                  " " +
+                  this.add0(h) +
+                  ":" +
+                  this.add0(mm) +
+                  ":" +
+                  this.add0(s),
+              });
+            }
+            console.log(res);
+            //console.log(typeof(res.result.pic));
+            console.log("ok");
+            this.docData = this.docList;
+            //console.log(this.docList)
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
 
     handleSizeChange(val) {
@@ -263,7 +376,8 @@ export default {
       this.dataType = 1;
     },
     addFollowing(id) {
-      if ((this.dataType == 0)) { //文章
+      if (this.dataType == 0) {
+        //文章
         this.axios
           .post("./pimservice/addTweetCollection", {
             tweetID: id,
@@ -296,9 +410,9 @@ export default {
             });
             console.log(err);
           });
-      }
-      else { //视频
-         this.axios
+      } else {
+        //视频
+        this.axios
           .post("./pimservice/addVideoCollection", {
             videoID: id,
             patientID: sessionStorage.getItem("userID"),

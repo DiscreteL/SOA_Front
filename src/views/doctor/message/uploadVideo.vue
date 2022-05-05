@@ -97,7 +97,7 @@ export default {
     },
     async submitFile() {
       await this.axios({
-        url: "http://192.168.43.147/upload",
+        url: "http://100.65.7.16:8789/upload",
         method: "post",
         data: this.newFile,
         headers: {
@@ -107,7 +107,7 @@ export default {
         .then((response) => {
           const videoUrl = response.data; //  3. 拿到刚刚的数据，并将其传给后台
           this.axios
-            .post("/doctor-service/publishVideo", {
+            .post("./vtmservice/publishVideo", {
               doctorID: this.ID,
               title: this.videoInfo.title,
               label: this.videoInfo.label,

@@ -40,7 +40,7 @@ export default {
   methods: {
     onSubmit() {
       this.axios
-        .post("/admin-and-problem-service/addProblem", {
+        .post("./pmservice/addProblem", {
           problemContent: this.problemForm.name,
           problemAnswer: this.problemForm.answer,
         })

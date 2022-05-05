@@ -108,7 +108,7 @@ export default {
     },
     loadData() {
       this.axios({
-        url: "doctor-service/getInfo/" + this.ID,
+        url: "./pimservice/getDoctorInfor/" + this.ID,
         method: "get",
         params: {
           ID: this.ID,
@@ -157,7 +157,7 @@ export default {
 
     onSubmit () {
       this.axios({
-        url: 'http://192.168.43.147:9790/upload',
+        url: 'http://100.65.7.16:8789/upload',
         method: 'post',
         data: this.newFile,
         headers: {

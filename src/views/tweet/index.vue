@@ -141,7 +141,7 @@ export default {
   methods: {
     loadData() {
       this.axios({
-        url: "api/admin-and-problem-service/getAllTweet",
+        url: "./vtmservice/getAllTweet",
         method: "get",
         params: {},
       })
@@ -158,7 +158,7 @@ export default {
       this.tweetData = undefined;
       this.tweetData = new Array();
       this.axios({
-        url: "api/admin-and-problem-service/getTweet/" + row.id,
+        url: "./vtmservice/getTweet/" + row.id,
         method: "get",
       })
         .then((response) => {
@@ -206,7 +206,7 @@ export default {
 
     handle(row) {
       this.axios({
-        url: "/admin-and-problem-service/auditTweet/" + row,
+        url: "./vtmservice/auditTweet/" + row,
         method: "post",
         data: { id: row},
       })
