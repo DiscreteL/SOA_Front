@@ -11,10 +11,10 @@
         </el-table-column>
         <el-table-column prop="patientID" label="患者ID" width="100">
         </el-table-column>
-        <el-table-column prop="time" label="预约时间" width="100">
+        <el-table-column prop="time" label="预约时间" width="100" :formatter="dateFormat">
         </el-table-column>
         <el-table-column
-          prop="InitDescription"
+          prop="initDescription"
           label="患者主诉"
           :show-overflow-tooltip="true"
         >
@@ -32,10 +32,11 @@
                   label="患者姓名"
                   prop="patientName"
                 ></el-table-column>
-                <el-table-column label="预约时间" prop="time"></el-table-column>
+                <el-table-column label="预约时间" prop="time" :formatter="dateFormat"></el-table-column>
                 <el-table-column
                   label="出生日期"
                   prop="bornDate"
+                  :formatter="dateFormat"
                 ></el-table-column>
                 <el-table-column label="性别" prop="gender"></el-table-column>
                 <el-table-column label="身高" prop="height"></el-table-column>
@@ -109,6 +110,14 @@ export default {
   },
 
   methods: {
+      dateFormat(row, column) {
+      let time = row[column.property];
+      if (time == undefined) {
+        return "";
+      }
+      
+      return time.substring(0,10)+' '+time.substring(11,19);
+    },
     //加载申请信息列表
     loadData() {
       this.axios({
@@ -119,6 +128,7 @@ export default {
         },
       }).then((response) => {
         for (let i = 0; i < response.data.length; i++) {
+         
           if(response.data[i].bookingRequest.status===0)
           this.tableData.push({
             reserveNum: response.data[i].bookingRequest.reserveNum,
@@ -142,17 +152,32 @@ export default {
         },
       })
         .then((response) => {
+          //这里返回结果的格式变了
+          // this.patientInfo.push({
+          //   patientID: response.data.id,
+          //   patientName: response.data.name,
+          //   time: response.data.time,
+          //   gender: response.data.gender,
+          //   bornDate: response.data.bornDate,
+          //   height: response.data.height,
+          //   weight: response.data.weight,
+          //   heartRate: response.data.heartRate,
+          //   nitDescription: response.data.initDescription,
+          // });
+          console.log(response.data.patient.name)
           this.patientInfo.push({
-            patientID: response.data.id,
-            patientName: response.data.name,
-            time: response.data.time,
-            gender: response.data.gender,
-            bornDate: response.data.bornDate,
-            height: response.data.height,
-            weight: response.data.weight,
-            heartRate: response.data.heartRate,
-            initDescription: response.data.initDescription,
+            reserveNum: response.data.bookingRequest.reserveNum,
+            patientID: response.data.bookingRequest.patientID,
+            time: response.data.bookingRequest.time,
+            initDescription: response.data.bookingRequest.initDescription,
+            patientName: response.data.patient.name,
+            gender: response.data.patient.gender,
+            bornDate: response.data.patient.bornDate,
+            heartRate: response.data.patient.heartRate,
+            weight: response.data.patient.weight,
+            height: response.data.patient.height,
           });
+          console.log(this.patientInfo)
         })
         .catch((error) => {
           console.log(error);
@@ -182,12 +207,14 @@ export default {
     },
 
     handleAccept(row) {
-      this.formData = new FormData();
-      this.formData.append("id", row.reserveNum);
+      // this.formData = new FormData();
+      // this.formData.append("id", row.reserveNum);
       this.axios({
-        url: "./oiservice/doctorAcceptRequest",
-        method: "post",
-        data: this.formData,
+        url: "./oiservice/doctorAcceptRequest"+row.reserveNum,
+        method: "get",
+        params: {
+          id: row.reserveNum,
+        },
       })
         .then((response) => {
           if (response.data === true) {
@@ -226,26 +253,30 @@ export default {
             data: this.formData,
           })
             .then((response) => {
+              console.log(response.data)
               if (response.data === true) {
-                this.$refs.form.resetFields();
-                this.dialogFormVisible = false;
+                console.log("成功")
+                // this.$refs.form.resetFields();
+                // this.dialogFormVisible = false;
                 this.$message({
                   type: "success",
                   message: "处理成功",
                 });
               } else {
+                console.log("shibai")
                 this.$message({
                   type: "error",
                   message: "处理失败！",
                 });
               }
             })
-            .catch(() => {
-              this.$message({
-                type: "error",
-                message: "处理失败！",
-              });
-            });
+            // .catch(() => {
+            //   console
+            //   this.$message({
+            //     type: "error",
+            //     message: "处理失败！",
+            //   });
+            // });
           this.formData = new FormData();
         })
         .catch(() => {

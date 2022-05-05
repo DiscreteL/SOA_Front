@@ -59,7 +59,7 @@ export default {
   methods:{
     getDocInfo(){
       this.axios({
-        url: "./pimservice/getDoctorInfo/" + window.sessionStorage.getItem("doctorID"),
+        url: "./pimservice/getDoctorInfor/" + window.sessionStorage.getItem("doctorID"),
         method: "get",
         params: {
           ID: window.sessionStorage.getItem("doctorID"),

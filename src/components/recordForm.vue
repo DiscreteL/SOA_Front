@@ -9,6 +9,15 @@
       <el-form-item label="患者姓名：">
         <span>{{ patientName }}</span>
       </el-form-item>
+      <el-form-item label="科室：">
+        <el-input
+          placeholder="请输入内容"
+          class="input"
+          v-model="diseaseDecidedForm.department"
+          clearable
+        >
+        </el-input>
+      </el-form-item>
       <el-form-item label="患者主诉：">
         <el-input
           placeholder="请输入内容"
@@ -91,7 +100,7 @@ export default {
       diseaseDecidedForm: {
         desc: "", //患者主诉
         disease: "", //疾病
-        // department: "", //科室
+        department: "", //科室
         type: "", //症状
         content: "",
         time: "",
@@ -118,9 +127,6 @@ export default {
 
       let content = this.diseaseDecidedForm.type;
       this.diseaseDecidedForm.content = content;
-      console.log("content:" + content);
-
-      // this.$store.commit("editDiseaseDecided", this.diseaseDecidedForm.disease);
       window.sessionStorage.setItem(
         "diseaseDecided",
         this.diseaseDecidedForm.disease
@@ -134,33 +140,11 @@ export default {
         });
       } else {
         for (let i = 0; i < this.diseaseDecidedForm.table.length; i++) {
-          console.log("this.diseaseDecidedForm.table[i].name:"+this.diseaseDecidedForm.table[i].name)
-          this.diseaseDecidedForm.medicine =
+            this.diseaseDecidedForm.medicine =
             this.diseaseDecidedForm.medicine +' '+
             this.diseaseDecidedForm.table[i].name;
         }
       }
-      // this.postPre();
-      console.log(
-        "recordID:" +
-          window.sessionStorage.getItem("doctorID") +
-          window.sessionStorage.getItem("patientID") +
-          month +
-          date +
-          year
-      );
-      console.log("time:" + this.diseaseDecidedForm.time);
-      console.log("doctorID:" + window.sessionStorage.getItem("doctorID"));
-      console.log("patientID:" + window.sessionStorage.getItem("patientID"));
-      console.log(
-        "this.diseaseDecidedForm.disease:" + this.diseaseDecidedForm.disease
-      );
-      console.log(
-        "this.diseaseDecidedForm.content:" + this.diseaseDecidedForm.content
-      );
-      console.log(
-        "this.diseaseDecidedForm.medicine:" + this.diseaseDecidedForm.medicine
-      );
       this.axios
         .post("./oiservice/createRecord", {
           recordID:
@@ -177,6 +161,8 @@ export default {
           diseaseName: this.diseaseDecidedForm.disease,
           diagContent: this.diseaseDecidedForm.content,
           medicine: this.diseaseDecidedForm.medicine,
+          department:this.diseaseDecidedForm.department,
+          symptom:this.diseaseDecidedForm.type,
         })
         .then((res) => {
           let preId =

@@ -7,13 +7,7 @@
       </el-button>
     </div>
     <el-card class="chatroom">
-      <!-- <div class="ope">
-        <i class="el-icon-turn-off-microphone"></i>
-        
-         <i class="el-icon-video-camera"></i> 
-      </div> -->
        <testvideo />
-      <!-- <i class="el-microphone"></i> -->
     </el-card>
     <el-card class="tab_pos">
       <tabs></tabs>
@@ -22,23 +16,14 @@
 </template>
 
 <script>
-// import { getDocInfoData } from "@/service/userService";
-// import text_box from "@/components/text_box";
-// import inquiry_record from "@/components/medicalrecord_form";
 import tabs from "@/components/docChatSide.vue";
-// import inquiry_title from "@/components/inquiry_title";
-// import inquiry_navigation_doc from "@/components/inquiry_navigation_doc";
 import testvideo from "./video.vue";
 
 export default {
   name: "Inquiry",
   components: {
-    // inquiry_title,
-    // text_box,
-    // inquiry_record,
     tabs,
     testvideo,
-    // inquiry_navigation_doc,
   },
   data() {
     return {
@@ -46,26 +31,30 @@ export default {
     };
   },
   created() {
-    // getDocInfoData({
-    //   id: this.$store.state.inquiry.doctorId,
-    // })
-    //   .then((res) => {
-    //     let temp = res.result.picture_url;
-    //     if (temp.length == 32) {
-    //       this.num = res.result.picture_url.substring(27, 28);
-    //     } else {
-    //       this.num = res.result.picture_url.substring(27, 29);
-    //     }
-    //     this.num = temp;
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   },
   methods: {
     quit() {
-      // clearInterval(this.$store.state.inquiry.chatroomId); //停止轮询
-      this.$router.push("/userhome2"); //退出，跳转到主页
+      this.axios({
+        url: "./oiservice/completeRequest/" + window.sessionStorage.getItem("reserveNum"),
+        method: "get",
+        params: {
+          id: this.ID,
+        },
+      })
+        .then((response) => {
+          // console.log(response.data);
+          // this.tableData = response.data;
+          if(response.data==true){
+           this.$message({
+            type: "success",
+            message: "问诊结束!",
+          });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        this.$router.push("/userhome2"); //退出，跳转到主页
     },
   },
 };

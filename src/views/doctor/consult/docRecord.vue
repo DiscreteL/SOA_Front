@@ -11,7 +11,7 @@
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
-          <el-form-item label="问诊时间">
+          <el-form-item label="问诊时间" >
             <span>{{ props.row.time }}</span>
           </el-form-item>
           <el-form-item label="患者姓名">
@@ -29,7 +29,7 @@
         </el-form>
       </template>
     </el-table-column>
-    <el-table-column label="问诊时间" prop="time" sortable> </el-table-column>
+    <el-table-column label="问诊时间" prop="time" :formatter="dateFormat" sortable> </el-table-column>
     <el-table-column label="患者姓名" prop="patientName"> </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
@@ -74,6 +74,13 @@ export default {
     };
   },
   methods: {
+      dateFormat(row, column) {
+      let time = row[column.property];
+      if (time == undefined) {
+        return "";
+      }
+      return time.substring(0,10)+' '+time.substring(11,19);
+    },
     loadData() {
       this.axios({
         url: "./oiservice/doctorGetAllRecord/" + this.ID,
@@ -83,6 +90,9 @@ export default {
         },
       })
         .then((response) => {
+          for (let i = 0; i < response.data.length; i++) {
+            response.data[i].time=response.data[i].time.substring(0,10)+' '+response.data[i].time.substring(11,19)
+          }
           this.tableData = response.data;
         })
         .catch((error) => {

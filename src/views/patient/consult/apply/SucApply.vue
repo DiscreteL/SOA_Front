@@ -145,6 +145,8 @@ export default {
               status:i.bookingRequest.status,
               initDiscription:i.bookingRequest.initDescription,
               rejectionReason:i.bookingRequest.rejectionReason,
+              doctorID:i.bookingRequest.doctorID,
+              doctorName:i.doctor.name,
             })
           }
           //0待接收 1接受 2拒绝 3已完成
@@ -154,10 +156,8 @@ export default {
         });
     },
     goConsult(data) {
-      // console.log("data.time" + data.time);
-      var strtime = Number(data.time);
-      // console.log("strtime" + strtime);
-      var date1 = new Date(strtime);
+      var date1=new Date( data.time)
+      date1.setHours(date1.getHours() - 8);
       // console.log("date1" + date1);
       var date2 = new Date();
       // console.log("date2" + date2);

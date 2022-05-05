@@ -13,6 +13,7 @@
           sortable
           width="300"
           column-key="date"
+           :formatter="dateFormat"
         >
         </el-table-column>
         <el-table-column
@@ -122,6 +123,13 @@ export default {
   },
 
   methods: {
+     dateFormat(row, column) {
+      let time = row[column.property];
+      if (time == undefined) {
+        return "";
+      }
+      return time.substring(0,10)+' '+time.substring(11,19);
+    },
     loadData() {
       this.axios({
         url: "./vtmservice/getDoctorAllVideo/" + this.ID,

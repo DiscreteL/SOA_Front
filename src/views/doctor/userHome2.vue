@@ -51,16 +51,6 @@ export default {
   components: {
     UserHomeNav2,
   },
-  // data() {
-  //   return {
-  //     // 返回个人信息
-  //     // userID: window.sessionStorage.getItem("id"),
-  //     userInfo: {}, //用户个人信息
-  //     item: {
-  //       id: "",
-  //     },
-  //   };
-  // },
   data() {
     return {
       // 默认不折叠

@@ -153,15 +153,13 @@ export default {
     handleChange() {
       this.$forceUpdate();
     },
-    //  格式化日期
+      //  格式化日期
     dateFormat1(row, column) {
       let time = row[column.property];
       if (time == undefined) {
         return "";
       }
-      time = Number(time);
-      var date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd");
+      return time.substring(0,10);
     },
     //  格式化日期
     dateFormat2(row, column) {
@@ -169,36 +167,21 @@ export default {
       if (time == undefined) {
         return "";
       }
-      time = Number(time);
-      var date = new Date(time);
-      return formatDate(date, "hh:mm:ss");
+      return time.substring(11,19);
     },
     goConsult(data) {
-      // console.log("data.time" + data.time);
-      var strtime = Number(data.time);
-      // console.log("strtime" + strtime);
-      var date1 = new Date(strtime);
+      var date1=new Date( data.time)
+      date1.setHours(date1.getHours() - 8);
       // console.log("date1" + date1);
       var date2 = new Date();
-      // console.log("date2" + date2);
       if (date1 < date2) {
-        // console.log(window.sessionStorage.getItem('userID'))
-        // this.$store.commit("editPatientId", data.id);
-        // this.$store.commit(
-        //   "editDoctorId",
-        //   window.sessionStorage.getItem("userID")
-        // );
-        // console.log("this.$store.state.inquiry.patientId");
-        // console.log(this.$store.state.inquiry.patientId);
-        // console.log("this.$store.state.inquiry.doctorId");
-        // console.log(this.$store.state.inquiry.doctorId);
-
-        console.log("data.patientID:"+data.id);
-        console.log("data.patientName:"+data.name);
-        window.sessionStorage.setItem("patientID", data.id);
+        // console.log("data.patientID:"+data.id);
+        // console.log("data.patientName:"+data.name);
+        window.sessionStorage.setItem("patientID", data.patientID);
         window.sessionStorage.setItem("doctorID", window.sessionStorage.getItem("userID"));
         window.sessionStorage.setItem("doctorName",window.sessionStorage.getItem("userName"));
         window.sessionStorage.setItem("patientName",data.name);
+        window.sessionStorage.setItem("reserveNum",data.reserveNum);
         this.$router.push("/doctorchat");
       } else
         this.$confirm("时间未到，聊天室还未开启！", "提示", {
