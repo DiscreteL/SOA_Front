@@ -48,6 +48,15 @@ module.exports = {
                 changeOrigin: true, //是否开启跨域
                 ws: true, //websocket支持
             },
+            '/pyservice': {
+                target: "http://localhost:8000",
+                //target: "http://192.168.189.1:8000",
+                changeOrigin: true, //是否开启跨域
+                ws: true, //websocket支持
+                pathRewrite: {
+                    '^/pyservice': ''
+                }
+            },
         }
     }
 }
