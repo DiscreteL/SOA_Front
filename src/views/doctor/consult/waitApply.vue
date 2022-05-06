@@ -210,7 +210,7 @@ export default {
       // this.formData = new FormData();
       // this.formData.append("id", row.reserveNum);
       this.axios({
-        url: "./oiservice/doctorAcceptRequest"+row.reserveNum,
+        url: "./oiservice/doctorAcceptRequest/"+row.reserveNum,
         method: "get",
         params: {
           id: row.reserveNum,

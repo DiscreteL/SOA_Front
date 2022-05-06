@@ -5,10 +5,35 @@
     </el-form-item>
     <el-form-item label="视频标签" required prop="label">
       <el-radio-group v-model="videoInfo.label">
+       <div style="margin-top: 10px">
         <el-radio label="疾病科普"></el-radio>
         <el-radio label="生活常识"></el-radio>
         <el-radio label="养生妙招"></el-radio>
+        </div>
+        <div style="margin-top: 20px">
+        <el-radio label="消化科"></el-radio>
+        <el-radio label="妇产科"></el-radio>
+        <el-radio label="儿科"></el-radio>
+        <el-radio label="生殖医学科"></el-radio>
+        </div>
+        <div style="margin-top: 20px">
+        <el-radio label="呼吸内科"></el-radio>
+        <el-radio label="神经内科"></el-radio>
+        <el-radio label="骨科"></el-radio>
+        <el-radio label="肿瘤科"></el-radio>
+        </div>
+        <div style="margin-top: 20px">
+        <el-radio label="口腔科"></el-radio>
+        <el-radio label="眼科"></el-radio>
+        <el-radio label="耳鼻喉科"></el-radio>
+        <el-radio label="康复医学科"></el-radio>
+        </div>
+        <div style="margin-top: 20px">
+        <el-radio label="中医科"></el-radio>
+        <el-radio label="皮肤科"></el-radio>
+        <el-radio label="心理咨询科"></el-radio>
         <el-radio label="其他"></el-radio>
+        </div>
       </el-radio-group>
     </el-form-item>
     <el-form-item label="上传文件" required>

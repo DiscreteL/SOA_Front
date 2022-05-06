@@ -11,17 +11,16 @@
       "
     >
       <el-main>
-        <el-button @click="toTweet">文章列表</el-button>
-        <el-button @click="toVideo">视频列表</el-button>
+        <el-button @click="toTweet" :plain= "selectA">文章列表</el-button>
+        <el-button @click="toVideo" :plain= "selectB">视频列表</el-button>
 
         <el-tooltip :content="'关闭则默认按时间排序'" placement="top">
-            <el-switch
-              v-model="recommendation"
-              active-text="开启个性化推荐"
-              style="margin-left: 20px"
-              @change="changeState()"
-            ></el-switch
-          >
+          <el-switch
+            v-model="recommendation"
+            active-text="开启个性化推荐"
+            style="margin-left: 20px"
+            @change="changeState()"
+          ></el-switch>
         </el-tooltip>
         <!--下面的slice很关键,实现了分页-->
         <el-table
@@ -119,6 +118,7 @@ export default {
   },
   data() {
     return {
+      ID: window.sessionStorage.getItem("userID"),
       isDialogVisible: false,
       docList: [],
       diaData: {},
@@ -130,7 +130,9 @@ export default {
       dataType: 0, //0是文章，1是视频
       // tableData: Array(20).fill(item),
       recommendation: true, //1为默认值，开启个性化推荐
-      label: 0,
+      label: "",
+      selectA:false,
+      selectB:true,
     };
   },
   created() {
@@ -139,10 +141,9 @@ export default {
   methods: {
     changeState() {
       if (this.dataType == 0) {
-        this.toTweet()
-      }
-      else {
-        this.toVideo()
+        this.toTweet();
+      } else {
+        this.toVideo();
       }
       console.log(this.recommendation);
     },
@@ -153,42 +154,192 @@ export default {
       if (this.recommendation) {
         //console.log(this.recommendation);
         this.axios({
-          url: "./vtmservice/getTweetByLabel/" + this.label,
+          url: "./pimservice/getAllTweetCollection/" + this.ID,
           method: "get",
           params: {
-            label: this.label,
+            patientID: this.ID,
           },
         })
           .then((res) => {
-            console.log(res);
-            for (let i of res.data) {
-              var time = new Date(i.time);
-              var y = time.getFullYear();
-              var m = time.getMonth() + 1;
-              var d = time.getDate();
-              var h = time.getHours();
-              var mm = time.getMinutes();
-              var s = time.getSeconds();
-              this.docList.push({
-                name: i.title,
-                url: i.url,
-                label: i.label,
-                id: i.id,
-                time:
-                  y +
-                  "-" +
-                  this.add0(m) +
-                  "-" +
-                  this.add0(d) +
-                  " " +
-                  this.add0(h) +
-                  ":" +
-                  this.add0(mm) +
-                  ":" +
-                  this.add0(s),
-              });
+            for (let i = 0; i < res.data.length; i++) {
+              var str;
+              switch (res.data[i].label) {
+                case "疾病科普":
+                  str = "1";
+                  break;
+                case "生活常识":
+                  str = "2";
+                  break;
+                case "养生妙招":
+                  str = "3";
+                  break;
+                case "消化科":
+                  str = "4";
+                  break;
+                case "妇产科":
+                  str = "5";
+                  break;
+                case "儿科":
+                  str = "6";
+                  break;
+                case "生殖医学科":
+                  str = "7";
+                  break;
+                case "呼吸内科":
+                  str = "8";
+                  break;
+                case "神经内科":
+                  str = "9";
+                  break;
+                case "骨科":
+                  str = "10";
+                  break;
+                case "肿瘤科":
+                  str = "11";
+                  break;
+                case "口腔科":
+                  str = "12";
+                  break;
+                case "眼科":
+                  str = "13";
+                  break;
+                case "耳鼻喉科":
+                  str = "14";
+                  break;
+                case "康复医学科":
+                  str = "15";
+                  break;
+                case "中医科":
+                  str = "16";
+                  break;
+                case "皮肤科":
+                  str = "17";
+                  break;
+                case "心理咨询科":
+                  str = "18";
+                  break;
+                case "其他":
+                  str = "19";
+                  break;
+                default:
+                  str = "19";
+                  break;
+              }
+              this.label += str;
+              if (i != res.data.length - 1) {
+                this.label += ",";
+              }
             }
-            this.docData = this.docList;
+            //console.log(this.label);
+            this.axios.get("./pyservice" + "?ls=" + this.label).then((res) => {
+              this.label = "";
+              for (let i = 0; i < res.data.rec_label.length; i++) {
+                var str;
+                //console.log(res.data.rec_label[i])
+                switch (res.data.rec_label[i]) {
+                  case 1:
+                    str = "疾病科普";
+                    break;
+                  case 2:
+                    str = "生活常识";
+                    break;
+                  case 3:
+                    str = "养生妙招";
+                    break;
+                  case 4:
+                    str = "消化科";
+                    break;
+                  case 5:
+                    str = "妇产科";
+                    break;
+                  case 6:
+                    str = "儿科";
+                    break;
+                  case 7:
+                    str = "生殖医学科";
+                    break;
+                  case 8:
+                    str = "呼吸内科";
+                    break;
+                  case 9:
+                    str = "神经内科";
+                    break;
+                  case 10:
+                    str = "骨科";
+                    break;
+                  case 11:
+                    str = "肿瘤科";
+                    break;
+                  case 12:
+                    str = "口腔科";
+                    break;
+                  case 13:
+                    str = "眼科";
+                    break;
+                  case 14:
+                    str = "耳鼻喉科";
+                    break;
+                  case 15:
+                    str = "康复医学科";
+                    break;
+                  case 16:
+                    str = "中医科";
+                    break;
+                  case 17:
+                    str = "皮肤科";
+                    break;
+                  case 18:
+                    str = "心理咨询科";
+                    break;
+                  case 19:
+                    str = "其他";
+                    break;
+                  default:
+                    str = "其他";
+                    break;
+                }
+                this.axios({
+                  url: "./vtmservice/getTweetByLabel/" + str,
+                  method: "get",
+                  params: {
+                    label: str,
+                  },
+                }).then((res) => {
+                  //console.log(res);
+                  for (let i of res.data) {
+                    var time = new Date(i.time);
+                    var y = time.getFullYear();
+                    var m = time.getMonth() + 1;
+                    var d = time.getDate();
+                    var h = time.getHours();
+                    var mm = time.getMinutes();
+                    var s = time.getSeconds();
+                    this.docList.push({
+                      name: i.title,
+                      url: i.url,
+                      label: i.label,
+                      id: i.id,
+                      time:
+                        y +
+                        "-" +
+                        this.add0(m) +
+                        "-" +
+                        this.add0(d) +
+                        " " +
+                        this.add0(h) +
+                        ":" +
+                        this.add0(mm) +
+                        ":" +
+                        this.add0(s),
+                    });
+                  }
+                  console.log(res);
+                  //console.log(typeof(res.result.pic));
+                  console.log("ok");
+                });
+                this.docData = this.docList;
+              }
+            });
           })
           .catch((err) => {
             console.log(err);
@@ -241,51 +392,202 @@ export default {
 
     getDataList2() {
       if (this.recommendation) {
+        //console.log(this.recommendation);
         this.axios({
-          url: "./vtmservice/getVideoByLabel/" + this.label,
+          url: "./pimservice/getAllVideoCollection/" + this.ID,
           method: "get",
           params: {
-            label: this.label,
+            patientID: this.ID,
           },
         })
           .then((res) => {
-            console.log(res);
-            for (let i of res.data) {
-              var time = new Date(i.time);
-              var y = time.getFullYear();
-              var m = time.getMonth() + 1;
-              var d = time.getDate();
-              var h = time.getHours();
-              var mm = time.getMinutes();
-              var s = time.getSeconds();
-              this.docList.push({
-                name: i.title,
-                url: i.url,
-                label: i.label,
-                id: i.id,
-                time:
-                  y +
-                  "-" +
-                  this.add0(m) +
-                  "-" +
-                  this.add0(d) +
-                  " " +
-                  this.add0(h) +
-                  ":" +
-                  this.add0(mm) +
-                  ":" +
-                  this.add0(s),
-              });
+            for (let i = 0; i < res.data.length; i++) {
+              var str;
+              switch (res.data[i].label) {
+                case "疾病科普":
+                  str = "1";
+                  break;
+                case "生活常识":
+                  str = "2";
+                  break;
+                case "养生妙招":
+                  str = "3";
+                  break;
+                case "消化科":
+                  str = "4";
+                  break;
+                case "妇产科":
+                  str = "5";
+                  break;
+                case "儿科":
+                  str = "6";
+                  break;
+                case "生殖医学科":
+                  str = "7";
+                  break;
+                case "呼吸内科":
+                  str = "8";
+                  break;
+                case "神经内科":
+                  str = "9";
+                  break;
+                case "骨科":
+                  str = "10";
+                  break;
+                case "肿瘤科":
+                  str = "11";
+                  break;
+                case "口腔科":
+                  str = "12";
+                  break;
+                case "眼科":
+                  str = "13";
+                  break;
+                case "耳鼻喉科":
+                  str = "14";
+                  break;
+                case "康复医学科":
+                  str = "15";
+                  break;
+                case "中医科":
+                  str = "16";
+                  break;
+                case "皮肤科":
+                  str = "17";
+                  break;
+                case "心理咨询科":
+                  str = "18";
+                  break;
+                case "其他":
+                  str = "19";
+                  break;
+                default:
+                  str = "19";
+                  break;
+              }
+              this.label += str;
+              if (i != res.data.length - 1) {
+                this.label += ",";
+              }
             }
-            this.docData = this.docList;
+            //console.log(this.label);
+            this.axios.get("./pyservice" + "?ls=" + this.label).then((res) => {
+              this.label = "";
+              for (let i = 0; i < res.data.rec_label.length; i++) {
+                var str;
+                //console.log(res.data.rec_label[i])
+                switch (res.data.rec_label[i]) {
+                  case 1:
+                    str = "疾病科普";
+                    break;
+                  case 2:
+                    str = "生活常识";
+                    break;
+                  case 3:
+                    str = "养生妙招";
+                    break;
+                  case 4:
+                    str = "消化科";
+                    break;
+                  case 5:
+                    str = "妇产科";
+                    break;
+                  case 6:
+                    str = "儿科";
+                    break;
+                  case 7:
+                    str = "生殖医学科";
+                    break;
+                  case 8:
+                    str = "呼吸内科";
+                    break;
+                  case 9:
+                    str = "神经内科";
+                    break;
+                  case 10:
+                    str = "骨科";
+                    break;
+                  case 11:
+                    str = "肿瘤科";
+                    break;
+                  case 12:
+                    str = "口腔科";
+                    break;
+                  case 13:
+                    str = "眼科";
+                    break;
+                  case 14:
+                    str = "耳鼻喉科";
+                    break;
+                  case 15:
+                    str = "康复医学科";
+                    break;
+                  case 16:
+                    str = "中医科";
+                    break;
+                  case 17:
+                    str = "皮肤科";
+                    break;
+                  case 18:
+                    str = "心理咨询科";
+                    break;
+                  case 19:
+                    str = "其他";
+                    break;
+                  default:
+                    str = "其他";
+                    break;
+                }
+                this.axios({
+                  url: "./vtmservice/getVideoByLabel/" + str,
+                  method: "get",
+                  params: {
+                    label: str,
+                  },
+                }).then((res) => {
+                  //console.log(res);
+                  for (let i of res.data) {
+                    var time = new Date(i.time);
+                    var y = time.getFullYear();
+                    var m = time.getMonth() + 1;
+                    var d = time.getDate();
+                    var h = time.getHours();
+                    var mm = time.getMinutes();
+                    var s = time.getSeconds();
+                    this.docList.push({
+                      name: i.title,
+                      url: i.url,
+                      label: i.label,
+                      id: i.id,
+                      time:
+                        y +
+                        "-" +
+                        this.add0(m) +
+                        "-" +
+                        this.add0(d) +
+                        " " +
+                        this.add0(h) +
+                        ":" +
+                        this.add0(mm) +
+                        ":" +
+                        this.add0(s),
+                    });
+                  }
+                  console.log(res);
+                  //console.log(typeof(res.result.pic));
+                  console.log("ok");
+                });
+                this.docData = this.docList;
+              }
+            });
           })
           .catch((err) => {
             console.log(err);
           });
       } else {
+        //console.log(this.recommendation);
         this.axios
           .get("./vtmservice/getAllVideo")
-          // .get("http://139.224.164.68:7777/getAllVideo")
           .then((res) => {
             console.log(res);
             for (let i of res.data) {
@@ -366,11 +668,15 @@ export default {
     },
 
     toTweet() {
+      this.selectA = false,
+      this.selectB = true,
       this.docList = [];
       this.getDataList1();
       this.dataType = 0;
     },
     toVideo() {
+      this.selectA = true,
+      this.selectB = false,
       this.docList = [];
       this.getDataList2();
       this.dataType = 1;
