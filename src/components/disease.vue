@@ -124,16 +124,6 @@
               >
                 <el-button slot="reference">常用药品</el-button>
               </el-popover>
-
-              <!-- <el-popover
-              placement="bottom"
-              title="并发症"
-              width="200"
-              trigger="hover"
-              :content=item.complication
-            >
-              <el-button slot="reference" style="text-align: center">并发症</el-button>
-            </el-popover> -->
             </div>
           </div>
         </el-col>
