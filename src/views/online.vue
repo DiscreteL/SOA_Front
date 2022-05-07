@@ -124,7 +124,6 @@ export default {
       mes.docId = this.$refs.listItem.lastCardInfo._id;
       this.axios
         .post("./oiservice/patientSubmitRequest", {
-          // patientID: this.$store.state.userId,
           patientID: sessionStorage.getItem("userID"),
           reserveNum: mes.date1 + mes.docId,
           doctorID: mes.docId,
