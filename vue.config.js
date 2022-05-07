@@ -50,6 +50,12 @@ module.exports = {
         changeOrigin: true, //是否开启跨域
         ws: true, //websocket支持
       },
+      // "/upload": {
+      //   // target: "http://100.65.7.16:9004",
+      //   target: "http://100.65.7.16:8789",
+      //   changeOrigin: true, //是否开启跨域
+      //   ws: true, //websocket支持
+      // },
       "/pyservice": {
         target: "http://localhost:8000",
         changeOrigin: true, //是否开启跨域
