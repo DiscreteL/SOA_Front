@@ -11,8 +11,8 @@
       "
     >
       <el-main>
-        <el-button @click="toTweet" :plain= "selectA">文章列表</el-button>
-        <el-button @click="toVideo" :plain= "selectB">视频列表</el-button>
+        <el-button @click="toTweet" :plain="selectA">文章列表</el-button>
+        <el-button @click="toVideo" :plain="selectB">视频列表</el-button>
 
         <el-tooltip :content="'关闭则默认按时间排序'" placement="top">
           <el-switch
@@ -131,8 +131,8 @@ export default {
       // tableData: Array(20).fill(item),
       recommendation: true, //1为默认值，开启个性化推荐
       label: "",
-      selectA:false,
-      selectB:true,
+      selectA: false,
+      selectB: true,
     };
   },
   created() {
@@ -342,7 +342,12 @@ export default {
             });
           })
           .catch((err) => {
-            console.log(err);
+            this.$notify({
+              title: "提示",
+              message:
+                "您的资讯浏览/收藏记录过少，暂时无法为您生成个性化推荐内容",
+              duration: 4500,
+            });
           });
       } else {
         //console.log(this.recommendation);
@@ -668,16 +673,12 @@ export default {
     },
 
     toTweet() {
-      this.selectA = false,
-      this.selectB = true,
-      this.docList = [];
+      (this.selectA = false), (this.selectB = true), (this.docList = []);
       this.getDataList1();
       this.dataType = 0;
     },
     toVideo() {
-      this.selectA = true,
-      this.selectB = false,
-      this.docList = [];
+      (this.selectA = true), (this.selectB = false), (this.docList = []);
       this.getDataList2();
       this.dataType = 1;
     },

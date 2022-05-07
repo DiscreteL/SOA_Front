@@ -153,11 +153,12 @@ export default {
 
     uploadFile(file) {
       this.newFile.append("file", file.file);
+      console.log("asdasd死而复生")
     },
 
     onSubmit () {
       this.axios({
-        url: 'http://100.65.7.16:8789/upload',
+        url: '',
         method: 'post',
         data: this.newFile,
         headers: {
