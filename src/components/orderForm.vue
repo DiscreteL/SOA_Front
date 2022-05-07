@@ -14,14 +14,6 @@
             style="width: 100%"
           ></el-date-picker>
         </el-col>
-        <!-- <el-col class="line" :span="2">-</el-col>
-        <el-col :span="11">
-          <el-time-picker
-            placeholder="选择时间"
-            v-model="form.date2"
-            style="width: 100%"
-          ></el-time-picker>
-        </el-col> -->
       </el-form-item>
       <el-form-item label="是否复诊">
         <el-switch v-model="form.delivery"></el-switch>

@@ -119,13 +119,11 @@ export default {
       this.isFormVisible = false;
     },
     submitForm(mes) {
-      //获得了表单
-      //向表单信息添加新信息
       mes.docId = this.$refs.listItem.lastCardInfo._id;
       this.axios
         .post("./oiservice/patientSubmitRequest", {
           patientID: sessionStorage.getItem("userID"),
-          reserveNum: mes.date1 + mes.docId,
+          reserveNum: mes.date1 + mes.docId, //预约单号为预约时间+医生ID
           doctorID: mes.docId,
           time: mes.date1,
           status: 0, //待确认的意思

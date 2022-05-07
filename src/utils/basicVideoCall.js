@@ -5,10 +5,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
-let rtc = {  
+let rtc = {
     localAudioTrack: null,
-      localVideoTrack: null,
-      client: null
+    localVideoTrack: null,
+    client: null
 };
 
 let options = { // Pass your App ID here.
@@ -41,7 +41,6 @@ function fetchToken(uid, channelName) {
 
 export async function startBasicCall() {
 
-    console.log("11111111111");
     console.log(window.sessionStorage.getItem("patientID"));
     // Create an AgoraRTCClient object.
     rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });

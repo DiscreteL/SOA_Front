@@ -125,15 +125,15 @@ export default {
     },
     async submitFile() {
       await this.axios({
-        url: "http://100.65.7.16:8789/upload",
+        url: "./upload/tencent/",
         method: "post",
         data: this.newFile,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        // headers: {
+        //   "Content-Type": "multipart/form-data",
+        // },
       })
         .then((response) => {
-          const articleUrl = response.data; //  3. 拿到刚刚的数据，并将其传给后台
+          const articleUrl = response.data.path; //  3. 拿到刚刚的数据，并将其传给后台
           this.axios
             .post("./vtmservice/publishTweet", {
               doctorID: this.ID,

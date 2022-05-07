@@ -161,6 +161,7 @@ export default {
           },
         })
           .then((res) => {
+            console.log(res.data.length)
             for (let i = 0; i < res.data.length; i++) {
               var str;
               switch (res.data[i].label) {
@@ -233,6 +234,7 @@ export default {
             //console.log(this.label);
             this.axios.get("./pyservice" + "?ls=" + this.label).then((res) => {
               this.label = "";
+              console.log(res);
               for (let i = 0; i < res.data.rec_label.length; i++) {
                 var str;
                 //console.log(res.data.rec_label[i])
@@ -342,6 +344,7 @@ export default {
             });
           })
           .catch((err) => {
+            console.log(err);
             this.$notify({
               title: "提示",
               message:
@@ -588,6 +591,12 @@ export default {
           })
           .catch((err) => {
             console.log(err);
+              this.$notify({
+              title: "提示",
+              message:
+                "您的资讯浏览/收藏记录过少，暂时无法为您生成个性化推荐内容",
+              duration: 4500,
+            });
           });
       } else {
         //console.log(this.recommendation);

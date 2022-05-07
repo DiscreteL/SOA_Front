@@ -29,7 +29,7 @@
     <el-table-column label="收藏时间" prop="time" :formatter="dateFormat">
     </el-table-column>
     <el-table-column label="标题" prop="title"> </el-table-column>
-    <el-table-column label="作者" prop="name"> </el-table-column>
+    <el-table-column label="标签" prop="label"> </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
         <el-input
@@ -111,8 +111,8 @@ export default {
       this.axios
         .get("./pimservice/getAllTweetCollection/" + this.store.id)
         .then(function (res) {
-          console.log("gettabledata.res.data:");
-          console.log(res.data);
+          // console.log("gettabledata.res.data:");
+          // console.log(res.data);
           _this.tableData = res.data;
         })
         .catch(function (error) {

@@ -158,28 +158,8 @@ export default {
     goConsult(data) {
       var date1=new Date( data.time)
       date1.setHours(date1.getHours() - 8);
-      // console.log("date1" + date1);
       var date2 = new Date();
-      // console.log("date2" + date2);
       if (date1 < date2) {
-        // console.log(window.sessionStorage.getItem('userID'))
-        // this.$store.commit(
-        //   "editPatientId",
-        //   window.sessionStorage.getItem("userID")
-        // );
-        // this.$store.commit("editDoctorId", data.doctorID);
-        //记得改回来！！！！！！！！！
-        // this.axios
-        //   .get("doctor-service/completeRequest/" + data.reserveNum)
-        //   .then(function (res) {
-        //     console.log("gettableData.res.data:");
-        //     console.log(res.data);
-        //   })
-        //   .catch(function (error) {
-        //     console.log("Failed!" + error);
-        //   });
-        console.log("data:"+data)
-        console.log("data.doctorID:"+data.doctorID);
         window.sessionStorage.setItem("doctorID", data.doctorID);
         window.sessionStorage.setItem("patientID", window.sessionStorage.getItem("userID"));
         window.sessionStorage.setItem("doctorName",data.name);

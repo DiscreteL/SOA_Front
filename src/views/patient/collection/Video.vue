@@ -29,7 +29,7 @@
     <el-table-column label="收藏时间" prop="time" :formatter="dateFormat">
     </el-table-column>
     <el-table-column label="标题" prop="title"> </el-table-column>
-    <el-table-column label="作者" prop="name"> </el-table-column>
+    <el-table-column label="标签" prop="label"> </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
         <el-input
@@ -40,7 +40,7 @@
         />
       </template>
       <template slot-scope="scope">
-        <el-button size="mini" @click="more(scope.row)">查看全文</el-button>
+        <el-button size="mini" @click="more(scope.row)">查看视频</el-button>
         <el-button size="mini" type="danger" @click="deleteCollect(scope.row)"
           >取消收藏</el-button
         >

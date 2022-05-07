@@ -122,15 +122,15 @@ export default {
     },
     async submitFile() {
       await this.axios({
-        url: "http://100.65.7.16:8789/upload",
+        url: "./upload/tencent/",
         method: "post",
         data: this.newFile,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        // headers: {
+        //   "Content-Type": "multipart/form-data",
+        // },
       })
         .then((response) => {
-          const videoUrl = response.data; //  3. 拿到刚刚的数据，并将其传给后台
+          const videoUrl = response.data.path; //  3. 拿到刚刚的数据，并将其传给后台
           this.axios
             .post("./vtmservice/publishVideo", {
               doctorID: this.ID,
@@ -148,6 +148,7 @@ export default {
         })
         .catch((err) => {
           console.log(err);
+          this.$message.error("上传失败！");
         });
     },
 
