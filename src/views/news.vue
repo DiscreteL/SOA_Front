@@ -161,7 +161,7 @@ export default {
           },
         })
           .then((res) => {
-            console.log(res.data.length)
+            console.log(res.data.length);
             for (let i = 0; i < res.data.length; i++) {
               var str;
               switch (res.data[i].label) {
@@ -306,39 +306,50 @@ export default {
                   params: {
                     label: str,
                   },
-                }).then((res) => {
-                  //console.log(res);
-                  for (let i of res.data) {
-                    var time = new Date(i.time);
-                    var y = time.getFullYear();
-                    var m = time.getMonth() + 1;
-                    var d = time.getDate();
-                    var h = time.getHours();
-                    var mm = time.getMinutes();
-                    var s = time.getSeconds();
-                    this.docList.push({
-                      name: i.title,
-                      url: i.url,
-                      label: i.label,
-                      id: i.id,
-                      time:
-                        y +
-                        "-" +
-                        this.add0(m) +
-                        "-" +
-                        this.add0(d) +
-                        " " +
-                        this.add0(h) +
-                        ":" +
-                        this.add0(mm) +
-                        ":" +
-                        this.add0(s),
+                })
+                  .then((res) => {
+                    //console.log(res);
+                    for (let i of res.data) {
+                      var time = new Date(i.time);
+                      var y = time.getFullYear();
+                      var m = time.getMonth() + 1;
+                      var d = time.getDate();
+                      var h = time.getHours();
+                      var mm = time.getMinutes();
+                      var s = time.getSeconds();
+                      this.docList.push({
+                        name: i.title,
+                        url: i.url,
+                        label: i.label,
+                        id: i.id,
+                        time:
+                          y +
+                          "-" +
+                          this.add0(m) +
+                          "-" +
+                          this.add0(d) +
+                          " " +
+                          this.add0(h) +
+                          ":" +
+                          this.add0(mm) +
+                          ":" +
+                          this.add0(s),
+                      });
+                    }
+                    console.log(res);
+                    //console.log(typeof(res.result.pic));
+                    console.log("ok");
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    this.$notify({
+                      title: "提示",
+                      message:
+                        "您的资讯浏览/收藏记录过少，暂时无法为您生成个性化推荐内容",
+                      duration: 4500,
                     });
-                  }
-                  console.log(res);
-                  //console.log(typeof(res.result.pic));
-                  console.log("ok");
-                });
+                  });
+
                 this.docData = this.docList;
               }
             });
@@ -584,14 +595,22 @@ export default {
                   console.log(res);
                   //console.log(typeof(res.result.pic));
                   console.log("ok");
-                });
+                }).catch((err) => {
+                    console.log(err);
+                    this.$notify({
+                      title: "提示",
+                      message:
+                        "您的资讯浏览/收藏记录过少，暂时无法为您生成个性化推荐内容",
+                      duration: 4500,
+                    });
+                  });
                 this.docData = this.docList;
               }
             });
           })
           .catch((err) => {
             console.log(err);
-              this.$notify({
+            this.$notify({
               title: "提示",
               message:
                 "您的资讯浏览/收藏记录过少，暂时无法为您生成个性化推荐内容",

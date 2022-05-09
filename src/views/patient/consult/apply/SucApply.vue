@@ -35,7 +35,6 @@
       sortable
     >
     </el-table-column>
-
     <el-table-column label="预约时间" prop="time" :formatter="dateFormat2">
     </el-table-column>
     <el-table-column label="预约医生" prop="name"> </el-table-column>

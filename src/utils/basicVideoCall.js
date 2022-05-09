@@ -27,7 +27,7 @@ let options = { // Pass your App ID here.
 function fetchToken(uid, channelName) {
     console.log(window.sessionStorage.getItem("userID"))
     return new Promise(function(resolve) {
-        axios.get("http://192.168.189.1:9002/webrtc/getToken/" + channelName + "/" + uid)
+        axios.get("./webrtc/getToken/" + channelName + "/" + uid)
             .then(function(response) {
                 const token = response.data;
                 console.log(token);

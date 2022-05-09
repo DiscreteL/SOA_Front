@@ -344,18 +344,19 @@ export default {
       if (this.loginForm2.email === "") {
         this.$message.error("请先输入邮箱再点击获取验证码");
       } else {
-        let regemail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-        if (!regemail.test(this.loginForm2.email)) {
-          this.$message({
-            showClose: true,
-            message: "请输入格式正确有效的邮箱号!",
-            type: "error",
-          });
-        } else {
-          console.log("经过检验格式正确"); //已执行
+        // let regemail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        // if (!regemail.test(this.loginForm2.email)) {
+        //   this.$message({
+        //     showClose: true,
+        //     message: "请输入格式正确有效的邮箱号!",
+        //     type: "error",
+        //   });
+        // } 
+        // else {
+          // console.log("经过检验格式正确"); //已执行
           if (this.loginForm2.usertype === "我是患者") {
             this.axios
-              .get("patient-service/getCode/" + this.loginForm2.email)
+              .post("./amservice/getCode/" ,{ id:this.loginForm2.email, identity:0})
               .then((res) => {
                 console.log(res);
                 if (res.data === true) {
@@ -377,7 +378,7 @@ export default {
               });
           } else {
             this.axios
-              .get("doctor-service/getCode/" + this.loginForm2.email)
+               .post("./amservice/getCode/" ,{ id:this.loginForm2.email, identity:1})
               .then((res) => {
                 console.log(res);
                 if (res.data === true) {
@@ -397,7 +398,7 @@ export default {
                   });
                 }
               });
-          }
+          // }
         }
       }
       console.log("55555"); //执行
@@ -424,11 +425,10 @@ export default {
         if (valid) {
           if (this.loginForm2.usertype === "我是患者") {
             this.axios
-              .get(
-                "patient-service/loginByMail/" +
-                  this.loginForm2.email +
-                  "/" +
-                  this.loginForm2.code
+              .post(
+                "./amservice/loginByMail/" ,{
+                  id:this.loginForm2.email,
+                  code:this.loginForm2.code}
               )
               .then((res) => {
                 console.log(res);
@@ -465,11 +465,10 @@ export default {
               });
           } else if (this.loginForm2.usertype === "我是医生") {
             this.axios
-              .get(
-                "doctor-service/loginByMail/" +
-                  this.loginForm2.email +
-                  "/" +
-                  this.loginForm2.code
+               .post(
+                "./amservice/loginByMail/" ,{
+                  id:this.loginForm2.email,
+                  code:this.loginForm2.code}
               )
               .then((res) => {
                 console.log(res);

@@ -51,6 +51,12 @@ module.exports = {
                     "^/pyservice": "",
                 },
             },
+            "/webrtc": {
+                // target: "http://100.65.7.16:9002",
+                target: "http://192.168.189.1:9002",
+                changeOrigin: true, //是否开启跨域
+                ws: true, //websocket支持
+            },
         },
     },
 };
