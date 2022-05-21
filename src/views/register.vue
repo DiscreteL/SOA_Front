@@ -400,8 +400,8 @@ export default {
           { required: true, message: "请输入登录密码", trigger: "blur" },
           {
             min: 6,
-            max: 15,
-            message: "长度在 6 到 15 个字符",
+            max: 18,
+            message: "长度在 6 到 18 个字符",
             trigger: "blur",
           },
           {

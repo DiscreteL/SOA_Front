@@ -120,25 +120,39 @@ export default {
     },
     submitForm(mes) {
       mes.docId = this.$refs.listItem.lastCardInfo._id;
-      this.axios
-        .post("./oiservice/patientSubmitRequest", {
-          patientID: sessionStorage.getItem("userID"),
-          reserveNum: mes.date1 + mes.docId, //预约单号为预约时间+医生ID
-          doctorID: mes.docId,
-          time: mes.date1,
-          status: 0, //待确认的意思
-          initDescription: mes.desc,
-        })
-        .then((res) => {
-          if (res.data === true)
-            this.$message({
-              message: "提交成功",
-              type: "success",
-            });
-        })
-        .catch((err) => {
-          console.log(err);
+      if (!mes.date1) {
+        this.$message({
+          message: "时间不能为空",
+          type: "error",
         });
+      } 
+      else if(!mes.desc){
+         this.$message({
+          message: "症状描述不能为空",
+          type: "error",
+        });
+      }
+        else {
+        this.axios
+          .post("./oiservice/patientSubmitRequest", {
+            patientID: sessionStorage.getItem("userID"),
+            reserveNum: mes.date1 + mes.docId, //预约单号为预约时间+医生ID
+            doctorID: mes.docId,
+            time: mes.date1,
+            status: 0, //待确认的意思
+            initDescription: mes.desc,
+          })
+          .then((res) => {
+            if (res.data === true)
+              this.$message({
+                message: "提交成功",
+                type: "success",
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
   },
 };
