@@ -166,7 +166,7 @@ export default {
         console.log("patientName:"+window.sessionStorage.getItem('patientName'))
         this.$router.push("/patientchat");
       } else
-        this.$confirm("时间未到，聊天室还未开启！", "提示", {
+        this.$confirm("聊天室还未开启，请在规定时间点击进入", "提示", {
           confirmButtonText: "确定",
           type: "warning",
         });

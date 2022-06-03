@@ -150,6 +150,12 @@ export default {
               });
           })
           .catch((err) => {
+            this.$notify({
+              title: "提示",
+              message: "提交失败，请稍后重试",
+              type: "error",
+              duration: 0,
+            });
             console.log(err);
           });
       }
