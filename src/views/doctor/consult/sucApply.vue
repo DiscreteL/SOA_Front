@@ -32,7 +32,7 @@
             <span>{{ props.row.gender }}</span>
           </el-form-item>
           <el-form-item label="出生日期">
-            <span>{{ props.row.bornDate }}</span>
+            <span>{{ props.row.bornDate |formatDate }}</span>
           </el-form-item>
           <el-form-item label="身高(cm)">
             <span>{{ props.row.height }}</span>
@@ -106,9 +106,10 @@ export default {
   },
   filters: {
     formatDate(time) {
-      time = Number(time);
-      var date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
+        if (time == undefined) {
+        return "";
+      }
+      return time.substring(0,10)+' '+time.substring(11,19);
     },
   },
   methods: {

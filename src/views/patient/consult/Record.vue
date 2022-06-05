@@ -17,7 +17,7 @@
           <el-form-item label="医生">
             <span>{{ props.row.doctorName }}</span>
           </el-form-item>
-          <el-form-item label="病历">
+          <el-form-item label="诊断">
             <span>{{ props.row.diagContent }}</span>
           </el-form-item>
           <el-form-item label="处方">
@@ -78,10 +78,10 @@ export default {
   },
   filters: {
     formatDate(time) {
-      // time=Number(time);
-      // console.log(time);
-      var date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd");
+        if (time == undefined) {
+        return "";
+      }
+      return time.substring(0,10)+' '+time.substring(11,19);
     },
   },
   methods: {

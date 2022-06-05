@@ -100,9 +100,10 @@ export default {
   },
   filters: {
     formatDate(time) {
-      time = Number(time);
-      var date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
+      if (time == undefined) {
+        return "";
+      }
+      return time.substring(0,10)+' '+time.substring(11,19);
     },
   },
   created() {
@@ -147,7 +148,7 @@ export default {
               time:i.bookingRequest.time,
               name:i.doctor.name,
               status:i.bookingRequest.status,
-              initDiscription:i.bookingRequest.initDescription,
+              initDescription:i.bookingRequest.initDescription,
               rejectionReason:i.bookingRequest.rejectionReason,
             })
           }

@@ -115,7 +115,6 @@ export default {
       if (time == undefined) {
         return "";
       }
-      
       return time.substring(0,10)+' '+time.substring(11,19);
     },
     //加载申请信息列表

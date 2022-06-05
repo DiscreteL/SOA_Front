@@ -55,7 +55,7 @@ export default {
     return {
       //   userID: window.sessionStorage.getItem("id"),
       userInfo: {},
-            store: {
+        store: {
         id: "",
       },
       navList: [
@@ -79,10 +79,7 @@ export default {
       let _this = this;
       this.axios
         .get(
-          "patient-service/getPatient/" + this.store.id
-          // headers: {
-          //   token: window.sessionStorage.getItem("token"),
-          // },
+          "pimservice/getPatientInfor/" + this.store.id
         )
         .then(function (res) {
           // console.log("res.data:");
