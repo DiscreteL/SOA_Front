@@ -310,31 +310,33 @@ export default {
                   .then((res) => {
                     //console.log(res);
                     for (let i of res.data) {
-                      var time = new Date(i.time);
-                      var y = time.getFullYear();
-                      var m = time.getMonth() + 1;
-                      var d = time.getDate();
-                      var h = time.getHours();
-                      var mm = time.getMinutes();
-                      var s = time.getSeconds();
-                      this.docList.push({
-                        name: i.title,
-                        url: i.url,
-                        label: i.label,
-                        id: i.id,
-                        time:
-                          y +
-                          "-" +
-                          this.add0(m) +
-                          "-" +
-                          this.add0(d) +
-                          " " +
-                          this.add0(h) +
-                          ":" +
-                          this.add0(mm) +
-                          ":" +
-                          this.add0(s),
-                      });
+                      if (i.audit == "1") {
+                        var time = new Date(i.time);
+                        var y = time.getFullYear();
+                        var m = time.getMonth() + 1;
+                        var d = time.getDate();
+                        var h = time.getHours();
+                        var mm = time.getMinutes();
+                        var s = time.getSeconds();
+                        this.docList.push({
+                          name: i.title,
+                          url: i.url,
+                          label: i.label,
+                          id: i.id,
+                          time:
+                            y +
+                            "-" +
+                            this.add0(m) +
+                            "-" +
+                            this.add0(d) +
+                            " " +
+                            this.add0(h) +
+                            ":" +
+                            this.add0(mm) +
+                            ":" +
+                            this.add0(s),
+                        });
+                      }
                     }
                     console.log(res);
                     //console.log(typeof(res.result.pic));
@@ -371,31 +373,33 @@ export default {
           .then((res) => {
             console.log(res);
             for (let i of res.data) {
-              var time = new Date(i.time);
-              var y = time.getFullYear();
-              var m = time.getMonth() + 1;
-              var d = time.getDate();
-              var h = time.getHours();
-              var mm = time.getMinutes();
-              var s = time.getSeconds();
-              this.docList.push({
-                name: i.title,
-                url: i.url,
-                label: i.label,
-                id: i.id,
-                time:
-                  y +
-                  "-" +
-                  this.add0(m) +
-                  "-" +
-                  this.add0(d) +
-                  " " +
-                  this.add0(h) +
-                  ":" +
-                  this.add0(mm) +
-                  ":" +
-                  this.add0(s),
-              });
+              if (i.audit == "1") {
+                var time = new Date(i.time);
+                var y = time.getFullYear();
+                var m = time.getMonth() + 1;
+                var d = time.getDate();
+                var h = time.getHours();
+                var mm = time.getMinutes();
+                var s = time.getSeconds();
+                this.docList.push({
+                  name: i.title,
+                  url: i.url,
+                  label: i.label,
+                  id: i.id,
+                  time:
+                    y +
+                    "-" +
+                    this.add0(m) +
+                    "-" +
+                    this.add0(d) +
+                    " " +
+                    this.add0(h) +
+                    ":" +
+                    this.add0(mm) +
+                    ":" +
+                    this.add0(s),
+                });
+              }
             }
             console.log(res);
             //console.log(typeof(res.result.pic));
@@ -563,39 +567,42 @@ export default {
                   params: {
                     label: str,
                   },
-                }).then((res) => {
-                  //console.log(res);
-                  for (let i of res.data) {
-                    var time = new Date(i.time);
-                    var y = time.getFullYear();
-                    var m = time.getMonth() + 1;
-                    var d = time.getDate();
-                    var h = time.getHours();
-                    var mm = time.getMinutes();
-                    var s = time.getSeconds();
-                    this.docList.push({
-                      name: i.title,
-                      url: i.url,
-                      label: i.label,
-                      id: i.id,
-                      time:
-                        y +
-                        "-" +
-                        this.add0(m) +
-                        "-" +
-                        this.add0(d) +
-                        " " +
-                        this.add0(h) +
-                        ":" +
-                        this.add0(mm) +
-                        ":" +
-                        this.add0(s),
-                    });
-                  }
-                  console.log(res);
-                  //console.log(typeof(res.result.pic));
-                  console.log("ok");
-                }).catch((err) => {
+                })
+                  .then((res) => {
+                    //console.log(res);
+                    for (let i of res.data) {
+                           if (i.audit == "1") {
+                      var time = new Date(i.time);
+                      var y = time.getFullYear();
+                      var m = time.getMonth() + 1;
+                      var d = time.getDate();
+                      var h = time.getHours();
+                      var mm = time.getMinutes();
+                      var s = time.getSeconds();
+                      this.docList.push({
+                        name: i.title,
+                        url: i.url,
+                        label: i.label,
+                        id: i.id,
+                        time:
+                          y +
+                          "-" +
+                          this.add0(m) +
+                          "-" +
+                          this.add0(d) +
+                          " " +
+                          this.add0(h) +
+                          ":" +
+                          this.add0(mm) +
+                          ":" +
+                          this.add0(s),
+                      });}
+                    }
+                    console.log(res);
+                    //console.log(typeof(res.result.pic));
+                    console.log("ok");
+                  })
+                  .catch((err) => {
                     console.log(err);
                     this.$notify({
                       title: "提示",
@@ -624,31 +631,33 @@ export default {
           .then((res) => {
             console.log(res);
             for (let i of res.data) {
-              var time = new Date(i.time);
-              var y = time.getFullYear();
-              var m = time.getMonth() + 1;
-              var d = time.getDate();
-              var h = time.getHours();
-              var mm = time.getMinutes();
-              var s = time.getSeconds();
-              this.docList.push({
-                name: i.title,
-                url: i.url,
-                label: i.label,
-                id: i.id,
-                time:
-                  y +
-                  "-" +
-                  this.add0(m) +
-                  "-" +
-                  this.add0(d) +
-                  " " +
-                  this.add0(h) +
-                  ":" +
-                  this.add0(mm) +
-                  ":" +
-                  this.add0(s),
-              });
+              if (i.audit == "1") {
+                var time = new Date(i.time);
+                var y = time.getFullYear();
+                var m = time.getMonth() + 1;
+                var d = time.getDate();
+                var h = time.getHours();
+                var mm = time.getMinutes();
+                var s = time.getSeconds();
+                this.docList.push({
+                  name: i.title,
+                  url: i.url,
+                  label: i.label,
+                  id: i.id,
+                  time:
+                    y +
+                    "-" +
+                    this.add0(m) +
+                    "-" +
+                    this.add0(d) +
+                    " " +
+                    this.add0(h) +
+                    ":" +
+                    this.add0(mm) +
+                    ":" +
+                    this.add0(s),
+                });
+              }
             }
             console.log(res);
             //console.log(typeof(res.result.pic));

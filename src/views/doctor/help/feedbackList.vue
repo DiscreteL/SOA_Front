@@ -10,7 +10,7 @@
       >
         <el-table-column
           prop="time"
-          label="反馈日期"
+          label="反馈时间"
           sortable
           width="200"
           column-key="time"
@@ -71,7 +71,7 @@ export default {
           this.tableData.push({
             reply: response.data[i].reply,
             content: response.data[i].content,
-            time: response.data[i].time
+            time: response.data[i].time.substring(0,10)+' '+response.data[i].time.substring(11,19)
           });
         }
         })

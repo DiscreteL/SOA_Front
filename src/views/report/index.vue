@@ -95,7 +95,7 @@ export default {
           for (let i = 0; i < response.data.length; i++) {
             this.tableData.push({
               id: response.data[i].doctorID,
-              time: response.data[i].time,
+              time:response.data[i].time.substring(0,10)+' '+response.data[i].time.substring(11,19),
               reply: response.data[i].reply,
               content: response.data[i].content,
               identity: 1,
@@ -115,7 +115,7 @@ export default {
           for (let i = 0; i < response.data.length; i++) {
             this.tableData.push({
               id: response.data[i].patientID,
-              time: response.data[i].time,
+              time: response.data[i].time.substring(0,10)+' '+response.data[i].time.substring(11,19),
               reply: response.data[i].reply,
               content: response.data[i].content,
               identity: 2,

@@ -13,6 +13,7 @@
           sortable
           width="300"
           column-key="date"
+           :formatter="dateFormat2"
         >
         </el-table-column>
         <el-table-column
@@ -139,6 +140,13 @@ export default {
   },
 
   methods: {
+     dateFormat2(row, column) {
+      let time = row[column.property];
+      if (time == undefined) {
+        return "";
+      }
+      return time.substring(0,10)+' '+ time.substring(11,19);
+    },
     loadData() {
       this.axios({
         url: "./vtmservice/getAllTweet",
@@ -165,7 +173,7 @@ export default {
           this.tweetData.push({
             doctorID: response.data.doctorID,
             id: response.data.id,
-            time: response.data.time,
+            time: response.data.time.substring(0,10)+' '+response.data.time.substring(11,19),
             title: response.data.title,
             label: response.data.label,
             url: response.data.url,

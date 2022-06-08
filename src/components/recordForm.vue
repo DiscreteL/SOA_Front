@@ -63,7 +63,7 @@
           <el-button @click="addMedicine">添加</el-button>
         </el-row>
         <el-table :data="diseaseDecidedForm.table">
-          <el-table-column fixed prop="name" width="180px" label="药品">
+          <el-table-column fixed prop="name" width="150px" label="药品">
           </el-table-column>
 
           <el-table-column fixed prop="action" width="153px" label="操作">
