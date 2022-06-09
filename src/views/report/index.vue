@@ -218,7 +218,7 @@ export default {
             time: this.timeC,
             content: this.contentC,
             reply: this.form.reply,
-            patientID: row,
+            patientID: row
           },
         })
           .then((response) => {
