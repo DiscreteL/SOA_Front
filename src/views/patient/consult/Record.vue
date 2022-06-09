@@ -117,7 +117,8 @@ export default {
       if (date == undefined) {
         return "";
       }
-      return moment(date).format("YYYY-MM-DD");
+      // return moment(date).format("YYYY-MM-DD");
+      return date.substring(0,10)+' '+date.substring(11,19);
     },
   },
 };

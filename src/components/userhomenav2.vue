@@ -53,7 +53,9 @@
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="onSubmit">发布</el-button>
-                <el-button type="primary" @click="dialogFormVisible=false">取消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false"
+                  >取消</el-button
+                >
               </el-form-item>
             </el-form>
           </el-dialog>
@@ -81,7 +83,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "UserHomeNav2",
   data() {
@@ -95,11 +97,9 @@ export default {
         { name: "/helpCenter", navItem: "帮助中心" },
       ],
       dialogFormVisible: false,
-      form: {
-        
-      },
+      form: {},
       fileList: [],
-      newFile: new FormData()
+      newFile: new FormData(),
     };
   },
   methods: {
@@ -122,11 +122,11 @@ export default {
         });
     },
 
-    handleRemove (file, fileList) {
-      console.log(file, fileList)
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
     },
-    handlePreview (file) {
-      console.log(file)
+    handlePreview(file) {
+      console.log(file);
     },
     handleExceed(files, fileList) {
       this.$message.warning(
@@ -136,90 +136,57 @@ export default {
       );
     },
 
-    BeforeUpload (file) {
+    BeforeUpload(file) {
       const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1);
-      const whiteList = ["pdf","jpg"];
+      const whiteList = ["pdf", "jpg"];
       if (whiteList.indexOf(fileSuffix) === -1) {
         this.$msg("上传文件只能是pdf/jpg格式", "error");
         return false;
       }
-      // if (file) {
-      //   this.newFile.append('file', file) //  2. 上传之前，拿到file对象，并将它添加到刚刚定义的FormData对象中
-      //   console.log(this.newFile.get('file'))
-      // } else {
-      //   return false
-      // }
     },
 
     uploadFile(file) {
       this.newFile.append("file", file.file);
-      console.log("asdasd死而复生")
+      console.log("asdasd死而复生");
     },
 
-    // onSubmit () {
-    //   this.axios({
-    //     url: '/upload/tencent',
-    //     method: 'post',
-    //     data: this.newFile,
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     }
-    //   })
-    //     .then((res) => {
-    //       console.log('res:', res)
-    //       this.dialogFormVisible=false,
-    //       this.$message({
-    //         type: "success",
-    //         message: "提交成功!",
-    //       });
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //     })
-    // },
-
-     async onSubmit() {
+    async onSubmit() {
       await this.axios({
         url: "./upload/tencent/",
         method: "post",
         data: this.newFile,
-        // headers: {
-        //   "Content-Type": "multipart/form-data",
-        // },
       })
         .then((response) => {
           const articleUrl = response.data.path; //  3. 拿到刚刚的数据，并将其传给后台
           this.axios
-            .post("./pimservice/updateDoctorInfor", {
+            .post("./pimservice/updateCertiProof", {
               certiProof: articleUrl,
-              idNum: this.userInfo.idNum,
-            name: this.userInfo.name,
-            gender: this.userInfo.gender,
-            hospital: this.userInfo.hospital,
-            title: this.userInfo.title,
-            department: this.userInfo.department,
-            workLength: this.userInfo.workLength,
-            certificationNum: this.userInfo.certificationNum,
-            isCertified: this.userInfo.isCertified,
-            opinion: this.userInfo.opinion,
-            isActive: this.userInfo.isActive,
-            rating: this.userInfo.rating,
-            password:this.userInfo.password,
-            docIntro: this.userInfo.docIntro,
-            email: this.userInfo.email,
-            id:this.ID
+              id: this.ID,
             })
             .then((response) => {
-              console.log(response)
-              this.$message.success("提交成功！");
-              // location.reload();
+              console.log(response);
+              if (response.data == true) {
+                this.$notify({
+                  title: "提示",
+                  message: "提交成功",
+                  type: "success",
+                  duration: 3000,
+                });
+                this.dialogFormVisible = false;
+              } else {
+                this.$notify({
+                  title: "提示",
+                  message: "提交失败",
+                  type: "error",
+                  duration: 3000,
+                });
+              }
             });
         })
         .catch((err) => {
           console.log(err);
         });
     },
-
   },
 
   mounted() {
