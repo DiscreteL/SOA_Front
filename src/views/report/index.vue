@@ -209,27 +209,27 @@ export default {
               message: "处理失败！",
             });
           });
-      } else if (this.identityC == 2) {
+      }
+      else if (this.identityC == 2) {
         this.axios({
           url: "./pmservice/replyPatientFeedback",
           method: "post",
           data: {
-            time: timeC,
-            content: contentC,
+            time: this.timeC,
+            content: this.contentC,
             reply: this.form.reply,
-            doctorID: row,
+            patientID: row,
           },
         })
           .then((response) => {
             if (response.data === true) {
+              location.reload();
               (this.opTweetID = ""),
                 (this.identityC = 0),
                 (this.timeC = ""),
                 (this.contentC = "");
-              location.reload();
               this.$refs.form.resetFields();
               this.dialogFormVisible = false;
-
               this.$message({
                 type: "success",
                 message: "处理成功",
