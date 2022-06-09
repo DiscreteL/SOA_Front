@@ -150,9 +150,7 @@ export default {
           recordID:
             window.sessionStorage.getItem("doctorID") +
             window.sessionStorage.getItem("patientID") +
-            month +
-            date +
-            year,
+            window.sessionStorage.getItem("reserveNum"),
           time: time1,
           doctorID: window.sessionStorage.getItem("doctorID"),
           doctorName: window.sessionStorage.getItem("doctorName"),

@@ -19,8 +19,9 @@
       <el-descriptions-item label="资格认证状态">
         <el-tag
           size="small"
-          :type="userInfo.isCertified === 0 ? 'danger' : 'success'"
-          ><span v-if="userInfo.isCertified === 0">未通过</span>
+          :type="userInfo.isCertified === 1 ? 'success' : 'danger'"
+          ><span v-if="userInfo.isCertified === 0">待审核</span>
+          <span v-if="userInfo.isCertified === 2">未通过</span>
           <span v-if="userInfo.isCertified === 1">已通过</span></el-tag
         >
       </el-descriptions-item>

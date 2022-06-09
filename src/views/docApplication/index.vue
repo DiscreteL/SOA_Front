@@ -143,12 +143,12 @@ export default {
     //加载医生申请信息列表
     loadData() {
       this.axios({
-        url: "admin-and-problem-service/getDoctorList",
+        url: "pimservice/getDoctorList",
         method: "get",
         params: {},
       }).then((response) => {
         for (let i = 0; i < response.data.length; i++) {
-          if (!response.data[i].opinion) {
+          if (!response.data[i].isCertified) {
             this.tableData.push({
               id: response.data[i].id,
               // date: response.data[i].date,
@@ -170,16 +170,16 @@ export default {
       this.docInfo = undefined;
       this.docInfo = new Array();
       this.axios({
-        url: "admin-and-problem-service/getInfo/" + row.id,
+        url: "pimservice/getDoctorInfor/" + row.id,
         method: "get",
       })
         .then((response) => {
           this.docInfo.push({
             id: response.data.id,
             name: response.data.name,
-            IDNum: response.data.idnum,
+            IDNum: response.data.idNum,
             gender: response.data.gender,
-            mail: response.data.mail,
+            mail: response.data.email,
             hospital: response.data.hospital,
             title: response.data.title,
             department: response.data.department,
@@ -218,10 +218,13 @@ export default {
     },
 
     handle(row) {
+      let opinion;
+      if(this.form.result==0) opinion='2';
+      else opinion='1';
       this.axios({
-        url: "/admin-and-problem-service/auditDoctor",
+        url: "/pimservice/auditDoctor",
         method: "post",
-        data: { id: row, opinion: this.form.result },
+        data: { id: row, isCertified: opinion },
       })
         .then((response) => {
           if (response.data === true) {
@@ -231,7 +234,7 @@ export default {
               type: "success",
               message: "处理成功",
             });
-            location.reload();
+            // location.reload();
           } else {
             this.$message({
               type: "error",

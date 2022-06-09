@@ -147,6 +147,7 @@ export default {
               rejectionReason:i.bookingRequest.rejectionReason,
               doctorID:i.bookingRequest.doctorID,
               doctorName:i.doctor.name,
+              reserveNum: i.bookingRequest.reserveNum,
             })
           }
           //0待接收 1接受 2拒绝 3已完成
@@ -164,7 +165,9 @@ export default {
         window.sessionStorage.setItem("patientID", window.sessionStorage.getItem("userID"));
         window.sessionStorage.setItem("doctorName",data.name);
         window.sessionStorage.setItem("patientName",window.sessionStorage.getItem("userName"));
-        console.log("patientName:"+window.sessionStorage.getItem('patientName'))
+        window.sessionStorage.setItem("reserveNum",data.reserveNum);
+        // console.log("patientName:"+window.sessionStorage.getItem('patientName'))
+        // console.log("reserveNum:"+window.sessionStorage.getItem('reserveNum'))
         this.$router.push("/patientchat");
       } else
         this.$confirm("聊天室还未开启，请在规定时间点击进入", "提示", {

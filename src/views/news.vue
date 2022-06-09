@@ -129,7 +129,7 @@ export default {
       currentPageData: {}, //当前页显示内容
       dataType: 0, //0是文章，1是视频
       // tableData: Array(20).fill(item),
-      recommendation: true, //1为默认值，开启个性化推荐
+      recommendation: false, //1为默认值，开启个性化推荐
       label: "",
       selectA: false,
       selectB: true,

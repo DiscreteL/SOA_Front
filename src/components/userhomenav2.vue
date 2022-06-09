@@ -156,26 +156,68 @@ export default {
       console.log("asdasd死而复生")
     },
 
-    onSubmit () {
-      this.axios({
-        url: '',
-        method: 'post',
+    // onSubmit () {
+    //   this.axios({
+    //     url: '/upload/tencent',
+    //     method: 'post',
+    //     data: this.newFile,
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data'
+    //     }
+    //   })
+    //     .then((res) => {
+    //       console.log('res:', res)
+    //       this.dialogFormVisible=false,
+    //       this.$message({
+    //         type: "success",
+    //         message: "提交成功!",
+    //       });
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
+
+     async onSubmit() {
+      await this.axios({
+        url: "./upload/tencent/",
+        method: "post",
         data: this.newFile,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+        // headers: {
+        //   "Content-Type": "multipart/form-data",
+        // },
       })
-        .then((res) => {
-          console.log('res:', res)
-          this.dialogFormVisible=false,
-          this.$message({
-            type: "success",
-            message: "提交成功!",
-          });
+        .then((response) => {
+          const articleUrl = response.data.path; //  3. 拿到刚刚的数据，并将其传给后台
+          this.axios
+            .post("./pimservice/updateDoctorInfor", {
+              certiProof: articleUrl,
+              idNum: this.userInfo.idNum,
+            name: this.userInfo.name,
+            gender: this.userInfo.gender,
+            hospital: this.userInfo.hospital,
+            title: this.userInfo.title,
+            department: this.userInfo.department,
+            workLength: this.userInfo.workLength,
+            certificationNum: this.userInfo.certificationNum,
+            isCertified: this.userInfo.isCertified,
+            opinion: this.userInfo.opinion,
+            isActive: this.userInfo.isActive,
+            rating: this.userInfo.rating,
+            password:this.userInfo.password,
+            docIntro: this.userInfo.docIntro,
+            email: this.userInfo.email,
+            id:this.ID
+            })
+            .then((response) => {
+              console.log(response)
+              this.$message.success("提交成功！");
+              // location.reload();
+            });
         })
         .catch((err) => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     },
 
   },

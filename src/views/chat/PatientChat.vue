@@ -112,8 +112,8 @@ export default {
     postRate() {
       //上传评价表
       this.axios.post("./oiservice/addEvaluation",{
-        patientID: this.$store.state.inquiry.patientId,
-        doctorID: this.$store.state.inquiry.doctorId,
+        patientID:  window.sessionStorage.getItem("patientID"),
+        doctorID:  window.sessionStorage.getItem("doctorID"),
         score: (this.formAssess.value1+this.formAssess.value2+this.formAssess.value3)/3,
       })
         .then((res) => {

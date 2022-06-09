@@ -74,9 +74,7 @@ export default {
       let preId =
         window.sessionStorage.getItem("doctorID") +
         window.sessionStorage.getItem("patientID") +
-        month +
-        date +
-        year;
+        window.sessionStorage.getItem("reserveNum")
       console.log("preId:" + preId);
       this.axios
         .get("./oiservice/getDiagContent/" + preId)
