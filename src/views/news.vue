@@ -48,7 +48,7 @@
           <el-table-column
             align="left"
             prop="name"
-            label="详细内容"
+            label="标题"
             width="350px"
           >
             <template slot-scope="scope">
@@ -120,9 +120,51 @@ export default {
     return {
       ID: window.sessionStorage.getItem("userID"),
       isDialogVisible: false,
-      docList: [],
+      docList: [
+        {time:"2022-06-09 16:58:00",
+        label:'生活常识',
+        name:"长期失眠怎么办？看了这篇你就知道！",
+        url:"https://jbt01-1309402647.cos.ap-shanghai.myqcloud.com/files/tweets/%E9%95%BF%E6%9C%9F%E5%A4%B1%E7%9C%A0%E7%9A%84%E5%8E%9F%E5%9B%A0%20%E5%A4%B1%E7%9C%A0%E7%9A%84%E5%8D%B1%E5%AE%B3%E6%9C%89%E4%BB%80%E4%B9%88.pdf",
+        id:34},
+        {time:"2022-06-09 16:58:00",
+        label:'养生科普',
+        name:"年轻人最容易忽视的问题：胃肠不适早就医！",
+        url:"https://jbt01-1309402647.cos.ap-shanghai.myqcloud.com/files/tweets/%E7%9B%98%E7%82%B9%E8%82%A0%E8%83%83%E4%B8%8D%E9%80%82%E7%9A%84%E5%8E%9F%E5%9B%A0%20%E6%97%A5%E5%B8%B8%E9%9C%80%E8%A6%81%E5%A4%9A%E6%B3%A8%E6%84%8F.pdf",
+        id:34},
+        {time:"2022-06-09 16:58:00",
+        label:'神经内科',
+        name:"年龄渐长，阿尔茨海默找上门",
+        url:"https://jbt01-1309402647.cos.ap-shanghai.myqcloud.com/files/tweets/%E7%9D%A1%E7%9C%A0%E4%B8%8D%E8%B6%B3%E6%98%93%E6%82%A3%E9%98%BF%E5%B0%94%E8%8C%A8%E6%B5%B7%E9%BB%98%E7%97%85%20%E7%94%A8%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%E5%8F%AF%E4%BB%A5%E9%A2%84%E9%98%B2.pdf",
+        id:34},
+        {time:"2022-06-09 16:58:00",
+        label:'消化科',
+        name:"肠胃炎早发现早治疗 这样预防",
+        url:"https://jbt01-1309402647.cos.ap-shanghai.myqcloud.com/files/tweets/%E8%82%A0%E8%83%83%E7%82%8E%E6%9C%89%E8%BF%99%E4%BA%9B%E5%8D%B1%E5%AE%B3%20%E7%94%9F%E6%B4%BB%E4%B8%AD%E6%80%8E%E4%B9%88%E9%A2%84%E9%98%B2%E8%82%A0%E8%83%83%E7%82%8E%E5%91%A2.pdf",
+        id:34},
+      ],
       diaData: {},
-      docData: [],
+      docData: [
+        {time:"2022-06-09 16:58:00",
+        label:'生活常识',
+        name:"长期失眠怎么办？看了这篇你就知道！",
+        url:"https://jbt01-1309402647.cos.ap-shanghai.myqcloud.com/files/tweets/%E9%95%BF%E6%9C%9F%E5%A4%B1%E7%9C%A0%E7%9A%84%E5%8E%9F%E5%9B%A0%20%E5%A4%B1%E7%9C%A0%E7%9A%84%E5%8D%B1%E5%AE%B3%E6%9C%89%E4%BB%80%E4%B9%88.pdf",
+        id:34},
+        {time:"2022-06-09 16:58:00",
+        label:'养生科普',
+        name:"年轻人最容易忽视的问题：胃肠不适早就医！",
+        url:"https://jbt01-1309402647.cos.ap-shanghai.myqcloud.com/files/tweets/%E7%9B%98%E7%82%B9%E8%82%A0%E8%83%83%E4%B8%8D%E9%80%82%E7%9A%84%E5%8E%9F%E5%9B%A0%20%E6%97%A5%E5%B8%B8%E9%9C%80%E8%A6%81%E5%A4%9A%E6%B3%A8%E6%84%8F.pdf",
+        id:34},
+        {time:"2022-06-09 16:58:00",
+        label:'神经内科',
+        name:"年龄渐长，阿尔茨海默找上门",
+        url:"https://jbt01-1309402647.cos.ap-shanghai.myqcloud.com/files/tweets/%E7%9D%A1%E7%9C%A0%E4%B8%8D%E8%B6%B3%E6%98%93%E6%82%A3%E9%98%BF%E5%B0%94%E8%8C%A8%E6%B5%B7%E9%BB%98%E7%97%85%20%E7%94%A8%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%E5%8F%AF%E4%BB%A5%E9%A2%84%E9%98%B2.pdf",
+        id:34},
+        {time:"2022-06-09 16:58:00",
+        label:'消化科',
+        name:"肠胃炎早发现早治疗 这样预防",
+        url:"https://jbt01-1309402647.cos.ap-shanghai.myqcloud.com/files/tweets/%E8%82%A0%E8%83%83%E7%82%8E%E6%9C%89%E8%BF%99%E4%BA%9B%E5%8D%B1%E5%AE%B3%20%E7%94%9F%E6%B4%BB%E4%B8%AD%E6%80%8E%E4%B9%88%E9%A2%84%E9%98%B2%E8%82%A0%E8%83%83%E7%82%8E%E5%91%A2.pdf",
+        id:34},
+      ],
       currentPage: 1, //当前页数 ，默认为1
       pageSize: 10, // 每页显示数量
       pageSizes: [8, 12, 16], //可以选择每页显示的数据条数

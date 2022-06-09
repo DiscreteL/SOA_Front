@@ -69,7 +69,7 @@ export default {
           //从后端请求到医生信息 也是筛选/搜索时直接处理的数据
           let count = 1;
           for (let i of res.data) {
-            if (i.isCertified != "0000") {
+            if (i.isCertified == "0001") {
               this.docList.push({
                 //这里不直接复制，而是将department属性改名为index 以便检索
                 id: i.id,

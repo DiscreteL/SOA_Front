@@ -68,9 +68,6 @@ export default {
   methods: {
     getPre() {
       //获取病历
-      let date = new Date().getDate();
-      let month = new Date().getMonth() + 1;
-      let year = new Date().getFullYear();
       let preId =
         window.sessionStorage.getItem("doctorID") +
         window.sessionStorage.getItem("patientID") +

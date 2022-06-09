@@ -128,9 +128,6 @@ export default {
         url: "./upload/tencent/",
         method: "post",
         data: this.newFile,
-        // headers: {
-        //   "Content-Type": "multipart/form-data",
-        // },
       })
         .then((response) => {
           const articleUrl = response.data.path; //  3. 拿到刚刚的数据，并将其传给后台

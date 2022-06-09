@@ -117,7 +117,21 @@ export default {
         score: (this.formAssess.value1+this.formAssess.value2+this.formAssess.value3)/3,
       })
         .then((res) => {
-          console.log(res);
+          if (res.data === false) {
+              this.$notify({
+                title: "提示",
+                message: "提交失败",
+                type: "warning",
+                duration: 3000,
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: `提交成功`,
+                type: "success",
+                duration: 0,
+              });
+          console.log(res);}
         })
         .catch((err) => {
           console.log(err);
